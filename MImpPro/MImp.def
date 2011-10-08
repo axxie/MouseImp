@@ -1,0 +1,4 @@
+EXPORTS
+    MIHookFunc
+    MIHookFunc1
+    MIGetVer

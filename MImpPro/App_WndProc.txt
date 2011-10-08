@@ -1,0 +1,157 @@
+#ifndef __RELEASE_CFG
+  __try
+  {
+#endif//__RELEASE_CFG
+  bool bCatch = false;
+  LRESULT lRes = 0;
+  WNDPROC const cpMemOldProc = pOldProc;
+
+  //incr call count
+  wWndProcCallCount++;
+  if(egcWndProcMaxRecursionCount <= wWndProcCallCount)
+  {
+    //recursion too long - break cycle to "DefWindowProc" call instead of "CallWindowProc"
+    SwitchWndToDef();
+  };
+
+  //easy
+  CMISharedInfo* const pCfgMem = pApp->pCfgMem;
+
+  switch(uiMsg)
+  {
+//  case WM_PAINT:
+  case WM_NCPAINT:
+  case WM_NCACTIVATE:
+    if(false != FlagTest(ecsIsShrinked))
+    {
+      bCatch = true;
+      lRes = CallWindowProc_(cpMemOldProc, hWnd, uiMsg, wParam, lParam);
+      //draw close margin
+      DrawCloseMargin(hWnd);
+    };
+    break;
+
+  case WM_HSCROLL:
+  case WM_VSCROLL:
+    if(pCfgMem->hSubClassScrollWnd == hWnd && SB_THUMBTRACK == LOWORD(wParam))
+    {
+      bCatch = false;
+      lRes = CallWindowProc_(cpMemOldProc, hWnd, uiMsg, wParam, lParam);
+      ////emulate "drop thumb" for "scroll work in MSWord"
+      //(!!!) SB_THUMBPOSITION should be after SB_THUMBTRACK - for avoid scrolling bug's in Netscape navigator
+      CallWindowProc_(cpMemOldProc, hWnd, uiMsg, MAKEWPARAM(SB_THUMBPOSITION, HIWORD(wParam)), lParam);
+    };
+    break;
+
+    ////    case WM_ACTIVATEAPP:
+    ////      if
+    ////        (
+    ////        //this thread deactivated
+    ////        (FALSE == cpcInfo->wParam && static_cast<DWORD>(cpcInfo->lParam) == pCfgMem->dwScrollStartThread)
+    ////        //another thread activated
+    ////        || (FALSE != cpcInfo->wParam && static_cast<DWORD>(cpcInfo->lParam) != pCfgMem->dwScrollStartThread)
+    ////        )
+    ////      {
+    ////        MouseControlAbort();
+    ////      };
+    ////      break;
+
+  case WM_ACTIVATE:
+    pApp->AHideActivateSensor(hWnd, WA_INACTIVE != LOWORD(wParam));
+    {
+      //get process of "chng wnd"
+      const DWORD dwcWndThrd = ::GetWindowThreadProcessId(hWnd, 0);
+      if
+        (
+        //deactivate this process
+        (WA_INACTIVE == LOWORD(wParam) && pCfgMem->dwScrollStartThread == dwcWndThrd)
+        //deactivate another process
+        || (WA_INACTIVE != LOWORD(wParam) && pCfgMem->dwScrollStartThread != dwcWndThrd)
+        )
+      {
+        pApp->MouseControlAbort();
+      };
+    };
+    break;
+
+    //sshow/hide
+  case WM_WINDOWPOSCHANGED:
+    {
+      const WINDOWPOS* const cpcMsgInfo = reinterpret_cast<const WINDOWPOS*>(lParam);
+      if(0 != (SWP_SHOWWINDOW & cpcMsgInfo->flags))
+      {
+        pApp->AShowSensor(hWnd);
+      }
+      else if(0 != (SWP_HIDEWINDOW & cpcMsgInfo->flags))
+      {
+        pApp->AHideSensor(hWnd);
+      };
+    };
+    break;
+
+  case WM_SHOWWINDOW:
+    if(FALSE != wParam)
+    {
+      pApp->AShowSensor(hWnd);
+    }
+    else
+    {
+      pApp->AHideSensor(hWnd);
+    };
+    break;
+
+    ////subclass service
+    //destroy wnd - try unsubclass wnd
+  case WM_DESTROY:
+    pApp->AHideDestroySensor(hWnd);
+    pApp->TryOpenWnd(hWnd, this);
+    break;
+
+
+    //unsubclass
+  case WM_NCDESTROY:
+    pApp->UnSubClass(hWnd, true, true);
+    break;
+
+    //if "button up" message get from queue - remove mouse hook from "forward mode"
+  case WM_NCRBUTTONUP:
+  case WM_RBUTTONUP:
+  case WM_NCLBUTTONUP:
+  case WM_LBUTTONUP:
+  case WM_NCMBUTTONUP:
+  case WM_MBUTTONUP:
+  case WM_MOUSEMOVE:
+  case WM_NCMOUSEMOVE:
+    pCfgMem->bMouseHookInForwardMode = FALSE;
+    break;
+
+  default:
+    //try process global msg's for for this wnd
+    if(uiMsg == pApp->uicGlbMsg)
+    {
+      lRes = pApp->ProcessGlbMsg(hWnd, wParam, lParam, this, true);
+      bCatch = true;
+    };
+    break;
+  };
+
+  //call prev
+  if(false == bCatch)
+  {
+    lRes = CallWindowProc_(cpMemOldProc, hWnd, uiMsg, wParam, lParam);
+  };
+
+  //decr count
+  wWndProcCallCount--;
+
+  //try del object
+  pApp->TryUnLock(hWnd, this);
+
+  return lRes;
+#ifndef __RELEASE_CFG
+  }
+  __except(sl::SLExceptionFilter(GetExceptionInformation()), EXCEPTION_CONTINUE_SEARCH)
+  {
+  };
+  return 0;
+#endif//__RELEASE_CFG

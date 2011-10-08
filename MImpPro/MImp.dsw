@@ -1,0 +1,203 @@
+Microsoft Developer Studio Workspace File, Format Version 6.00
+# WARNING: DO NOT EDIT OR DELETE THIS WORKSPACE FILE!
+
+###############################################################################
+
+Project: "MImp"=.\MImp.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name SLib
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name CrptPack
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "MImpCfg"=.\MImpCfg\MImpCfg.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name SLibWin
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name SLibExc
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name PngLib
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name RsaEuro
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name SharedLib
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name MImpUtl
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ZLib
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "MImpCtrl"=.\MImpCtrl\MImpCtrl.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name SLibWin
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name SLib
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "MImpUtl"=.\MImpUtl\MImpUtl.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name MImp
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "MouseImp"=.\MouseImp\MouseImp.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name SLibWin
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name SLib
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name SharedLib
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name RsaEuro
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name MImpUtl
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name PSApiAdd
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "PSApiAdd"=.\PSApiAdd\PSApiAdd.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "PngLib"=.\PngLib\PngLib.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "SLib"=.\SLib\SLib.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "SLibExc"=.\SLibExc\SLibExc.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "SLibWin"=.\SLibWin\SLibWin.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ZLib"=.\ZLib\ZLib.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Global:
+
+Package=<5>
+{{{
+}}}
+
+Package=<3>
+{{{
+}}}
+
+###############################################################################
+

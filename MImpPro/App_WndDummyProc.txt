@@ -1,0 +1,72 @@
+#ifndef __RELEASE_CFG
+  __try
+  {
+#endif//__RELEASE_CFG
+
+  bool bCatch = false;
+  LRESULT lRes = 0;
+  WNDPROC const cpMemOldProc = pOldProc;
+
+  //incr call count
+  wWndProcCallCount++;
+  if(egcWndProcMaxRecursionCount <= wWndProcCallCount)
+  {
+    //recursion too long - break cycle to "DefWindowProc" call instead of "CallWindowProc"
+    SwitchDummyWndToDef();
+  };
+
+  //easy
+  CMISharedInfo* const pCfgMem = pApp->pCfgMem;
+
+  switch(uiMsg)
+  {
+    //if "button up" message get from queue - remove mouse hook from "forward mode"
+  case WM_NCRBUTTONUP:
+  case WM_RBUTTONUP:
+  case WM_NCLBUTTONUP:
+  case WM_LBUTTONUP:
+  case WM_NCMBUTTONUP:
+  case WM_MBUTTONUP:
+  case WM_MOUSEMOVE:
+  case WM_NCMOUSEMOVE:
+    pCfgMem->bMouseHookInForwardMode = FALSE;
+    break;
+
+  case WM_DESTROY:
+    pApp->TryOpenWnd(hWnd, this);
+    break;
+
+  case WM_NCDESTROY:
+    pApp->UnSubClass(hWnd, true, true);
+    break;
+
+  default:
+    //try process global msg's for for this wnd
+    if(uiMsg == pApp->uicGlbMsg)
+    {
+      lRes = pApp->ProcessGlbMsg(hWnd, wParam, lParam, this, false);
+      bCatch = true;
+    };
+    break;
+  };
+
+  //call prev
+  if(false == bCatch)
+  {
+    lRes = CallWindowProc_(cpMemOldProc, hWnd, uiMsg, wParam, lParam);
+  };
+
+  //decr count
+  wWndProcCallCount--;
+
+  //try del object
+  pApp->TryUnLock(hWnd, this);
+  return lRes;
+
+#ifndef __RELEASE_CFG
+  }
+  __except(sl::SLExceptionFilter(GetExceptionInformation()), EXCEPTION_CONTINUE_SEARCH)
+  {
+  };
+  return 0;
+#endif//__RELEASE_CFG

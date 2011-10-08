@@ -1,0 +1,13 @@
+Document Type: GRF
+item: Custom Graphic
+  Width=32
+  Height=32
+  item: Bitmap
+    Text=C:\Tmp\tmp00\MImpPro\Install\BMP\Welcome.bmp
+    Rectangle=0 0 32 32
+    Pen Color=255
+    Pen Width=1
+    Brush Style=1000
+    Extra Flags=00000001
+  end
+end
