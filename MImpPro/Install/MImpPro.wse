@@ -1,6 +1,6 @@
 Document Type: WSE
 item: Global
-  Version=7.041
+  Version=8.14
   Title=MouseImp PRO Installation
   Flags=10010100
   Languages=65 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -18,14 +18,15 @@ item: Global
   Patch Flags=0000000000001001
   Patch Threshold=85
   Patch Memory=4000
-  EXE Filename=MImpPRO.exe
+  EXE Filename=MIProLive.exe
   FTP Cluster Size=20
   Per-User Version ID=1
   Dialogs Version=7
-  Version File=1.0
-  Version Description=MouseImp PRO
-  Version Copyright=Copyright © 2000 TV4 STUDIOS
-  Version Company=TV4 STUDIOS
+  Version File=0.1 Vista
+  Version Description=MouseImp PRO Live!
+  Version Copyright=Copyright © 2007 Pingram Software
+  Version Company=Pingram Software
+  Crystal Format=10111100101100000010001001001001
   Distribute Path=\\Strangefire\shared
   Distribute Type=1
   Step View=All
@@ -33,7 +34,7 @@ item: Global
   Variable Default1=C:\WINNT\System32
   Variable Flags1=00001000
   Variable Name2=_WISE_
-  Variable Default2=C:\PROGRA~1\WISEIN~1
+  Variable Default2=C:\PROGRA~1\WISEIN~1.0
   Variable Flags2=00001000
   Variable Name3=_ALIASNAME_
   Variable Flags3=00001000
@@ -261,7 +262,7 @@ item: Custom Dialog Set
       Action=2
       Enabled Color=00000000000000001111111111111111
       Create Flags=01010000000000000000000000001011
-      Pathname=C:\Tmp\tmp00\MImpPro\Install\BMP\Welcome.grf
+      Pathname=BMP\Welcome.grf
       Pathname French=%_WISE_%\dialogs\template\install.grf
       Pathname German=%_WISE_%\dialogs\template\install.grf
       Pathname Portuguese=%_WISE_%\dialogs\template\install.grf
@@ -870,6 +871,34 @@ end
 item: Include Script
   Pathname=%_WISE_%\INCLUDE\uninstal.wse
 end
+item: Install File
+  Source=d:\Visual Studio Projects\MImpPro\Install\Files\MIProCfg.exe.manifest
+  Destination=%MAINDIR%\MIProCfg.exe.manifest
+  Flags=0000000010000010
+  File Size=536
+  File Date=20030611 233504
+end
+item: Install File
+  Source=d:\Visual Studio Projects\MImpPro\Install\Files\MImpPro.chm
+  Destination=%MAINDIR%\MImpPro.chm
+  Flags=0000000010000010
+  File Size=104013
+  File Date=20040411 084240
+end
+item: Install File
+  Source=d:\Visual Studio Projects\MImpPro\Install\Files\License_rus.txt
+  Destination=%MAINDIR%\License_rus.txt
+  Flags=0000000010000010
+  File Size=2134
+  File Date=20030617 070204
+end
+item: Install File
+  Source=d:\Visual Studio Projects\MImpPro\Install\Files\License.txt
+  Destination=%MAINDIR%\License.txt
+  Flags=0000000010000010
+  File Size=1715
+  File Date=20030617 070356
+end
 item: Add Text to INSTALL.LOG
   Text=Non-System File:
 end
@@ -877,6 +906,13 @@ item: Install File
   Source=.\Files\MIPro.dll
   Destination=%MAINDIR%\MIPro.dll
   Flags=0000000010000010
+  Version String=1, 3, 0, 5
+  Version MS=65539
+  Version LS=5
+  Product=MouseImp PRO
+  File Size=90112
+  File Date=20070306 234822
+  EXE Type=32
 end
 item: Add Text to INSTALL.LOG
   Text=Non-System File:
@@ -885,6 +921,11 @@ item: Install File
   Source=.\Files\MIProCfg.exe
   Destination=%MAINDIR%\MIProCfg.exe
   Flags=0000000010000010
+  Version String=0, 0, 0, 0
+  Product=MouseImp PRO
+  File Size=239104
+  File Date=20030628 054206
+  EXE Type=32
 end
 item: Add Text to INSTALL.LOG
   Text=Non-System File:
@@ -893,6 +934,13 @@ item: Install File
   Source=.\Files\MIProCpl.cpl
   Destination=%SYS32%\MIProCpl.cpl
   Flags=0000000010000010
+  Version String=1, 3, 0, 5
+  Version MS=65539
+  Version LS=5
+  Product=MouseImp PRO
+  File Size=61440
+  File Date=20070306 234822
+  EXE Type=32
 end
 item: Add Text to INSTALL.LOG
   Text=Non-System File:
@@ -901,6 +949,11 @@ item: Install File
   Source=.\Files\MIProHst.exe
   Destination=%MAINDIR%\MIProHst.exe
   Flags=0000000010000010
+  Version String=0, 0, 0, 0
+  Product=MouseImp PRO
+  File Size=30208
+  File Date=20030612 004332
+  EXE Type=32
 end
 item: Add Text to INSTALL.LOG
   Text=Non-System File:
@@ -909,6 +962,13 @@ item: Install File
   Source=.\Files\MIProUtl.dll
   Destination=%MAINDIR%\MIProUtl.dll
   Flags=0000000010000010
+  Version String=1, 3, 0, 5
+  Version MS=65539
+  Version LS=5
+  Product=MouseImp PRO
+  File Size=3584
+  File Date=20070306 234822
+  EXE Type=32
 end
 item: Set Variable
   Variable=COMMON
@@ -1012,7 +1072,37 @@ item: Create Shortcut
   Key Type=1536
   Flags=00000001
 end
+item: Create Shortcut
+  Source=%MAINDIR%\MImpPro.chm
+  Destination=%CGROUPDIR%\%CGROUP_SAVE%\Documentation.lnk
+  Working Directory=%MAINDIR%
+  Icon Number=0
+end
 item: Else Statement
+end
+item: Add ProgMan Icon
+  Group=%GROUP%
+  Icon Name=Quick Tour
+  Command Line=%MAINDIR%\MIProCfg.exe /QuickTour
+  Default Directory=%MAINDIR%
+end
+item: Add ProgMan Icon
+  Group=%GROUP%
+  Icon Name=Configuration
+  Command Line=%MAINDIR%\MIProCfg.exe
+  Default Directory=%MAINDIR%
+end
+item: Add ProgMan Icon
+  Group=%GROUP%
+  Icon Name=MouseImp PRO
+  Command Line=%MAINDIR%\MIProHst.exe
+  Default Directory=%MAINDIR%
+end
+item: Add ProgMan Icon
+  Group=%GROUP%
+  Icon Name=Documentation
+  Command Line=%MAINDIR%\MImpPro.chm
+  Default Directory=%MAINDIR%
 end
 item: End Block
 end

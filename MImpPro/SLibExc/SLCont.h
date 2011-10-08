@@ -1,5 +1,5 @@
 /**********************************************************************
-template contsinter's
+template contsinter's New
 **********************************************************************/
 
 #ifndef __SLCONT_H
@@ -325,7 +325,7 @@ inline void CSLHashSet<Type, StoreType, dwcSizePow>::FreeAll(const bool bcFreeAl
 };
 
 template<class Type, class StoreType, const DWORD dwcSizePow>
-inline CSLHashSet<Type, StoreType, dwcSizePow>::CNode* CSLHashSet<Type, StoreType, dwcSizePow>::NewNode(Type InitData, CNode* const cpInitNext)
+inline typename CSLHashSet<Type, StoreType, dwcSizePow>::CNode* CSLHashSet<Type, StoreType, dwcSizePow>::NewNode(Type InitData, CNode* const cpInitNext)
 {
   CNode* const cpRes = reinterpret_cast<CNode*>(NodeMemMgr.New());
   cpRes->CNode::CNode(InitData, cpInitNext);
@@ -431,7 +431,7 @@ inline DWORD CSLHashSet<Type, StoreType, dwcSizePow>::TypeToHashPos(Type InitDat
 };
 
 template<class Type, class StoreType, const DWORD dwcSizePow>
-inline CSLHashSet<Type, StoreType, dwcSizePow>::iterator CSLHashSet<Type, StoreType, dwcSizePow>::IterBegin()
+inline typename CSLHashSet<Type, StoreType, dwcSizePow>::iterator CSLHashSet<Type, StoreType, dwcSizePow>::IterBegin()
 {
   //try find first item in hash
   DWORD dwHashPos = 0;
@@ -455,7 +455,7 @@ inline CSLHashSet<Type, StoreType, dwcSizePow>::iterator CSLHashSet<Type, StoreT
 };
 
 template<class Type, class StoreType, const DWORD dwcSizePow>
-inline CSLHashSet<Type, StoreType, dwcSizePow>::iterator CSLHashSet<Type, StoreType, dwcSizePow>::IterNext(iterator Curr) const
+inline typename CSLHashSet<Type, StoreType, dwcSizePow>::iterator CSLHashSet<Type, StoreType, dwcSizePow>::IterNext(iterator Curr) const
 {
   _ASSERT(false != IterIsOk(Curr));
   //goto next
@@ -521,13 +521,13 @@ inline CSLSList<Type, StoreType>::~CSLSList()
 };
 
 template<class Type, class StoreType>
-inline CSLSList<Type, StoreType>::iterator CSLSList<Type, StoreType>::IterBegin() 
+inline typename CSLSList<Type, StoreType>::iterator CSLSList<Type, StoreType>::IterBegin() 
 {
   return PosToIter(&pHead);
 };
 
 template<class Type, class StoreType>
-inline CSLSList<Type, StoreType>::iterator CSLSList<Type, StoreType>::IterNext(iterator Curr) const
+inline typename CSLSList<Type, StoreType>::iterator CSLSList<Type, StoreType>::IterNext(iterator Curr) const
 {
   _ASSERT(false != IterIsOk(Curr));
   CNode** const cppThis = IterToPos(Curr);
@@ -576,7 +576,7 @@ inline bool CSLSList<Type, StoreType>::IsOk() const
 };
 
 template<class Type, class StoreType>
-inline CSLSList<Type, StoreType>::iterator CSLSList<Type, StoreType>::Push(Type InitData)
+inline typename CSLSList<Type, StoreType>::iterator CSLSList<Type, StoreType>::Push(Type InitData)
 {
   //new node
   CNode* const cpNewNode = NewNode(InitData, pHead);
@@ -604,19 +604,19 @@ inline StoreType* CSLSList<Type, StoreType>::Get()
 };
 
 template<class Type, class StoreType>
-inline CSLSList<Type, StoreType>::CNode** CSLSList<Type, StoreType>::IterToPos(iterator Iter) const
+inline typename CSLSList<Type, StoreType>::CNode** CSLSList<Type, StoreType>::IterToPos(iterator Iter) const
 {
   return reinterpret_cast<CNode**>(Iter);
 };
 
 template<class Type, class StoreType>
-inline CSLSList<Type, StoreType>::iterator CSLSList<Type, StoreType>::PosToIter(CNode** const cppNode) const
+inline typename CSLSList<Type, StoreType>::iterator CSLSList<Type, StoreType>::PosToIter(CNode** const cppNode) const
 {
   return reinterpret_cast<iterator>(cppNode);
 };
 
 template<class Type, class StoreType>
-inline CSLSList<Type, StoreType>::CNode* CSLSList<Type, StoreType>::NewNode(Type InitData, CNode* const cpInitNext)
+inline typename CSLSList<Type, StoreType>::CNode* CSLSList<Type, StoreType>::NewNode(Type InitData, CNode* const cpInitNext)
 {
   CNode* const cpRes = reinterpret_cast<CNode*>(NodeMemMgr.New());
   cpRes->CNode::CNode(InitData, cpInitNext);
@@ -663,7 +663,7 @@ inline CSLStack<Type, StoreType, dwcFrameSize>::~CSLStack()
 };
 
 template<class Type, class StoreType, const DWORD dwcFrameSize>
-inline CSLStack<Type, StoreType, dwcFrameSize>::CNode* CSLStack<Type, StoreType, dwcFrameSize>::GetStartOfFrame(CFrameHdr* const cpFrame)
+inline typename CSLStack<Type, StoreType, dwcFrameSize>::CNode* CSLStack<Type, StoreType, dwcFrameSize>::GetStartOfFrame(CFrameHdr* const cpFrame)
 {
   return reinterpret_cast<CNode*>(cpFrame + 1);
 };
@@ -766,7 +766,7 @@ inline void CSLStack<Type, StoreType, dwcFrameSize>::FreeAll(const bool bcFreeMe
 };
 
 template<class Type, class StoreType, const DWORD dwcFrameSize>
-inline CSLStack<Type, StoreType, dwcFrameSize>::CFrameHdr* CSLStack<Type, StoreType, dwcFrameSize>::NewFrame()
+inline typename CSLStack<Type, StoreType, dwcFrameSize>::CFrameHdr* CSLStack<Type, StoreType, dwcFrameSize>::NewFrame()
 {
   CFrameHdr* pRes = 0;
   if(0 != pFreeFrames)
@@ -796,7 +796,7 @@ inline void CSLStack<Type, StoreType, dwcFrameSize>::DeleteFrame(CFrameHdr* cons
 };
 
 template<class Type, class StoreType, const DWORD dwcFrameSize>
-inline CSLStack<Type, StoreType, dwcFrameSize>::CNode* CSLStack<Type, StoreType, dwcFrameSize>::NewNode(Type InitData, const DWORD dwcInFramePos, CFrameHdr* const cpAllocFrame)
+inline typename CSLStack<Type, StoreType, dwcFrameSize>::CNode* CSLStack<Type, StoreType, dwcFrameSize>::NewNode(Type InitData, const DWORD dwcInFramePos, CFrameHdr* const cpAllocFrame)
 {
   CNode* const cpStartNode = GetStartOfFrame(cpAllocFrame);
   CNode* const cpRes = cpStartNode + dwcInFramePos;

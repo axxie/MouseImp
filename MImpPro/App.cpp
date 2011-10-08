@@ -40,6 +40,21 @@ static LPCTSTR const cpcFlatSB_GetScrollInfoName = _T("FlatSB_GetScrollInfo");
 static LPCTSTR const cpcFlatSB_GetScrollPropName = _T("FlatSB_GetScrollProp");
 static LPCTSTR const cpcIEWndClassName = _T("Internet Explorer_Server");
 static LPCTSTR const cpcWinAmpPLClassName = _T("Winamp PE");
+//static LPCTSTR const cpcOffice2007ClassName = _T("NetUIHWND");
+static LPCTSTR const cpcWord2007ClassName = _T("_WwG");
+static LPCTSTR const cpcExcel2007ClassName = _T("EXCEL7");
+static LPCTSTR const cpcPowerPoint2007ClassName = _T("paneClassDC");
+static LPCTSTR const cpcOutlook2007ClassName = _T("AfxWndW");
+
+static LPCTSTR const cpcOpera7WndClassName = _T("FRAMES2");
+static LPCTSTR const cpcOpera9WndClassName = _T("OperaWindowClass");
+static LPCTSTR const cpcMozillaWndClassName = _T("MozillaWindowClass");
+
+// BEGIN.TormozIT - 1C8 fan
+static LPCTSTR const cpcV8WindowWndClassName = _T("V8Window");
+static LPCTSTR const cpcV8GridWndClassName = _T("V8Grid");
+static LPCTSTR const cpcV8FormElementWndClassName = _T("V8FormElement");
+// END.TormozIT - 1C8 fan
 
 //info for non client messages (for stop scroll control mode)
 const struct StopMouseMsg cpcStopMouseNCInfo[] =
@@ -334,8 +349,8 @@ bool CApp::Init()
   //init hook dispatch func's
   if(false != bRes)
   {
-    pMouseFunc = CApp::MouseHookFunc;
-    pCBTFunc = CApp::CBTHookFunc;
+    pMouseFunc = &CApp::MouseHookFunc;
+    pCBTFunc = &CApp::CBTHookFunc;
   };
 
   //shared info
@@ -376,8 +391,8 @@ void CApp::Finit()
   };
 
   //clear hook func dispatch table
-  pMouseFunc = DummyHookFunc;
-  pCBTFunc = DummyHookFunc;
+  pMouseFunc = &CApp::DummyHookFunc;
+  pCBTFunc = &CApp::DummyHookFunc;
 
   //shared cfg
   if(0 != pCfgMem)
@@ -469,6 +484,10 @@ LRESULT CApp::DummyHookFunc(int nCode, WPARAM wParam, LPARAM lParam)
 
 LRESULT CApp::CBTHookFunc(int nCode, WPARAM wPrm, LPARAM lPrm)
 {
+	//OA
+	if (nCode < 0)
+		return ::CallNextHookEx(pCfgMem->hCBTHook, nCode, wPrm, lPrm);
+
   InstallAllFromHook();
 
   //process wnd's from mem list
@@ -544,21 +563,28 @@ LRESULT CApp::CBTHookFunc(int nCode, WPARAM wPrm, LPARAM lPrm)
     //mem only if alloved
     if(FALSE != pCfgMem->bProcessAddWndFromCBTHook)
     {
-      MemWndList.Push(reinterpret_cast<HWND>(wPrm));
+		//OA - commented this out
+      //MemWndList.Push(reinterpret_cast<HWND>(wPrm));
     };
     break;
 
   default:
     break;
   };
-
-  return ::CallNextHookEx(pCfgMem->hCBTHook, nCode, wPrm, lPrm);
+  //OA - changed to return 0 instead of next hook
+	return 0;
+  //return ::CallNextHookEx(pCfgMem->hCBTHook, nCode, wPrm, lPrm);
 };
 
 LRESULT CApp::MouseHookFunc(int nCode, WPARAM wPrm, LPARAM lPrm)
 {
+  //OA - commented this out
+  if (nCode < 0)
+	  return ::CallNextHookEx(pCfgMem->hMouseHook, nCode, wPrm, lPrm);
   InstallAllFromHook();
-  LRESULT lRes = ::CallNextHookEx(pCfgMem->hMouseHook, nCode, wPrm, lPrm);
+  //LRESULT lRes = ::CallNextHookEx(pCfgMem->hMouseHook, nCode, wPrm, lPrm);
+  LRESULT lRes = 0;
+  //OA end
   if(0 <= nCode && 0 != lPrm)
   {
     //msg info
@@ -725,6 +751,7 @@ LRESULT CApp::MouseHookFunc(int nCode, WPARAM wPrm, LPARAM lPrm)
     };
 
     //try reforward mosue event
+	//OA pCfgMem->bReForwardMouseEvent = FALSE;
     if(FALSE != pCfgMem->bReForwardMouseEvent)
     {
       //stop reforward
@@ -962,14 +989,117 @@ UINT CApp::DrillChildUp(const HWND hcInitStart, const UINT uicCurrKeyFlag, const
       //mem info
       CSCrollIEProcessInfo& rInfo = pCfgMem->ScrollIEProcessInfo;
       rInfo.hWnd = hLookWnd;
-      rInfo.bLockedScrollDirection = true;
+      rInfo.bLockedScrollDirection = true; 
       rInfo.bHorScroll = false;
       rInfo.bLockedWheelDelta = true;
       //goto state
       uiRes = ehmScrollIEPress;
       break;
-    };
+    }
+    else if(
+		false != ASCompareClassSimple(cpBuff, cpcWord2007ClassName)
+		)
+    {
+      CSCrollIEProcessInfo& rInfo = pCfgMem->ScrollIEProcessInfo; // ScrollProcessInfo ???
+      rInfo.hWnd = hLookWnd;
+      rInfo.bLockedScrollDirection = true;
+      rInfo.bHorScroll = false;
+      rInfo.bLockedWheelDelta = true;
+      //rInfo.bLockedWheelDelta = true;
+      //goto state
+      uiRes = ehmScrollIEPress; // ehmScrollPress ???
+      break;
+    }
+    else if(
+		false != ASCompareClassSimple(cpBuff, cpcExcel2007ClassName)
+		)
+    {
+      CSCrollIEProcessInfo& rInfo = pCfgMem->ScrollIEProcessInfo;
+      rInfo.hWnd = hLookWnd;
+      rInfo.bLockedScrollDirection = true;
+      rInfo.bHorScroll = false;
+      rInfo.bLockedWheelDelta = false;
+      //goto state
+      uiRes = ehmScrollIEPress;
+      break;
+    }
+    else if(
+		false != ASCompareClassSimple(cpBuff, cpcPowerPoint2007ClassName)
+		)
+    {
+      CSCrollIEProcessInfo& rInfo = pCfgMem->ScrollIEProcessInfo;
+      rInfo.hWnd = hLookWnd;
+      rInfo.bLockedScrollDirection = true;
+      rInfo.bHorScroll = false;
+      rInfo.bLockedWheelDelta = false;
+      //goto state
+      uiRes = ehmScrollIEPress;
+      break;
+    }
+	else if(false != ASCompareClassSimple(cpBuff, cpcOpera7WndClassName) ||
+		false != ASCompareClassSimple(cpBuff, cpcOpera9WndClassName))
+	{
+		////Mozilla processing
+		//mem info
+		CSCrollIEProcessInfo& rInfo = pCfgMem->ScrollIEProcessInfo;
+		rInfo.hWnd = hLookWnd;
+		rInfo.bLockedScrollDirection = false;
+		rInfo.bHorScroll = false;
+		rInfo.bLockedWheelDelta = true;
+		//goto state
+		uiRes = ehmScrollIEPress;
+		break;
+	}
+	else if (
+		false != ASCompareClassSimple(cpBuff, cpcMozillaWndClassName)
+		)
+	{
+		 ////Mozilla processing
+		//mem info
+		CSCrollIEProcessInfo& rInfo = pCfgMem->ScrollIEProcessInfo;
+		rInfo.hWnd = hLookWnd;
+		rInfo.bLockedScrollDirection = true;
+		rInfo.bHorScroll = false;
+		rInfo.bLockedWheelDelta = true;
+		//goto state
+		uiRes = ehmScrollIEPress;
+		break;
+	}
 
+	// BEGIN.TormozIT - 1C8 fan
+	else if (false
+		|| ASCompareClassSimple(cpBuff, cpcV8FormElementWndClassName)
+		|| ASCompareClassSimple(cpBuff, cpcV8GridWndClassName)
+		|| ASCompareClassSimple(cpBuff, cpcV8WindowWndClassName)
+		)
+	{
+		//mem info
+		CSCrollIEProcessInfo& rInfo = pCfgMem->ScrollIEProcessInfo;
+		rInfo.hWnd = hLookWnd;
+		rInfo.bLockedScrollDirection = true;
+		rInfo.bHorScroll = false;
+		rInfo.bLockedWheelDelta = true;
+		//goto state
+		uiRes = ehmScrollIEPress;
+		break;
+	}
+
+	// END.TormozIT - 1C8 fan
+
+	;/*
+    else if(
+		false != ASCompareClassSimple(cpBuff, cpcOutlook2007ClassName)
+		)
+    {
+      CSCrollIEProcessInfo& rInfo = pCfgMem->ScrollIEProcessInfo;
+      rInfo.hWnd = hLookWnd;
+      rInfo.bLockedScrollDirection = true;
+      rInfo.bHorScroll = false;
+      rInfo.bLockedWheelDelta = false;
+      //goto state
+      uiRes = ehmScrollIEPress;
+      break;
+    };*/
 //    //find Pager Ctrl
 //    if(false != ASCompareClassSimple(cpBuff, WC_PAGESCROLLER))
 //    {
@@ -1433,12 +1563,12 @@ bool CApp::MouseMoveAll(const UINT uicCurrKeyFlag, const MOUSEHOOKSTRUCT* const 
   //look on current move mode and process it's
 
   bool bRes = true;
-
   //look on curr mode
   switch(pCfgMem->lHookMode)
   {
     //btn pressed - look if mouse in "not drag rect" and if not in - process scroll
     //and for IE - too
+
   case ehmScrollPress:
     //look pnt in rect
     if(DragPresent(pCfgMem->StartMsg, cpMsg->pt))

@@ -513,12 +513,12 @@ inline bool CSubClassInfo::ThunkInstall(const HWND hcWnd)
 
   if(FALSE == ::IsWindowUnicode(hcWnd))
   {
-    InitThunk(reinterpret_cast<TMFP>(WndProcA), this);
+    InitThunk(reinterpret_cast<TMFP>(&CSubClassInfo::WndProcA), this);
     pOldProc = reinterpret_cast<WNDPROC>(::SetWindowLongA(hcWnd, GWL_WNDPROC, reinterpret_cast<LONG>(GetThunk())));
   }
   else
   {
-    InitThunk(reinterpret_cast<TMFP>(WndProcW), this);
+    InitThunk(reinterpret_cast<TMFP>(&CSubClassInfo::WndProcW), this);
     pOldProc = reinterpret_cast<WNDPROC>(::SetWindowLongW(hcWnd, GWL_WNDPROC, reinterpret_cast<LONG>(GetThunk())));
   };
   bRes = 0 != pOldProc;
@@ -549,11 +549,11 @@ inline bool CSubClassInfo::ThunkRemove(const HWND hcWnd)
     //goto dummy
     if(FALSE == ::IsWindowUnicode(hcWnd))
     {
-      InitThunk(reinterpret_cast<TMFP>(DummyWndProcA), this);
+      InitThunk(reinterpret_cast<TMFP>(&CSubClassInfo::DummyWndProcA), this);
     }
     else
     {
-      InitThunk(reinterpret_cast<TMFP>(DummyWndProcW), this);
+      InitThunk(reinterpret_cast<TMFP>(&CSubClassInfo::DummyWndProcW), this);
     };
     bRes = false;
   };
@@ -567,11 +567,11 @@ inline void CSubClassInfo::ThunkReInstall(const HWND hcWnd)
   _ASSERT(0 != pOldProc);
   if(FALSE == ::IsWindowUnicode(hcWnd))
   {
-    InitThunk(reinterpret_cast<TMFP>(WndProcA), this);
+    InitThunk(reinterpret_cast<TMFP>(&CSubClassInfo::WndProcA), this);
   }
   else
   {
-    InitThunk(reinterpret_cast<TMFP>(WndProcW), this);
+    InitThunk(reinterpret_cast<TMFP>(&CSubClassInfo::WndProcW), this);
   };
 };
 
@@ -589,11 +589,11 @@ inline void CSubClassInfo::SwitchWndToDef()
 {
   if(FALSE == ::IsWindowUnicode(hcWnd))
   {
-    InitThunk(reinterpret_cast<TMFP>(WndProcADef), this);
+    InitThunk(reinterpret_cast<TMFP>(&CSubClassInfo::WndProcADef), this);
   }
   else
   {
-    InitThunk(reinterpret_cast<TMFP>(WndProcWDef), this);
+    InitThunk(reinterpret_cast<TMFP>(&CSubClassInfo::WndProcWDef), this);
   };
 };
 
@@ -601,11 +601,11 @@ inline void CSubClassInfo::SwitchDummyWndToDef()
 {
   if(FALSE == ::IsWindowUnicode(hcWnd))
   {
-    InitThunk(reinterpret_cast<TMFP>(DummyWndProcADef), this);
+    InitThunk(reinterpret_cast<TMFP>(&CSubClassInfo::DummyWndProcADef), this);
   }
   else
   {
-    InitThunk(reinterpret_cast<TMFP>(DummyWndProcWDef), this);
+    InitThunk(reinterpret_cast<TMFP>(&CSubClassInfo::DummyWndProcWDef), this);
   };
 };
 
@@ -1727,6 +1727,7 @@ inline void CApp::SBScrollStartInt(CScrollProcessInfo& rInfo, CScrollProcessInfo
     ::SetKeyboardState(cpMapTbl);
   };
 
+
   if(false != bcIsCtrl || FALSE != rDirInfo.bIsCaptured)
   {
     //emulate click at middle of thumb in scroll bar ctrl
@@ -1746,12 +1747,21 @@ inline void CApp::SBScrollStartInt(CScrollProcessInfo& rInfo, CScrollProcessInfo
       );
   };
 
+
   ////mem "additional process" wnd
   pCfgMem->hSubClassScrollWnd = (false != bcIsCtrl)
     ? ::GetParent(hWnd)
     : hWnd;
+
   //subclass and goto forwarding mode
-  pCfgMem->bMouseHookInForwardMode = false != SubClassWnd(pCfgMem->hSubClassScrollWnd);
+  // OA this function causes Windows Vista applications to fail
+	OSVERSIONINFO osvi;
+	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+	GetVersionEx (&osvi);
+	bool bIsWindowsVistaorLater = (osvi.dwMajorVersion > 5);
+
+	if (!bIsWindowsVistaorLater)
+		pCfgMem->bMouseHookInForwardMode = false != SubClassWnd(pCfgMem->hSubClassScrollWnd);
 
   //store "save" distance - from mouse pnt to thumb center - for start of scroll
   CalcSaveDistance(rcPnt, rCurrPnt);
@@ -2090,11 +2100,13 @@ inline bool CApp::IEScrollMoveInt(const MOUSEHOOKSTRUCT* const cpMsg, CSCrollIEP
         iMouseShift = -iMouseShift;
       };
       iMouseShift += rScrollInfo.lRemand;
-      const LONG lcRealDeltaMult = iMouseShift / egcWheelScrollingSBPointPerDelta;
+      const double lcRealDeltaMult = iMouseShift / egcWheelScrollingSBPointPerDelta;
       rScrollInfo.lRemand = iMouseShift - lcRealDeltaMult * egcWheelScrollingSBPointPerDelta;
       if(0 != lcRealDeltaMult)
       {
-        const LONG lcDeltaVal = WHEEL_DELTA * lcRealDeltaMult;
+		  // Oleg: added " / 2 " to increase scrolling precision in Office 2007 applications.
+		  // " / 4 " would be the same as a infinitely stopless mouse wheel
+        const LONG lcDeltaVal = WHEEL_DELTA * lcRealDeltaMult / 2;
         SafeSendMsg(rScrollInfo.hWnd, WM_MOUSEWHEEL, MAKEWPARAM(0, -lcDeltaVal), MAKELPARAM(rScrollInfo.PntStartScroll.x, rScrollInfo.PntStartScroll.y));
         rScrollInfo.LastScrollPnt = cpMsg->pt;
       };

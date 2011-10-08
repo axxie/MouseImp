@@ -26,7 +26,7 @@ main functionaly
 
 namespace help
 {
-# include "..\\help\\MIPROHLP.H"
+//# include "..\\help\\MIPROHLP.H"
 };
 
 //tool's dll
@@ -403,7 +403,7 @@ bool CApp::Init(bool& rNewInited)
     hPSApiModule = ::LoadLibrary(cpcPSApiModuleName);
     if(0 != hPSApiModule)
     {
-      pProcessCloseAllFunc = ProcessEnumCloseAllPSApi;
+      pProcessCloseAllFunc = &CApp::ProcessEnumCloseAllPSApi;
       pEnumProcessesFunc = reinterpret_cast<EnumProcessesType>(::GetProcAddress(hPSApiModule, cpcEnumProcessesName));
       pEnumProcessModulesFunc = reinterpret_cast<EnumProcessModulesType>(::GetProcAddress(hPSApiModule, cpcEnumProcessModulesName));
       pGetModuleBaseNameFunc = reinterpret_cast<GetModuleBaseNameType>(::GetProcAddress(hPSApiModule, cpcGetModuleBaseNameName));
@@ -414,7 +414,7 @@ bool CApp::Init(bool& rNewInited)
         && 0 != pGetModuleBaseNameFunc
         )
       {
-        pProcessFindNameFunc = ProcessFindNamePSApi;
+        pProcessFindNameFunc = &CApp::ProcessFindNamePSApi;
       };
     }
     else
@@ -422,7 +422,7 @@ bool CApp::Init(bool& rNewInited)
       hToolHelpModule = ::LoadLibrary(cpcToolHelpModuleName);
       if(0 != hToolHelpModule)
       {
-        pProcessCloseAllFunc = ProcessEnumCloseAllToolHelp;
+        pProcessCloseAllFunc = &CApp::ProcessEnumCloseAllToolHelp;
         pProcess32First = reinterpret_cast<Process32FirstType>(::GetProcAddress(hToolHelpModule, cpcProcess32FirstName));
         pProcess32Next = reinterpret_cast<Process32NextType>(::GetProcAddress(hToolHelpModule, cpcProcess32NextName));
         pCreateToolhelp32Snapshot = reinterpret_cast<CreateToolhelp32SnapshotType>(::GetProcAddress(hToolHelpModule, cpcCreateToolhelp32SnapshotName));
@@ -433,7 +433,7 @@ bool CApp::Init(bool& rNewInited)
           && 0 != pCreateToolhelp32Snapshot
           )
         {
-          pProcessFindNameFunc = ProcessFindNameToolHelp;
+          pProcessFindNameFunc = &CApp::ProcessFindNameToolHelp;
         };
       };
     };
@@ -450,7 +450,7 @@ bool CApp::Init(bool& rNewInited)
   {
     bRes = false;
     //create proc thunk
-    WndProcThunk.InitThunk(reinterpret_cast<AppClassThunkType::TMFP>(MainWndProc), this);
+    WndProcThunk.InitThunk(reinterpret_cast<AppClassThunkType::TMFP>(&CApp::MainWndProc), this);
     //register class
     WNDCLASS Class;
     Class.style = 0;
@@ -526,7 +526,7 @@ bool CApp::Init(bool& rNewInited)
   //start "processing" timer
   if(false != bRes)
   {
-    TimerProcThunk.InitThunk(reinterpret_cast<AppClassThunkType::TMFP>(TimerThunkProc), this);
+    TimerProcThunk.InitThunk(reinterpret_cast<AppClassThunkType::TMFP>(&CApp::TimerThunkProc), this);
     uiTimerId = ::SetTimer(0, 0, eccTimerTime, reinterpret_cast<TIMERPROC>(TimerProcThunk.GetThunk()));
     bRes = 0 != uiTimerId;
   };
@@ -582,8 +582,8 @@ bool CApp::Init(bool& rNewInited)
       pCfgMem->hMouseHook = ::SetWindowsHookEx(WH_MOUSE, reinterpret_cast<HOOKPROC>(cpMouseHook), hHookLib, 0);
       pCfgMem->hCBTHook = ::SetWindowsHookEx(WH_CBT, reinterpret_cast<HOOKPROC>(cpCBTHook), hHookLib, 0);
       //dbg:
-//      pCfgMem->hMouseHook = ::SetWindowsHookEx(WH_MOUSE, reinterpret_cast<HOOKPROC>(cpMouseHook), hHookLib, ::GetCurrentThreadId());
-//      pCfgMem->hCBTHook = ::SetWindowsHookEx(WH_CBT, reinterpret_cast<HOOKPROC>(cpCBTHook), hHookLib, ::GetCurrentThreadId());
+      //pCfgMem->hMouseHook = ::SetWindowsHookEx(WH_MOUSE, reinterpret_cast<HOOKPROC>(cpMouseHook), hHookLib, ::GetCurrentThreadId());
+      //pCfgMem->hCBTHook = ::SetWindowsHookEx(WH_CBT, reinterpret_cast<HOOKPROC>(cpCBTHook), hHookLib, ::GetCurrentThreadId());
       //dbg:
       if(0 != pCfgMem->hMouseHook && 0 != pCfgMem->hCBTHook)
       {
