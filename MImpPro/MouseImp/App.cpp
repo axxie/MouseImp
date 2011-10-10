@@ -579,11 +579,29 @@ bool CApp::Init(bool& rNewInited)
     {
       ////allow process from cbt hook - else first processing from cbt hook will remove memed list
       pCfgMem->bProcessAddWndFromCBTHook = TRUE;
+#ifndef MIMP_DEBUG
       pCfgMem->hMouseHook = ::SetWindowsHookEx(WH_MOUSE, reinterpret_cast<HOOKPROC>(cpMouseHook), hHookLib, 0);
       pCfgMem->hCBTHook = ::SetWindowsHookEx(WH_CBT, reinterpret_cast<HOOKPROC>(cpCBTHook), hHookLib, 0);
-      //dbg:
-      //pCfgMem->hMouseHook = ::SetWindowsHookEx(WH_MOUSE, reinterpret_cast<HOOKPROC>(cpMouseHook), hHookLib, ::GetCurrentThreadId());
-      //pCfgMem->hCBTHook = ::SetWindowsHookEx(WH_CBT, reinterpret_cast<HOOKPROC>(cpCBTHook), hHookLib, ::GetCurrentThreadId());
+#else
+      STARTUPINFO si = {0};
+      si.cb = sizeof(STARTUPINFO);
+      PROCESS_INFORMATION pi = {0};
+
+      BOOL bNotepadRes = CreateProcess(
+          NULL,
+          "notepad.exe",
+          NULL,
+          NULL,
+          FALSE,
+          0,
+          NULL,
+          NULL,
+          &si,
+          &pi);
+
+      pCfgMem->hMouseHook = ::SetWindowsHookEx(WH_MOUSE, reinterpret_cast<HOOKPROC>(cpMouseHook), hHookLib, pi.dwThreadId);
+      pCfgMem->hCBTHook = ::SetWindowsHookEx(WH_CBT, reinterpret_cast<HOOKPROC>(cpCBTHook), hHookLib, pi.dwThreadId);
+#endif
       //dbg:
       if(0 != pCfgMem->hMouseHook && 0 != pCfgMem->hCBTHook)
       {

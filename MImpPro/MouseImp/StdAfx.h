@@ -5,6 +5,10 @@ precompiled hdr's
 #ifndef __STDAFX_H
 #define __STDAFX_H
 
+#ifdef _DEBUG
+#define MIMP_DEBUG
+#endif
+
 #pragma once
 
 
