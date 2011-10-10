@@ -4,5 +4,5 @@
 
 #include "stdafx.h"
 
-#include "..\\SLibWin\\SLWMinCrt.h"
+//#include "..\\SLibWin\\SLWMinCrt.h"
 

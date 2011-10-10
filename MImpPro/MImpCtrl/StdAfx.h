@@ -15,8 +15,8 @@
 #include <windows.h>
 
 //not used "command line" info
-#define __SLW_NO_COMMAND_LINE_INFO
-#include "..\\SLibWin\\SLWMinCrtHdr.h"
+//#define __SLW_NO_COMMAND_LINE_INFO
+//#include "..\\SLibWin\\SLWMinCrtHdr.h"
 
 
 //{{AFX_INSERT_LOCATION}}

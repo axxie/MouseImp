@@ -13,7 +13,7 @@ precompiled
 #define WIN32_EXTRA_LEAN
 #include <windows.h>
 
-#include "SLibWin\\SLWMinCrtHdr.h"
+//#include "SLibWin\\SLWMinCrtHdr.h"
 
 #include <COMMCTRL.H>
 

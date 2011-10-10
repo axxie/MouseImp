@@ -97,7 +97,7 @@ void CClickStatic::OnDestroy()
 	CStatic::OnDestroy();
 }
 
-UINT CClickStatic::OnNcHitTest(CPoint point) 
+LRESULT CClickStatic::OnNcHitTest(CPoint point) 
 {
 	//catch for process move message's
   return HTCLIENT;

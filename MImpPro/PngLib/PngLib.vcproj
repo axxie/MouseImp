@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="8,00"
 	Name="PngLib"
 	ProjectGUID="{23BA6E60-5BCE-4492-B918-85BEF35F1117}"
+	RootNamespace="PngLib"
 	>
 	<Platforms>
 		<Platform
@@ -52,6 +53,7 @@
 				ProgramDataBaseFileName=".\Release/"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -117,7 +119,7 @@
 				AdditionalIncludeDirectories="..\\ZLib"
 				PreprocessorDefinitions="_DEBUG;WIN32;_WINDOWS;PNG_USE_PNGVCRD"
 				MinimalRebuild="true"
-				RuntimeLibrary="3"
+				RuntimeLibrary="1"
 				PrecompiledHeaderFile=".\Debug/PngLib.pch"
 				AssemblerListingLocation=".\Debug/"
 				ObjectFile=".\Debug/"

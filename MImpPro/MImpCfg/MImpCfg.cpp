@@ -159,7 +159,7 @@ BOOL CMImpCfgApp::InitInstance()
 #ifdef _AFXDLL
 	Enable3dControls();			// Call this when using MFC in a shared DLL
 #else
-	Enable3dControlsStatic();	// Call this when linking to MFC statically
+//	Enable3dControlsStatic();	// Call this when linking to MFC statically
 #endif
 
   if(0 == ::lstrcmpi(m_lpCmdLine, cpcCmdKeyQuickTour))
@@ -272,12 +272,13 @@ void CMImpCfgApp::OnHelp()
 
 void CMImpCfgApp::PumpMessageOnce()
 {
-  while(FALSE != ::PeekMessage(&m_msgCur, 0, 0, 0, PM_REMOVE))
+  MSG msg;
+  while(FALSE != ::PeekMessage(&msg, 0, 0, 0, PM_REMOVE))
   {
-    if(FALSE == PreTranslateMessage(&m_msgCur))
+    if(FALSE == PreTranslateMessage(&msg))
     {
-      ::TranslateMessage(&m_msgCur);
-      ::DispatchMessage(&m_msgCur);
+      ::TranslateMessage(&msg);
+      ::DispatchMessage(&msg);
     }
   };
 };

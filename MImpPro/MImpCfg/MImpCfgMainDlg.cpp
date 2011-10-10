@@ -609,6 +609,6 @@ void CMImpCfgMainDlg::WndAllHide()
   using sl::CSLThunk;
   typedef CSLThunk<CMImpCfgMainDlg> ThunkType;
   ThunkType Thunk;
-  Thunk.InitThunk(reinterpret_cast<ThunkType::TMFP>(WndAllHideHelper), this);
+  Thunk.InitThunk(reinterpret_cast<ThunkType::TMFP>(&CMImpCfgMainDlg::WndAllHideHelper), this);
   ::EnumThreadWindows(::GetCurrentThreadId(), reinterpret_cast<WNDENUMPROC>(Thunk.GetThunk()), 0);
 };

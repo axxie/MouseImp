@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="8,00"
 	Name="MImpCfg"
 	ProjectGUID="{756CB75D-EE02-4D68-A211-4C28767DF6A7}"
+	RootNamespace="MImpCfg"
 	Keyword="MFCProj"
 	>
 	<Platforms>
@@ -61,6 +62,7 @@
 				ProgramDataBaseFileName=".\Release/"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -81,7 +83,7 @@
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				DelayLoadDLLs="WINSPOOL.DRV;version.dll;SHELL32.dll"
-				ProgramDatabaseFile=".\Release/MIProCfg.pdb"
+				GenerateDebugInformation="true"
 				SubSystem="2"
 				TargetMachine="1"
 			/>
@@ -149,7 +151,7 @@
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
+				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="stdafx.h"
 				PrecompiledHeaderFile=".\Debug/MImpCfg.pch"

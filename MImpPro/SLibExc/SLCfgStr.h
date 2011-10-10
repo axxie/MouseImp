@@ -6,7 +6,7 @@ ConfigStream implementation
 #define __SLCFGSTR_H
 
 
-#include <STRSTREA.H>
+#include <STRSTREAM>
 
 #include "SLUtil.h"
 
@@ -101,7 +101,7 @@ protected:
 //  SetTopWindow(bTopWnd);
 //};
 
-class CSLInCfgStr : public istrstream, CSLCfgRegBase
+class CSLInCfgStr : public std::istrstream, CSLCfgRegBase
 {
 protected:
 
@@ -158,7 +158,7 @@ protected:
 //    << IsTopWindow();
 //};
 
-class CSLOutCfgStr : public ostrstream, CSLCfgRegBase
+class CSLOutCfgStr : public std::ostrstream, CSLCfgRegBase
 {
 protected:
 

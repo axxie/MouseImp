@@ -18,7 +18,7 @@ precompiled hdr's
 
 //not used "command line" info
 #define __SLW_NO_COMMAND_LINE_INFO
-#include "..\\SLibWin\\SLWMinCrtHdr.h"
+//#include "..\\SLibWin\\SLWMinCrtHdr.h"
 
 
 #endif//__STDAFX_H

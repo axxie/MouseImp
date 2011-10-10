@@ -507,8 +507,6 @@ LPCSTR const cpMouseHookFunc = "MIHookFunc";
 LPCSTR const cpcCBTHookFunc = "MIHookFunc1";
 //name of hook module DLL file
 LPCSTR const cpcHookFundModule = "MIPro.dll";
-//util dll
-LPCSTR const cpcUtilDllName = "MIProUtl.dll";
 //name of host application
 LPCSTR const cpcHostAppName = "MIProHst.exe";
 //name of "cfg" application
@@ -909,7 +907,7 @@ inline BOOL AHideCheckWndStyle(const HWND hcWnd, const bool bcLookOnCaptionSize 
   if(FALSE == bRes)
   {
     const LONG lcStyle = ::GetWindowLong(hcWnd, GWL_STYLE);
-    if(0 == (WS_POPUP | WS_CHILD) & lcStyle)
+    if(0 == ((WS_POPUP | WS_CHILD) & lcStyle))
     {
       //overlapped window - have caption as default
       bRes = TRUE;
