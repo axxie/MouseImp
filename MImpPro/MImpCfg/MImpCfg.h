@@ -7,7 +7,7 @@ app class
 
 #pragma once
 
-#include "..\\MIGlobal.h"
+#include "..\Include\MIGlobal.h"
 
 #include "resource.h"
 

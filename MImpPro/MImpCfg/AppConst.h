@@ -8,7 +8,7 @@ const's
 #pragma once
 
 
-#include "..\\MIGlobal.h"
+#include "..\Include\MIGlobal.h"
 
 //////////////////////////////////////////////////////////////////////
 //const's

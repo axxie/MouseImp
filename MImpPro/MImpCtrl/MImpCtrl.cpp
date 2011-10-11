@@ -7,7 +7,7 @@
 
 #include "cpl.h"
 
-#include "..\\MIGlobal.h"
+#include "..\Include\MIGlobal.h"
 
 #include "..\\Slib\\SLFileMap.h"
 

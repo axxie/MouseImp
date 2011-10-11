@@ -10,7 +10,7 @@ WndPattern finder dlg
 
 #include "AutoHidePatterns.h"
 
-#include "..\\MIGlobal.h"
+#include "..\Include\MIGlobal.h"
 
 #include "MImpCfg.h"
 

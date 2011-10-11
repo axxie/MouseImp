@@ -8,7 +8,7 @@ AboutDlg
 #include "General.h"
 
 
-#include "..\\MIGlobal.h"
+#include "..\Include\MIGlobal.h"
 
 #include "MImpCfg.h"
 

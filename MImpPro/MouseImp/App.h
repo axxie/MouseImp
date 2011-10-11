@@ -7,7 +7,7 @@ main functionaly
 
 #pragma once
 
-#include "..\\MIGlobal.h"
+#include "..\Include\MIGlobal.h"
 
 #include "..\\SLib\\SLThunk.h"
 
