@@ -293,10 +293,6 @@
 				>
 			</File>
 			<File
-				RelativePath="res\Splash.rgn"
-				>
-			</File>
-			<File
 				RelativePath="res\splash_b.bmp"
 				>
 			</File>
@@ -312,25 +308,9 @@
 				RelativePath="res\tray_main.ico"
 				>
 			</File>
-			<File
-				RelativePath="res\tray_scr_hor.ico"
-				>
-			</File>
-			<File
-				RelativePath="res\tray_scr_vert.ico"
-				>
-			</File>
-			<File
-				RelativePath="res\tray_scroll.ico"
-				>
-			</File>
 		</Filter>
 		<File
 			RelativePath="..\MIGlobal.h"
-			>
-		</File>
-		<File
-			RelativePath="..\PEHelper.h"
 			>
 		</File>
 	</Files>
