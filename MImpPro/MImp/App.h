@@ -7,15 +7,15 @@ mouse imp hok dll
 
 #pragma once
 
-#include "MIGlobal.h"
+#include "..\Include\MIGlobal.h"
 
 #include "resource.h"
 
-#include "SLib\\SLDbg.h"
+#include "..\\SLib\\SLDbg.h"
 
-#include "Slib\\SLCont.h"
+#include "..\\Slib\\SLCont.h"
 
-#include "Slib\\SLThunk.h"
+#include "..\\Slib\\SLThunk.h"
 
 #include <ZMOUSE.H>
 

@@ -73,7 +73,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="Debug/MIPro.dll"
+				OutputFile="../Debug/MIPro.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
 				ModuleDefinitionFile=".\MImp.def"
@@ -169,7 +169,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/FORCE"
-				OutputFile="Release/MIPro.dll"
+				OutputFile="../Release/MIPro.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				ModuleDefinitionFile=".\MImp.def"

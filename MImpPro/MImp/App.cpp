@@ -8,13 +8,13 @@ mouse imp hok dll
 #include "App.h"
 
 
-#include "SLibWin\\SLWDbg.h"
+#include "..\\SLibWin\\SLWDbg.h"
 
 #include <limits.h>
 
-#include "Slib\\SLExcHandler.h"
+#include "..\\Slib\\SLExcHandler.h"
 
-#include "slib\\SLcont.h"
+#include "..\\slib\\SLcont.h"
 
 
 //////////////////////////////////////////////////////////////////////
