@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="windows-1251"?>
+<VisualStudioPropertySheet
+	ProjectType="Visual C++"
+	Version="8.00"
+	Name="MouseImpRelease"
+	InheritedPropertySheets=".\MouseImpCommon.vsprops"
+	>
+	<Tool
+		Name="VCCLCompilerTool"
+		Optimization="2"
+		InlineFunctionExpansion="2"
+		PreprocessorDefinitions="NDEBUG;__RELEASE_CFG"
+		StringPooling="true"
+		RuntimeLibrary="0"
+		EnableFunctionLevelLinking="true"
+	/>
+	<Tool
+		Name="VCLinkerTool"
+		LinkIncremental="1"
+	/>
+	<Tool
+		Name="VCResourceCompilerTool"
+		PreprocessorDefinitions="NDEBUG,__CRYPT"
+	/>
+</VisualStudioPropertySheet>

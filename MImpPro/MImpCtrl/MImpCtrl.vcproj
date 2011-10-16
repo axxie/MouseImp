@@ -16,9 +16,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\Debug"
-			IntermediateDirectory=".\Debug"
 			ConfigurationType="2"
+			InheritedPropertySheets="..\Properties\MouseImpDebug.vsprops"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			>
@@ -45,42 +44,21 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="0"
-				PreprocessorDefinitions="_DEBUG;WIN32;_WINDOWS;_USRDLL;MIMPCTRL_EXPORTS"
-				MinimalRebuild="true"
-				BasicRuntimeChecks="3"
-				RuntimeLibrary="1"
-				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="stdafx.h"
-				PrecompiledHeaderFile=".\Debug/MImpCtrl.pch"
-				AssemblerListingLocation=".\Debug/"
-				ObjectFile=".\Debug/"
-				ProgramDataBaseFileName=".\Debug/"
-				WarningLevel="3"
-				SuppressStartupBanner="true"
-				DebugInformationFormat="4"
+				PreprocessorDefinitions="_USRDLL;MIMPCTRL_EXPORTS"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG"
-				Culture="1049"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="../Debug/MIProCpl.cpl"
-				LinkIncremental="2"
-				SuppressStartupBanner="true"
+				OutputFile="$(OutDir)\MIProCpl.cpl"
 				ModuleDefinitionFile=".\MImpCtrl.def"
-				GenerateDebugInformation="true"
-				ProgramDatabaseFile=".\Debug/MIProCpl.pdb"
-				ImportLibrary=".\Debug/MIProCpl.lib"
-				TargetMachine="1"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -93,8 +71,6 @@
 			/>
 			<Tool
 				Name="VCBscMakeTool"
-				SuppressStartupBanner="true"
-				OutputFile=".\Debug/MImpCtrl.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -111,9 +87,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\Release"
-			IntermediateDirectory=".\Release"
 			ConfigurationType="2"
+			InheritedPropertySheets="..\Properties\MouseImpRelease.vsprops"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			>
@@ -140,43 +115,21 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="2"
-				InlineFunctionExpansion="2"
-				PreprocessorDefinitions="_USRDLL;MIMPCTRL_EXPORTS;_WINDOWS;WIN32;NDEBUG;__RELEASE_CFG"
-				StringPooling="true"
-				RuntimeLibrary="0"
-				EnableFunctionLevelLinking="true"
-				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="stdafx.h"
-				PrecompiledHeaderFile=".\Release/MImpCtrl.pch"
-				AssemblerListingLocation=".\Release/"
-				ObjectFile=".\Release/"
-				ProgramDataBaseFileName=".\Release/"
-				WarningLevel="3"
-				SuppressStartupBanner="true"
-				DebugInformationFormat="3"
+				PreprocessorDefinitions="_USRDLL;MIMPCTRL_EXPORTS"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="NDEBUG,__CRYPT"
-				Culture="1049"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/FORCE"
-				OutputFile="..//Release/MIProCpl.cpl"
-				LinkIncremental="1"
-				SuppressStartupBanner="true"
+				OutputFile="$(OutDir)\MIProCpl.cpl"
 				ModuleDefinitionFile=".\MImpCtrl.def"
-				GenerateDebugInformation="true"
-				ImportLibrary=".\Release/MIProCpl.lib"
-				TargetMachine="1"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -189,8 +142,6 @@
 			/>
 			<Tool
 				Name="VCBscMakeTool"
-				SuppressStartupBanner="true"
-				OutputFile=".\Release/MImpCtrl.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"

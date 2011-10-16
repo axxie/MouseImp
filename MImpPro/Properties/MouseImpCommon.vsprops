@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="windows-1251"?>
+<VisualStudioPropertySheet
+	ProjectType="Visual C++"
+	Version="8.00"
+	Name="MouseImpCommon"
+	OutputDirectory="$(SolutionDir)\..\Bin\$(PlatformName)\$(ConfigurationName)"
+	IntermediateDirectory="$(SolutionDir)\..\Intermediate\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+	>
+	<Tool
+		Name="VCCLCompilerTool"
+		PreprocessorDefinitions="WIN32;_WINDOWS"
+		UsePrecompiledHeader="2"
+		WarningLevel="3"
+		DebugInformationFormat="3"
+	/>
+	<Tool
+		Name="VCLibrarianTool"
+		OutputFile="$(IntDir)\$(ProjectName).lib"
+	/>
+	<Tool
+		Name="VCLinkerTool"
+		GenerateDebugInformation="true"
+		ImportLibrary="$(IntDir)\$(TargetName).lib"
+	/>
+</VisualStudioPropertySheet>

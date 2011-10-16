@@ -16,9 +16,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\Debug"
-			IntermediateDirectory=".\Debug"
 			ConfigurationType="2"
+			InheritedPropertySheets="..\Properties\MouseImpDebug.vsprops"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			>
@@ -45,42 +44,21 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="0"
-				PreprocessorDefinitions="_DEBUG;WIN32;_WINDOWS;_USRDLL;MIMP_EXPORTS"
-				MinimalRebuild="true"
-				BasicRuntimeChecks="3"
-				RuntimeLibrary="1"
-				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="StdAfx.h"
-				PrecompiledHeaderFile=".\Debug/MImp.pch"
-				AssemblerListingLocation=".\Debug/"
-				ObjectFile=".\Debug/"
-				ProgramDataBaseFileName=".\Debug/"
-				WarningLevel="3"
-				SuppressStartupBanner="true"
-				DebugInformationFormat="4"
+				PreprocessorDefinitions="_USRDLL;MIMP_EXPORTS"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG"
-				Culture="1049"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="../Debug/MIPro.dll"
-				LinkIncremental="2"
-				SuppressStartupBanner="true"
+				OutputFile="$(OutDir)\MIPro.dll"
 				ModuleDefinitionFile=".\MImp.def"
-				GenerateDebugInformation="true"
-				ProgramDatabaseFile=".\Debug/MIPro.pdb"
-				ImportLibrary=".\Debug/MIPro.lib"
-				TargetMachine="1"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -93,8 +71,6 @@
 			/>
 			<Tool
 				Name="VCBscMakeTool"
-				SuppressStartupBanner="true"
-				OutputFile=".\Debug/MImp.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -111,9 +87,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\Release"
-			IntermediateDirectory=".\Release"
 			ConfigurationType="2"
+			InheritedPropertySheets="..\Properties\MouseImpRelease.vsprops"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			>
@@ -140,44 +115,22 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="2"
-				InlineFunctionExpansion="2"
-				PreprocessorDefinitions="_USRDLL;MIMP_EXPORTS;_WINDOWS;WIN32;NDEBUG;__RELEASE_CFG"
-				StringPooling="true"
-				RuntimeLibrary="0"
-				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="StdAfx.h"
-				PrecompiledHeaderFile=".\Release/MImp.pch"
-				AssemblerListingLocation=".\Release/"
-				ObjectFile=".\Release/"
-				ProgramDataBaseFileName=".\Release/"
-				WarningLevel="3"
-				SuppressStartupBanner="true"
-				DebugInformationFormat="3"
+				PreprocessorDefinitions="_USRDLL;MIMP_EXPORTS"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="NDEBUG,__CRYPT"
-				Culture="1049"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/FORCE"
-				OutputFile="../Release/MIPro.dll"
-				LinkIncremental="1"
-				SuppressStartupBanner="true"
+				OutputFile="$(OutDir)\MIPro.dll"
 				ModuleDefinitionFile=".\MImp.def"
-				GenerateDebugInformation="true"
 				EntryPointSymbol=""
-				BaseAddress="0x64000000"
-				ImportLibrary=".\Release/MIPro.lib"
-				TargetMachine="1"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -190,8 +143,6 @@
 			/>
 			<Tool
 				Name="VCBscMakeTool"
-				SuppressStartupBanner="true"
-				OutputFile=".\Release/MImp.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
