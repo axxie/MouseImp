@@ -18,6 +18,7 @@ precompiled hdr's
 #include <windows.h>
 
 #include <SHELLAPI.H>
+#include "sddl.h"
 
 
 //not used "command line" info

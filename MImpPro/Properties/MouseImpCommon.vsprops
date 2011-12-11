@@ -8,7 +8,7 @@
 	>
 	<Tool
 		Name="VCCLCompilerTool"
-		PreprocessorDefinitions="WIN32;_WINDOWS"
+		PreprocessorDefinitions="WIN32;_WINDOWS;_WIN32_WINNT=0x0500"
 		UsePrecompiledHeader="2"
 		WarningLevel="3"
 		DebugInformationFormat="3"

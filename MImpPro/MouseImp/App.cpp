@@ -335,8 +335,32 @@ bool CApp::Init(bool& rNewInited)
     const bool bcOpenExist = 0 != hCfgMap;
     if(0 == hCfgMap)
     {
+      SECURITY_ATTRIBUTES secAttr;
+      char secDesc[ SECURITY_DESCRIPTOR_MIN_LENGTH ];
+      secAttr.nLength = sizeof(secAttr);
+      secAttr.bInheritHandle = FALSE;
+      secAttr.lpSecurityDescriptor = &secDesc;
+      InitializeSecurityDescriptor(secAttr.lpSecurityDescriptor, SECURITY_DESCRIPTOR_REVISION);
+      SetSecurityDescriptorDacl(secAttr.lpSecurityDescriptor, TRUE, 0, FALSE);
+
+      PSECURITY_DESCRIPTOR pSD;
+      ConvertStringSecurityDescriptorToSecurityDescriptor(
+        "S:(ML;;NW;;;LW)", // this means "low integrity"
+        SDDL_REVISION_1,
+        &pSD,
+        NULL);
+      PACL pSacl = NULL;                  // not allocated
+      BOOL fSaclPresent = FALSE;
+      BOOL fSaclDefaulted = FALSE;
+      GetSecurityDescriptorSacl(
+        pSD,
+        &fSaclPresent,
+        &pSacl,
+        &fSaclDefaulted);
+      SetSecurityDescriptorSacl(secAttr.lpSecurityDescriptor, TRUE, pSacl, FALSE);
+
       //open failed - create new
-      hCfgMap = ::CreateFileMapping(INVALID_HANDLE_VALUE, 0, PAGE_READWRITE, 0, dwcSharedInfoSize, cpcSharedInfoName);
+      hCfgMap = ::CreateFileMapping(INVALID_HANDLE_VALUE, &secAttr, PAGE_READWRITE, 0, dwcSharedInfoSize, cpcSharedInfoName);
       bInstallNew = true;
     };
     if(0 != hCfgMap)

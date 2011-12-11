@@ -2055,9 +2055,12 @@ extern "C" BOOL WINAPI DllMain(HANDLE hDllHandle, DWORD dwReason, LPVOID lpReser
 
   case DLL_PROCESS_DETACH:
     //try finit/delete app
-    pApp->Finit();
-    delete pApp;
-    pApp = 0;
+    if (pApp != NULL)
+    {
+        pApp->Finit();
+        delete pApp;
+        pApp = 0;
+    }
 
 #ifdef __REL_CFG
     //dbg:
