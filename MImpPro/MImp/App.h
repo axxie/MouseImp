@@ -15,7 +15,7 @@ mouse imp hok dll
 
 #include "..\\Slib\\SLCont.h"
 
-#include "..\\Slib\\SLThunk.h"
+#include "..\\Slib\\SLWndProcThunk.h"
 
 #include <ZMOUSE.H>
 
@@ -24,7 +24,7 @@ class CApp;
 extern CApp* pApp;
 
 using sl::CSLSList;
-using sl::CSLThunk;
+using sl::CSLWndProcThunk;
 using sl::CSLHashSet;
 
 class CApp;
@@ -151,20 +151,21 @@ extern const struct StopMouseMsg cpcStopMouseNCInfo[];
 //CSubClassInfo - infor for subclassed wnd
 
 class CSubClassInfo;
-typedef CSLThunk<CSubClassInfo> ThunkBaseType;
+typedef CSLWndProcThunk<CSubClassInfo> ThunkBaseType;
 
 class CSubClassInfo : protected ThunkBaseType
 {
 protected:
 
-  ////controlled wnd
-  const HWND hcWnd;
   ////old proc
   WNDPROC pOldProc;
   ////class state flag holder
   DWORD dwFlags;
 
 public:
+
+  ////controlled wnd
+  const HWND hcWnd;
 
   enum ClassStateEnum
   {
@@ -513,13 +514,13 @@ inline bool CSubClassInfo::ThunkInstall(const HWND hcWnd)
 
   if(FALSE == ::IsWindowUnicode(hcWnd))
   {
-    InitThunk(reinterpret_cast<TMFP>(&CSubClassInfo::WndProcA), this);
-    pOldProc = reinterpret_cast<WNDPROC>(::SetWindowLongA(hcWnd, GWL_WNDPROC, reinterpret_cast<LONG>(GetThunk())));
+    InitThunk(&CSubClassInfo::WndProcA, this);
+    pOldProc = reinterpret_cast<WNDPROC>(::SetWindowLongPtrA(hcWnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(GetThunk())));
   }
   else
   {
-    InitThunk(reinterpret_cast<TMFP>(&CSubClassInfo::WndProcW), this);
-    pOldProc = reinterpret_cast<WNDPROC>(::SetWindowLongW(hcWnd, GWL_WNDPROC, reinterpret_cast<LONG>(GetThunk())));
+    InitThunk(&CSubClassInfo::WndProcW, this);
+    pOldProc = reinterpret_cast<WNDPROC>(::SetWindowLongPtrW(hcWnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(GetThunk())));
   };
   bRes = 0 != pOldProc;
 
@@ -535,11 +536,11 @@ inline bool CSubClassInfo::ThunkRemove(const HWND hcWnd)
   if
     (
     //wnd proc not chnaged after install subclasing
-    reinterpret_cast<LONG>(GetThunk()) == ::GetWindowLong(hcWnd, GWL_WNDPROC)
+    reinterpret_cast<LONG_PTR>(GetThunk()) == ::GetWindowLongPtr(hcWnd, GWLP_WNDPROC)
     )
   {
     //remove subclassing
-    bRes = 0 != ::SetWindowLong(hcWnd, GWL_WNDPROC, reinterpret_cast<LONG>(pOldProc));
+    bRes = 0 != ::SetWindowLongPtr(hcWnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(pOldProc));
     bSetToDummy = false == bRes;
   };
 
@@ -549,11 +550,11 @@ inline bool CSubClassInfo::ThunkRemove(const HWND hcWnd)
     //goto dummy
     if(FALSE == ::IsWindowUnicode(hcWnd))
     {
-      InitThunk(reinterpret_cast<TMFP>(&CSubClassInfo::DummyWndProcA), this);
+      InitThunk(&CSubClassInfo::DummyWndProcA, this);
     }
     else
     {
-      InitThunk(reinterpret_cast<TMFP>(&CSubClassInfo::DummyWndProcW), this);
+      InitThunk(&CSubClassInfo::DummyWndProcW, this);
     };
     bRes = false;
   };
@@ -567,11 +568,11 @@ inline void CSubClassInfo::ThunkReInstall(const HWND hcWnd)
   _ASSERT(0 != pOldProc);
   if(FALSE == ::IsWindowUnicode(hcWnd))
   {
-    InitThunk(reinterpret_cast<TMFP>(&CSubClassInfo::WndProcA), this);
+    InitThunk(&CSubClassInfo::WndProcA, this);
   }
   else
   {
-    InitThunk(reinterpret_cast<TMFP>(&CSubClassInfo::WndProcW), this);
+    InitThunk(&CSubClassInfo::WndProcW, this);
   };
 };
 
@@ -582,18 +583,18 @@ inline bool CSubClassInfo::operator==(const HWND hcCompareWnd) const
 
 inline void CSubClassInfo::ThunkRemoveTidy(const HWND hcWnd)
 {
-  ::SetWindowLong(hcWnd, GWL_WNDPROC, reinterpret_cast<LONG>(pOldProc));
+  ::SetWindowLongPtr(hcWnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(pOldProc));
 };
 
 inline void CSubClassInfo::SwitchWndToDef()
 {
   if(FALSE == ::IsWindowUnicode(hcWnd))
   {
-    InitThunk(reinterpret_cast<TMFP>(&CSubClassInfo::WndProcADef), this);
+    InitThunk(&CSubClassInfo::WndProcADef, this);
   }
   else
   {
-    InitThunk(reinterpret_cast<TMFP>(&CSubClassInfo::WndProcWDef), this);
+    InitThunk(&CSubClassInfo::WndProcWDef, this);
   };
 };
 
@@ -601,11 +602,11 @@ inline void CSubClassInfo::SwitchDummyWndToDef()
 {
   if(FALSE == ::IsWindowUnicode(hcWnd))
   {
-    InitThunk(reinterpret_cast<TMFP>(&CSubClassInfo::DummyWndProcADef), this);
+    InitThunk(&CSubClassInfo::DummyWndProcADef, this);
   }
   else
   {
-    InitThunk(reinterpret_cast<TMFP>(&CSubClassInfo::DummyWndProcWDef), this);
+    InitThunk(&CSubClassInfo::DummyWndProcWDef, this);
   };
 };
 
@@ -1997,7 +1998,7 @@ inline bool CApp::CheckRealKey(const int icVKKey)
   };
 
   const SHORT scRes = ::GetAsyncKeyState(iUseKey);
-  const SHORT scMask = 1 << (sizeof(SHORT) * CHAR_BIT - 1);
+  const USHORT scMask = (1 << (sizeof(SHORT) * CHAR_BIT - 1));
   return 0 != (scMask & scRes);
 };
 
@@ -2100,7 +2101,7 @@ inline bool CApp::IEScrollMoveInt(const MOUSEHOOKSTRUCT* const cpMsg, CSCrollIEP
         iMouseShift = -iMouseShift;
       };
       iMouseShift += rScrollInfo.lRemand;
-      const double lcRealDeltaMult = iMouseShift / egcWheelScrollingSBPointPerDelta;
+      const int lcRealDeltaMult = iMouseShift / egcWheelScrollingSBPointPerDelta;
       rScrollInfo.lRemand = iMouseShift - lcRealDeltaMult * egcWheelScrollingSBPointPerDelta;
       if(0 != lcRealDeltaMult)
       {
@@ -2174,7 +2175,7 @@ inline bool CApp::PagerScrollStart(const MOUSEHOOKSTRUCT* const cpMsg)
   CScrollPagerCtrlInfo& rInfo = pCfgMem->ScrollPagerCtrlInfo;
   rInfo.LastScrollMagnMiss.x = 0;
   rInfo.LastScrollMagnMiss.y = 0;
-  DWORD dwRes = 0;
+  DWORD_PTR dwRes = 0;
   SafeSendMsg(rInfo.hPagerCtrl, PGM_GETPOS, 0, 0, &dwRes);
   rInfo.lCurrPos = dwRes;
   rInfo.lStartPos = 0;
@@ -2191,7 +2192,7 @@ inline void CApp::MouseEventReForvarder(const MOUSEHOOKSTRUCT* const cpcInfo, co
     hWnd = cpcInfo->hwnd;
   };
   //look on hit test for such wnd
-  DWORD dwHitTestRes = WM_NCHITTEST;
+  DWORD_PTR dwHitTestRes = WM_NCHITTEST;
   SafeSendMsg(hWnd, WM_NCHITTEST, 0, MAKELPARAM(cpcInfo->pt.x, cpcInfo->pt.y), &dwHitTestRes);
   //forward msg
   if(HTCLIENT == dwHitTestRes)

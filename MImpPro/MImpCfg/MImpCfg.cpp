@@ -118,7 +118,7 @@ void CMImpCfgApp::StartCfg()
     free(reinterpret_cast<void*>(const_cast<LPSTR>(m_pszHelpFilePath)));
     m_pszHelpFilePath = 0;
     //new
-    m_pszHelpFilePath = ::strdup(cpBuff);
+    m_pszHelpFilePath = ::_strdup(cpBuff);
   };
 
   //start main wnd

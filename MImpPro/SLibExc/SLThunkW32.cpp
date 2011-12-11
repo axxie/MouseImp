@@ -8,7 +8,7 @@ thunk's (for func's call)
 #include <windows.h>
 #pragma hdrstop
 
-#include "SLThunk.h"
+#include "SLThunkW32.h"
 
 
 

@@ -1,7 +1,9 @@
+/*
 #ifndef __RELEASE_CFG
   __try
   {
 #endif//__RELEASE_CFG
+*/
   bool bCatch = false;
   LRESULT lRes = 0;
   WNDPROC const cpMemOldProc = pOldProc;
@@ -148,6 +150,7 @@
   pApp->TryUnLock(hWnd, this);
 
   return lRes;
+/*  
 #ifndef __RELEASE_CFG
   }
   __except(sl::SLExceptionFilter(GetExceptionInformation()), EXCEPTION_CONTINUE_SEARCH)
@@ -155,3 +158,4 @@
   };
   return 0;
 #endif//__RELEASE_CFG
+*/

@@ -578,7 +578,7 @@ void CSWSplash::Destroy()
   if(false != bSplashPresent)
   {
     //handle of instance of application
-    HINSTANCE hInst = reinterpret_cast<HINSTANCE>(::GetWindowLong(hWnd, GWL_HINSTANCE));
+    HINSTANCE hInst = reinterpret_cast<HINSTANCE>(::GetWindowLongPtr(hWnd, GWLP_HINSTANCE));
     //timer
     ::KillTimer(hWnd, eccTimerId);
     //wnd

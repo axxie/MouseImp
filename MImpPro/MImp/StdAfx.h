@@ -16,5 +16,6 @@ precompiled
 //#include "SLibWin\\SLWMinCrtHdr.h"
 
 #include <COMMCTRL.H>
+#include <psapi.h>
 
 #endif//__STDAFX_H

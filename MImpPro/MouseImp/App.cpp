@@ -66,13 +66,13 @@ static inline DWORD MyRnd(const DWORD dwcFrom, const DWORD dwcTo)
 //////////////////////////////////////////////////////////////////////
 //main init
 
-CApp* pApp = 0;
+CApp* g_pApp = 0;
 
 //func names
 static LPCSTR const cpcGetWkSetFunc = "GetProcessWorkingSetSize";
-typedef BOOL (WINAPI *GetWkSetFuncType)(HANDLE, LPDWORD, LPDWORD);
+typedef BOOL (WINAPI *GetWkSetFuncType)(HANDLE, PSIZE_T, PSIZE_T);
 static LPCSTR const cpcSetWkSetFunc = "SetProcessWorkingSetSize";
-typedef BOOL (WINAPI *SetWkSetFuncType)(HANDLE, DWORD, DWORD);
+typedef BOOL (WINAPI *SetWkSetFuncType)(HANDLE, SIZE_T, SIZE_T);
 
 //name of relocation info res type
 static LPCSTR const cpcRelInfoResTypeName = "bin";
@@ -127,18 +127,18 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR lpCmdLine, in
 
   int iRes = 0;
 
-  pApp = new CApp(hInst);
+  g_pApp = new CApp(hInst);
   bool bNewInited = false;
-  if(false != pApp->Init(bNewInited))
+  if(false != g_pApp->Init(bNewInited))
   {
-    pApp->Run();
+    g_pApp->Run();
   };
   if(false != bNewInited)
   {
-    pApp->Finit();
+    g_pApp->Finit();
   };
-  delete pApp;
-  pApp = 0;
+  delete g_pApp;
+  g_pApp = 0;
 
   return iRes;
 };
@@ -293,6 +293,16 @@ void CApp::SaveCfg()
   };
 };
 
+static LRESULT __stdcall CApp_MainWndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+    return g_pApp->MainWndProc(hwnd, uMsg, wParam, lParam);
+}
+
+static VOID __stdcall CApp_TimerProcThunk(HWND hwnd, UINT uMsg, UINT_PTR idEvent, DWORD dwTime)
+{
+    g_pApp->TimerThunkProc(hwnd, uMsg, idEvent, dwTime);
+}
+
 bool CApp::Init(bool& rNewInited)
 {
   //splash on
@@ -326,7 +336,7 @@ bool CApp::Init(bool& rNewInited)
     if(0 == hCfgMap)
     {
       //open failed - create new
-      hCfgMap = ::CreateFileMapping(reinterpret_cast<HANDLE>(0xFFFFFFFF), 0, PAGE_READWRITE, 0, dwcSharedInfoSize, cpcSharedInfoName);
+      hCfgMap = ::CreateFileMapping(INVALID_HANDLE_VALUE, 0, PAGE_READWRITE, 0, dwcSharedInfoSize, cpcSharedInfoName);
       bInstallNew = true;
     };
     if(0 != hCfgMap)
@@ -449,12 +459,10 @@ bool CApp::Init(bool& rNewInited)
   if(false != bRes)
   {
     bRes = false;
-    //create proc thunk
-    WndProcThunk.InitThunk(reinterpret_cast<AppClassThunkType::TMFP>(&CApp::MainWndProc), this);
     //register class
     WNDCLASS Class;
     Class.style = 0;
-    Class.lpfnWndProc = reinterpret_cast<WNDPROC>(WndProcThunk.GetThunk());
+    Class.lpfnWndProc = CApp_MainWndProc;
     Class.cbClsExtra = 0;
     Class.cbWndExtra = 0;
     Class.hInstance = hInst;
@@ -482,6 +490,7 @@ bool CApp::Init(bool& rNewInited)
         );
       if(0 != hcWnd)
       {
+        this->hcWnd = hcWnd;
         //mem main wnd in shared cfg
         pCfgMem->hMainHostWnd = hcWnd;
         bRes = true;
@@ -526,8 +535,7 @@ bool CApp::Init(bool& rNewInited)
   //start "processing" timer
   if(false != bRes)
   {
-    TimerProcThunk.InitThunk(reinterpret_cast<AppClassThunkType::TMFP>(&CApp::TimerThunkProc), this);
-    uiTimerId = ::SetTimer(0, 0, eccTimerTime, reinterpret_cast<TIMERPROC>(TimerProcThunk.GetThunk()));
+    uiTimerId = ::SetTimer(0, 0, eccTimerTime, CApp_TimerProcThunk);
     bRes = 0 != uiTimerId;
   };
 
@@ -583,6 +591,9 @@ bool CApp::Init(bool& rNewInited)
       pCfgMem->hMouseHook = ::SetWindowsHookEx(WH_MOUSE, reinterpret_cast<HOOKPROC>(cpMouseHook), hHookLib, 0);
       pCfgMem->hCBTHook = ::SetWindowsHookEx(WH_CBT, reinterpret_cast<HOOKPROC>(cpCBTHook), hHookLib, 0);
 #else
+//      pCfgMem->hMouseHook = ::SetWindowsHookEx(WH_MOUSE, reinterpret_cast<HOOKPROC>(cpMouseHook), hHookLib, 0);
+//      pCfgMem->hCBTHook = ::SetWindowsHookEx(WH_CBT, reinterpret_cast<HOOKPROC>(cpCBTHook), hHookLib, 0);
+
       STARTUPINFO si = {0};
       si.cb = sizeof(STARTUPINFO);
       PROCESS_INFORMATION pi = {0};
@@ -590,6 +601,7 @@ bool CApp::Init(bool& rNewInited)
       BOOL bNotepadRes = CreateProcess(
           NULL,
           "notepad.exe",
+          //"C:\\Program Files\\Internet Explorer\\IEXPLORE.EXE",
           NULL,
           NULL,
           FALSE,
@@ -598,9 +610,53 @@ bool CApp::Init(bool& rNewInited)
           NULL,
           &si,
           &pi);
+      MessageBox(NULL, "Wait for notepad", "Message", MB_OK);
+
 
       pCfgMem->hMouseHook = ::SetWindowsHookEx(WH_MOUSE, reinterpret_cast<HOOKPROC>(cpMouseHook), hHookLib, pi.dwThreadId);
       pCfgMem->hCBTHook = ::SetWindowsHookEx(WH_CBT, reinterpret_cast<HOOKPROC>(cpCBTHook), hHookLib, pi.dwThreadId);
+
+
+
+
+/*
+      DWORD dwProcesses[10000];
+      DWORD dwBytesReturned = 0;
+
+      pEnumProcessesFunc(dwProcesses, sizeof(dwProcesses), &dwBytesReturned);
+      for (DWORD i = 0; i < dwBytesReturned/sizeof(DWORD); i++)
+      {
+          TCHAR szProcessName[MAX_PATH] = TEXT("<unknown>");
+
+          // Get a handle to the process.
+
+          HANDLE hProcess = OpenProcess( PROCESS_QUERY_INFORMATION |
+              PROCESS_VM_READ,
+              FALSE, dwProcesses[i] );
+
+          // Get the process name.
+
+          if (NULL != hProcess )
+          {
+              HMODULE hMod;
+              DWORD cbNeeded;
+
+              if ( pEnumProcessModulesFunc( hProcess, &hMod, sizeof(hMod), 
+                  &cbNeeded) )
+              {
+                  pGetModuleBaseNameFunc( hProcess, hMod, szProcessName, 
+                      sizeof(szProcessName)/sizeof(TCHAR) );
+              }
+          }
+
+          // Print the process name and identifier.
+
+          CloseHandle( hProcess );
+      }
+
+//      pCfgMem->hMouseHook = ::SetWindowsHookEx(WH_MOUSE, reinterpret_cast<HOOKPROC>(cpMouseHook), hHookLib, pi.dwThreadId);
+//      pCfgMem->hCBTHook = ::SetWindowsHookEx(WH_CBT, reinterpret_cast<HOOKPROC>(cpCBTHook), hHookLib, pi.dwThreadId);
+*/
 #endif
       //dbg:
       if(0 != pCfgMem->hMouseHook && 0 != pCfgMem->hCBTHook)
@@ -650,8 +706,8 @@ bool CApp::Init(bool& rNewInited)
     SetWkSetFuncType const pSetWkFunc = reinterpret_cast<SetWkSetFuncType>(::GetProcAddress(hKrnl, cpcSetWkSetFunc));
     if(0 != pGetWkFunc && 0 != pSetWkFunc)
     {
-      DWORD dwHiSize = 0;
-      DWORD dwLowSize = 0;
+      SIZE_T dwHiSize = 0;
+      SIZE_T dwLowSize = 0;
       if(FALSE != pGetWkFunc(::GetCurrentProcess(), &dwLowSize, &dwHiSize))
       {
         pSetWkFunc(::GetCurrentProcess(), dwLowSize, 2 * dwLowSize);
@@ -1053,7 +1109,7 @@ void CApp::NewAppInfoCatch(const DWORD dwcProcessId, HANDLE hNameMap)
     {
       //extract short file name
       LPCSTR pPtr = cpcAppName;
-      LONG lLen = ::lstrlen(pPtr);
+      LONG_PTR lLen = ::lstrlen(pPtr);
       ScanAppNameAndExtractName(pPtr, lLen);
       //insert info (if present already - chng)
       pNewAppInfo = ProcessMapList.Find(dwcProcessId);
@@ -1079,6 +1135,7 @@ void CApp::NewAppInfoCatch(const DWORD dwcProcessId, HANDLE hNameMap)
     };
   };
 };
+
 
 LRESULT CApp::MainWndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
@@ -1572,7 +1629,7 @@ UINT CApp::MsgBox(const UINT uicResId, const UINT uicType) const
   return SLWMessageBox((0 == pCfgMem) ? 0 : pCfgMem->hMainHostWnd, uicResId, IDS_STR_MSG_TITLE, uicType | MB_SETFOREGROUND | MB_TOPMOST, hInst);
 };
 
-void CApp::TimerThunkProc(HWND hWnd, UINT uiMsg, UINT uiEvent, DWORD dwTime)
+void CApp::TimerThunkProc(HWND hWnd, UINT uiMsg, UINT_PTR, DWORD)
 {
   AHTimerLooking();
   TrayClickTimerSensor(eccTimerTime);
@@ -1669,7 +1726,7 @@ void CApp::ProcessFindNameToolHelp(const DWORD dwcProcessId)
     {
       //process module name
       LPCTSTR pcNamePos = ProcessInfo.szExeFile;
-      LONG lLen = ::lstrlen(pcNamePos);
+      LONG_PTR lLen = ::lstrlen(pcNamePos);
       ScanAppNameAndExtractName(pcNamePos, lLen);
       //if info not have already - insert
       __CProcessInfoStr* pNewAppInfo = ProcessMapList.Add(ProcessInfo.th32ProcessID);

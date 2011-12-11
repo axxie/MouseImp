@@ -55,7 +55,7 @@ protected:
 
 protected:
 
-  int OnToolHitTest(CPoint point, TOOLINFO * pTI) const;
+  INT_PTR OnToolHitTest(CPoint point, TOOLINFO * pTI) const;
   void PreSubclassWindow();
   BOOL OnToolTipText( UINT id, NMHDR * pNMHDR, LRESULT * pResult );
 // Overrides

@@ -398,15 +398,15 @@ void CAutoShrinkPatterns::OnGetdispinfoWndPatList(NMHDR* pNMHDR, LRESULT* pResul
     switch(rItem.iSubItem)
     {
     case eccAppCol:
-      _tcsncpy(rItem.pszText, cpcItemInfo->AppName, rItem.cchTextMax);
+      _tcscpy_s(rItem.pszText, rItem.cchTextMax, cpcItemInfo->AppName);
       break;
 
     case eccClassCol:
-      _tcsncpy(rItem.pszText, cpcItemInfo->ClassName, rItem.cchTextMax);
+      _tcscpy_s(rItem.pszText, rItem.cchTextMax, cpcItemInfo->ClassName);
       break;
 
     case eccTitleCol:
-      _tcsncpy(rItem.pszText, cpcItemInfo->TitleName, rItem.cchTextMax);
+      _tcscpy_s(rItem.pszText, rItem.cchTextMax, cpcItemInfo->TitleName);
       break;
 
     default:

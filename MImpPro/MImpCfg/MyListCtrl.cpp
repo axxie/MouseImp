@@ -313,7 +313,7 @@ BOOL CMyListCtrl::OnToolTipText( UINT id, NMHDR * pNMHDR, LRESULT * pResult )
 	return TRUE;    // message was handled
 }
 
-int CMyListCtrl::OnToolHitTest(CPoint point, TOOLINFO * pTI) const
+INT_PTR CMyListCtrl::OnToolHitTest(CPoint point, TOOLINFO * pTI) const
 {
 	int row, col;
 	RECT cellrect;

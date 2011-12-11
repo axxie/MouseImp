@@ -94,7 +94,7 @@ inline bool StrChunk::IsCurr() const
 
 inline bool StrChunk::operator!=(const StrChunk& rcCmpChunk) const
 {
-  return dwcStrLen != rcCmpChunk.dwcStrLen || 0 != strnicmp(cpcStr, rcCmpChunk.cpcStr, dwcStrLen);
+  return dwcStrLen != rcCmpChunk.dwcStrLen || 0 != _strnicmp(cpcStr, rcCmpChunk.cpcStr, dwcStrLen);
 };
 
 
@@ -249,7 +249,7 @@ void CSLFileName::Parse(LPCTSTR const cpcParseStr, const DWORD dwcParts)
 {
   //scaning filename from end (by part's priority - extention, name & other)
   LPCTSTR pcScanPos = cpcParseStr;
-  int iStrLen = strlen(pcScanPos);
+  size_t iStrLen = strlen(pcScanPos);
   //rest part - used for find "lowweight" part's
   DWORD dwRestParts = dwcParts;
   

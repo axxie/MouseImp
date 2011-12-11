@@ -9,7 +9,7 @@ main functionaly
 
 #include "..\Include\MIGlobal.h"
 
-#include "..\\SLib\\SLThunk.h"
+#include "..\\SLib\\SLWndProcThunk.h"
 
 #include "..\\Slib\\SLCont.h"
 
@@ -23,11 +23,11 @@ main functionaly
 
 
 class CApp;
-extern CApp* pApp;
+extern CApp* g_pApp;
 struct __CAppPattInfo;
 struct __CAHWndPatternInfo;
 
-using sl::CSLThunk;
+using sl::CSLWndProcThunk;
 using sl::CSLHashSet;
 using sl::__SLHashFunc;
 using sl::CSLSList;
@@ -110,7 +110,7 @@ struct __CProcessInfoStr
   //for conainter's
   inline bool operator==(const DWORD dwcCompProcess);
   //set app name
-  inline void SetAppName(LPCSTR const cpcInitName, const DWORD dwcInitNameLen);
+  inline void SetAppName(LPCSTR const cpcInitName, const DWORD_PTR dwcInitNameLen);
 };
 
 
@@ -145,10 +145,6 @@ protected:
 
   //hook module handle
   HINSTANCE hHookLib;
-
-  //wnd proc thunk
-  typedef CSLThunk<CApp> AppClassThunkType;
-  AppClassThunkType WndProcThunk;
 
   //instance of global shared cfg
   CMISharedInfo* pCfgMem;
@@ -199,10 +195,8 @@ protected:
   typedef CSLHashSet<HWND, HWND, 4> TimerActiveWndSetType;
   TimerActiveWndSetType TimerActiveWndSet;
 
-  //thunk for looking timer proc
-  AppClassThunkType TimerProcThunk;
   //timer id
-  UINT uiTimerId;
+  UINT_PTR uiTimerId;
 
   //last value for ::GetTickCount(), looked from WndOpen - used for calc "application running" time
   DWORD dwLastLookAppTime;
@@ -226,6 +220,9 @@ protected:
   ULONG ulTrayFirstClickTimerTime;
 
 public:
+
+  HWND hcWnd;
+
 
 public:
 
@@ -255,8 +252,6 @@ protected:
   //try uninstall all hook's (calsed from close host wnd)
   void UninstallSubClassing();
 
-  //timer thunk proc
-  void TimerThunkProc(HWND hWnd, UINT uiMsg, UINT uiEvent, DWORD dwTime);
   //build timer active looking set
   inline void TimerBuildActiveSetHelper();
 
@@ -341,8 +336,11 @@ protected:
   inline void TrayClickProcess();
   inline bool TrayIconSpecialState() const;
 
+public:
   //main wnd proc
   LRESULT MainWndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+  //timer thunk proc
+  void TimerThunkProc(HWND hWnd, UINT uiMsg, UINT_PTR, DWORD);
 };
 
 /**********************************************************************
@@ -429,7 +427,7 @@ inline __CProcessInfoStr::~__CProcessInfoStr()
   delete pAppName;
 };
 
-inline void __CProcessInfoStr::SetAppName(LPCSTR const cpcInitName, const DWORD dwcInitNameLen)
+inline void __CProcessInfoStr::SetAppName(LPCSTR const cpcInitName, const DWORD_PTR dwcInitNameLen)
 {
   //only once
   _ASSERT(0 == pAppName);
@@ -686,7 +684,7 @@ inline void CApp::TimerSaveCfgProcess()
 
 inline void CApp::AnalyseExitWndProc(const HWND hcWnd)
 {
-  DWORD dwRes = 0;
+  DWORD_PTR dwRes = 0;
   if(false == SafeSendMsg(hcWnd, uicGlbMsg, egmUnInstallSubClassing, 0, &dwRes, true))
   {
     //send failed - post uninstall request

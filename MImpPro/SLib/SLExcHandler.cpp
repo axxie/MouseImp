@@ -13,6 +13,7 @@ Exception info hanlder
 
 #include <imagehlp.h>
 
+#if 0
 
 
 _SL_BEG
@@ -477,3 +478,5 @@ LONG WINAPI SLExceptionFilter(_EXCEPTION_POINTERS *pExceptionInfo)
 };
 
 _SL_END
+
+#endif

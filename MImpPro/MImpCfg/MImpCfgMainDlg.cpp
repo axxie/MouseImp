@@ -14,7 +14,7 @@ Main cfg dialog
 
 #include "..\\SlibExc\\SLResMem.h"
 
-#include "..\\SlibExc\\SLThunk.h"
+#include "..\\SlibExc\\SLThunkW32.h"
 
 #include "ScrollPage.h"
 
@@ -606,8 +606,8 @@ BOOL CMImpCfgMainDlg::WndAllHideHelper(HWND hcWnd, LPARAM lParam)
 void CMImpCfgMainDlg::WndAllHide()
 {
   //enu all wnd's, hide and push it's to "mem list
-  using sl::CSLThunk;
-  typedef CSLThunk<CMImpCfgMainDlg> ThunkType;
+  using sl::CSLThunkW32;
+  typedef CSLThunkW32<CMImpCfgMainDlg> ThunkType;
   ThunkType Thunk;
   Thunk.InitThunk(reinterpret_cast<ThunkType::TMFP>(&CMImpCfgMainDlg::WndAllHideHelper), this);
   ::EnumThreadWindows(::GetCurrentThreadId(), reinterpret_cast<WNDENUMPROC>(Thunk.GetThunk()), 0);

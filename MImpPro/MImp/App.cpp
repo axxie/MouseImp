@@ -81,7 +81,7 @@ static const __MK2VKInfo cpcLinkKeysInfo[] =
   {VK_RBUTTON, MK_RBUTTON}
 };
 
-static inline bool FintNotTransparent(HWND& rhWnd, const LONG lcCursorX, const LONG lcCursorY, DWORD& rdwHitTest)
+static inline bool FintNotTransparent(HWND& rhWnd, const LONG lcCursorX, const LONG lcCursorY, DWORD_PTR& rdwHitTest)
 {
   ////dril from passed wnd until find not "transparent" wnd or wnd not belong to "process of start wnd"
   bool bRes = false;
@@ -151,7 +151,7 @@ static inline void ClickActivateWnd(const HWND hcWnd, const MOUSEHOOKSTRUCT* con
   };
 
   ////process WM_MOUSEACTIVATE
-  DWORD dwRes = MA_ACTIVATE;
+  DWORD_PTR dwRes = MA_ACTIVATE;
   SafeSendMsg(hcWnd, WM_MOUSEACTIVATE, reinterpret_cast<WPARAM>(hTopParent), MAKELPARAM(cpcInfo->wHitTestCode, WM_LBUTTONDOWN), &dwRes);
   if(MA_ACTIVATE == dwRes || MA_ACTIVATEANDEAT == dwRes)
   {
@@ -1438,12 +1438,12 @@ bool CApp::MouseBtnUp(const UINT uicCurrKeyFlag, const MOUSEHOOKSTRUCT* const cp
 
 void CApp::RestoreCursorInWnd(const HWND hcStartWnd, const POINT& rcPnt) const
 {
-  DWORD dwHitTest = 0;
+  DWORD_PTR dwHitTest = 0;
   HWND hWnd = hcStartWnd;
   if(false != FintNotTransparent(hWnd, rcPnt.x, rcPnt.y, dwHitTest))
   {
     //send "set cursor" for finede wnd as from "start" wnd for "mousemove"
-    DWORD dwRes = 0;
+    DWORD_PTR dwRes = 0;
     if
       (
       //se cursor failed
@@ -1453,7 +1453,7 @@ void CApp::RestoreCursorInWnd(const HWND hcStartWnd, const POINT& rcPnt) const
       )
     {
       ////get cursor from wnd class
-      const DWORD dwcCursor = ::GetClassLong(hWnd, GCL_HCURSOR);
+      const DWORD_PTR dwcCursor = ::GetClassLongPtr(hWnd, GCLP_HCURSOR);
       HCURSOR hSetCursor = (0 != dwcCursor)
         ? reinterpret_cast<HCURSOR>(dwcCursor)
         : pCfgMem->hMemWndCursor;

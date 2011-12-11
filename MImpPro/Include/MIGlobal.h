@@ -497,7 +497,11 @@ struct CSharedNotClearedInfo
 };
 
 //name of shared info view (for open from hook dll)
+#ifdef _WIN64
+LPCSTR const cpcSharedInfoName = "MImpProSharedInfo64";
+#else
 LPCSTR const cpcSharedInfoName = "MImpProSharedInfo";
+#endif
 //shared info for handle crypted data
 LPCSTR const cpcSharedCryptInfo = "MImpProSharedCInfo";
 
@@ -748,7 +752,7 @@ inline LONG GetWndBorderSize(const HWND hcWnd, const DWORD dwcStyle, const bool 
 };
 
 //scan app name and extract entire name only (name, not ext, path and etc)
-inline void ScanAppNameAndExtractName(LPCSTR& rpcName, LONG& rlInStrLenOutEndPos)
+inline void ScanAppNameAndExtractName(LPCSTR& rpcName, LONG_PTR& rlInStrLenOutEndPos)
 {
   //try find last '\/' at start of name
   //try find last '.'
@@ -1038,14 +1042,14 @@ inline bool CheckWndActive(const HWND hcWnd)
 };
 
 //send to "critical" wnd (what can be hung)
-inline bool SafeSendMsg(const HWND hcWnd, const UINT uicMsg, WPARAM wParam, LPARAM lParam, DWORD* lRes, const bool bcLongWait = false)
+inline bool SafeSendMsg(const HWND hcWnd, const UINT uicMsg, WPARAM wParam, LPARAM lParam, PDWORD_PTR lRes, const bool bcLongWait = false)
 {
   return 0 != ::SendMessageTimeout(hcWnd, uicMsg, wParam, lParam, SMTO_ABORTIFHUNG | SMTO_BLOCK, (false == bcLongWait) ? 1000 : 10000, lRes);
 };
 
 inline bool SafeSendMsg(const HWND hcWnd, const UINT uicMsg, WPARAM wParam, LPARAM lParam)
 {
-  DWORD dwRes = 0;
+  DWORD_PTR dwRes = 0;
   return SafeSendMsg(hcWnd, uicMsg, wParam, lParam, &dwRes);
 };
 
