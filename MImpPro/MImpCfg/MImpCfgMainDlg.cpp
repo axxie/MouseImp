@@ -400,7 +400,11 @@ void CMImpCfgMainDlg::OnSelchangeChildTab(NMHDR* pNMHDR, LRESULT* pResult)
   };
 
   //set focus to first control
-  HWND hCtrl = ::GetNextDlgTabItem(pDlg->m_hWnd, 0, FALSE);
+  HWND hCtrl = 0;
+  if(0 != pDlg)
+  {
+    hCtrl = ::GetNextDlgTabItem(pDlg->m_hWnd, 0, FALSE);
+  }
   if(0 == hCtrl)
   {
     hCtrl = ::GetNextDlgTabItem(m_hWnd, 0, FALSE);

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="Windows-1251"?>
+<config>
+		<!-- "wndclass" attribute may be substring of actual wnd class name
+		-->
+		
+		<!-- MS Visual Studio 2010 -->
+	<item wndclass="HwndWrapper[DefaultDomain" horscroll="false" lockedscrolldirection="true" lockedwheeldelta="true" />
+		<!-- Visio 2010 -->
+	<item wndclass="VISIO" horscroll="true" lockedscrolldirection="false" lockedwheeldelta="true" />	
+		<!-- Opera 10 -->
+	<item wndclass="OpWindow" horscroll="false" lockedscrolldirection="false" lockedwheeldelta="true" />
+		<!-- Chrome  -->
+	<item wndclass="Chrome_RenderWidgetHost" horscroll="false" lockedscrolldirection="false" lockedwheeldelta="true" />	
+		<!-- NetBeans  -->
+	<item wndclass="SunAwtFrame" horscroll="false" lockedscrolldirection="false" lockedwheeldelta="true" />	
+</config>

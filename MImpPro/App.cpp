@@ -370,6 +370,24 @@ bool CApp::Init()
     };
   };
 
+  // read configuration file
+  char szFileName[MAX_PATH];
+  memset(szFileName, 0, MAX_PATH);
+  GetModuleFileName(GetModuleHandle("MIPro.dll"), szFileName, MAX_PATH);
+
+  char drive[_MAX_DRIVE];
+  char dir[_MAX_DIR];
+  char fname[_MAX_FNAME];
+  char ext[_MAX_EXT];
+
+  _splitpath(szFileName, drive, dir, fname, ext);
+  memset(szFileName, 0, MAX_PATH);
+  strcat(szFileName,drive);
+  strcat(szFileName,dir);
+  strcat(szFileName,"mimpwnds.xml");
+
+  xMainNode = XMLNode::parseFile(szFileName, "config", &xRes);
+
   //init (if ok)
   if(false != bRes)
   {
@@ -971,7 +989,63 @@ UINT CApp::DrillChildUp(const HWND hcInitStart, const UINT uicCurrKeyFlag, const
     //try look "is this wnd IE explorer wnd"
     TCHAR cpBuff[egcWndClassTextLen];
     ::GetClassName(hLookWnd, cpBuff, COUNTOF(cpBuff));
-    ////find IE
+    
+	// if xml configuration file exists, try using it
+	if(!xRes.error)
+	{
+		int n=xMainNode.nChildNode("item");
+		bool found = false;
+		for(int i=0; i < n; i++)
+		{
+			XMLCSTR className = xMainNode.getChildNode("item", i).getAttribute("wndclass");
+			XMLCSTR horScroll = xMainNode.getChildNode("item", i).getAttribute("horscroll");
+			XMLCSTR lockedScrollDirection = xMainNode.getChildNode("item", i).getAttribute("lockedscrolldirection");
+			XMLCSTR lockedWheelDelta = xMainNode.getChildNode("item", i).getAttribute("lockedwheeldelta");
+			if(NULL != className)
+			{
+				if(false != ASCompareClassSimplePatt(cpBuff, className))
+				{
+
+					CSCrollIEProcessInfo& rInfo = pCfgMem->ScrollIEProcessInfo;
+					rInfo.hWnd = hLookWnd;
+					rInfo.bLockedScrollDirection = true;
+					rInfo.bHorScroll = false;
+					rInfo.bLockedWheelDelta = false;
+					if(NULL != horScroll)
+					{
+						if(0 == ::lstrcmp(horScroll, "true"))
+						{
+							rInfo.bHorScroll = true;
+						}
+					}
+					if(NULL != lockedWheelDelta)
+					{
+						if(0 == ::lstrcmp(lockedWheelDelta, "true"))
+						{
+							rInfo.bLockedWheelDelta = true;
+						}
+					}					
+					if(NULL != lockedScrollDirection)
+					{
+						if(0 == ::lstrcmp(lockedScrollDirection, "false"))
+						{
+							rInfo.bLockedScrollDirection = false;
+						}
+					}
+					//goto state
+					uiRes = ehmScrollIEPress;
+					found = true;
+					break;
+				}
+			}
+		}
+		if(found)
+		{
+			break;
+		}
+	}
+
+	////find IE
     if(false != ASCompareClassSimple(cpBuff, cpcIEWndClassName))
     {
       //mem info

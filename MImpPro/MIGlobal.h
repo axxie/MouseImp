@@ -712,6 +712,12 @@ inline bool ASCompareClassSimple(LPCSTR const cpcClass, LPCSTR const cpcPatt)
   return 0 == ::lstrcmpi(cpcClass, cpcPatt);
 };
 
+//simple compare class (without MFC processing)
+inline bool ASCompareClassSimplePatt(LPCSTR const cpcClass, LPCSTR const cpcPatt)
+{
+	return NULL != ::strstr(cpcClass,cpcPatt);
+};
+
 //compare wnd title for AShrink
 inline bool ASCompareTitle(LPCTSTR const cpcWnd, LPCTSTR const cpcPatt)
 {
