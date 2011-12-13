@@ -370,6 +370,14 @@
 				RelativePath="StdAfx.h"
 				>
 			</File>
+			<File
+				RelativePath=".\xmlParser.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\xmlParser.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Res"

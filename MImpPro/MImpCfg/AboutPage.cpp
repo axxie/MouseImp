@@ -16,7 +16,6 @@ AboutDlg
 
 #include "AppConst.h"
 
-#include <WININET.H>
 
 #include "..\\SLibExc\\SLCfgReg.h"
 
@@ -28,18 +27,6 @@ AboutDlg
 //////////////////////////////////////////////////////////////////////
 //global's
 
-//name of WinInet dll
-static LPCTSTR const cpcAgentName = _T("");
-static LPCTSTR const cpcWNDllName = _T("WININET.DLL");
-//func's
-static LPCTSTR const cpcWNInternetOpen = _T("InternetOpenA");
-typedef HINTERNET (WINAPI *WNInternetOpenType)(LPCSTR pcAgent, DWORD dwAccessType, LPCSTR pcProxy, LPCSTR pLocals, DWORD dwFlags);
-static LPCTSTR const cpcWNInternetCloseHandle = _T("InternetCloseHandle");
-typedef BOOL (WINAPI *WNInternetCloseHandleType)(HINTERNET hInet);
-static LPCTSTR const cpcWNInternetOpenUrl = _T("InternetOpenUrlA");
-typedef HINTERNET (WINAPI *WNInternetOpenUrlType)(HINTERNET hSess, LPCSTR pcUrl, LPCSTR pcHdr, DWORD dwHdrLen, DWORD dwFlag, DWORD dwContext);
-static LPCTSTR const cpcWNInternetReadFile = _T("InternetReadFile");
-typedef BOOL (WINAPI *WNInternetReadFileType)(HINTERNET hFile, LPVOID pBuff, DWORD dwReadSize, LPDWORD pReaded);
 
 
 //////////////////////////////////////////////////////////////////////

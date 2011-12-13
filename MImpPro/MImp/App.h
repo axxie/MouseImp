@@ -17,6 +17,8 @@ mouse imp hok dll
 
 #include "..\\Slib\\SLWndProcThunk.h"
 
+#include "xmlParser.h"
+
 #include <ZMOUSE.H>
 
 
@@ -285,6 +287,9 @@ protected:
   FlatSB_GetScrollPropType pFlatSB_GetScrollProp;
   typedef BOOL (WINAPI* FlatSB_GetScrollInfoType)(HWND, int, LPSCROLLINFO);
   FlatSB_GetScrollInfoType pFlatSB_GetScrollInfo;
+
+  XMLNode xMainNode;
+  XMLResults xRes;
 
 public:
 
