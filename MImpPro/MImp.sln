@@ -39,6 +39,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MImp", "MImp\MImp.vcproj", 
 		{22D73C84-6AD6-48B4-8E6E-6BCDFDAB9DD8} = {22D73C84-6AD6-48B4-8E6E-6BCDFDAB9DD8}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MImpSrv", "MImpSrv\MImpSrv.vcproj", "{433BBC19-AD15-4D78-97E6-B82EB981A088}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -123,6 +125,12 @@ Global
 		{642D304F-CE5A-4ED1-8E97-15E47D74A426}.Release|Win32.Build.0 = Release|Win32
 		{642D304F-CE5A-4ED1-8E97-15E47D74A426}.Release|x64.ActiveCfg = Release|x64
 		{642D304F-CE5A-4ED1-8E97-15E47D74A426}.Release|x64.Build.0 = Release|x64
+		{433BBC19-AD15-4D78-97E6-B82EB981A088}.Debug|Win32.ActiveCfg = Debug|Win32
+		{433BBC19-AD15-4D78-97E6-B82EB981A088}.Debug|Win32.Build.0 = Debug|Win32
+		{433BBC19-AD15-4D78-97E6-B82EB981A088}.Debug|x64.ActiveCfg = Debug|Win32
+		{433BBC19-AD15-4D78-97E6-B82EB981A088}.Release|Win32.ActiveCfg = Release|Win32
+		{433BBC19-AD15-4D78-97E6-B82EB981A088}.Release|Win32.Build.0 = Release|Win32
+		{433BBC19-AD15-4D78-97E6-B82EB981A088}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
