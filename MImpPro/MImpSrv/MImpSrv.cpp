@@ -9,6 +9,8 @@
 
 #define MIMP_STOP_TIMEOUT           30000 // 30 seconds
 
+#define MIMP_HOST_EXE_NAME          L"MIProHst.exe"
+
 #define MIMP_ERROR_REBOOT_REQUIRED  -42
 
 class CScopedServiceHandle
@@ -48,6 +50,115 @@ private:
 
     SC_HANDLE m_controlledHandle;
 };
+
+
+class CScopedHandle
+{
+public:
+    CScopedHandle()
+    :
+        m_controlledHandle(INVALID_HANDLE_VALUE)
+    {
+    }
+
+    ~CScopedHandle()
+    {
+        if (m_controlledHandle)
+        {
+            CloseHandle(m_controlledHandle);
+            m_controlledHandle = NULL;
+        }
+    }
+
+    operator HANDLE()
+    {
+        return m_controlledHandle;
+    }
+
+    HANDLE* operator &()
+    {
+        return &m_controlledHandle;
+    }
+
+    CScopedHandle& operator=(const HANDLE& src)
+    {
+        _ASSERTE(m_controlledHandle == NULL);
+        m_controlledHandle = src;
+        return *this;
+    }
+
+private:
+    // no copy
+    CScopedHandle(const CScopedHandle&);
+    CScopedHandle& operator=(const CScopedHandle&);
+
+    HANDLE m_controlledHandle;
+};
+
+bool SetPrivilege(
+    HANDLE  tokenHandle,          
+    LPCTSTR privilegeName,  
+    bool    enablePrivilege) 
+{
+    TOKEN_PRIVILEGES tp;
+    LUID luid;
+
+    if (!LookupPrivilegeValue( 
+        NULL,            // lookup privilege on local system
+        privilegeName,   // privilege to lookup 
+        &luid))          // receives LUID of privilege
+    {
+        printf("LookupPrivilegeValue error: %u\n", GetLastError() ); 
+        return false; 
+    }
+
+    tp.PrivilegeCount = 1;
+    tp.Privileges[0].Luid = luid;
+    if (enablePrivilege)
+    {
+        tp.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
+    }
+    else
+    {
+        tp.Privileges[0].Attributes = 0;
+    }
+
+    // Enable the privilege or disable all privileges.
+    if (!AdjustTokenPrivileges(
+        tokenHandle, 
+        FALSE, 
+        &tp, 
+        sizeof(TOKEN_PRIVILEGES), 
+        (PTOKEN_PRIVILEGES) NULL, 
+        (PDWORD) NULL))
+    { 
+        printf("AdjustTokenPrivileges error: %u\n", GetLastError() ); 
+        return false; 
+    } 
+
+    if (GetLastError() == ERROR_NOT_ALL_ASSIGNED)
+
+    {
+        printf("The token does not have the specified privilege. \n");
+        return false;
+    } 
+
+    return true;
+}
+
+bool EnablePrivilege(
+    LPCTSTR privilegeName,
+    bool    enablePrivilege)
+{
+    CScopedHandle tokenHandle;
+    if (!OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES, &tokenHandle))
+    {
+        return false;
+    }
+
+    return SetPrivilege(tokenHandle, privilegeName, enablePrivilege); 
+}
+
 
 
 VOID DoUpdateSvcDacl(SC_HANDLE serviceHandle)
@@ -159,9 +270,9 @@ dacl_cleanup:
 
 DWORD InstallService()
 {
-    wchar_t wszPath[MAX_PATH];
+    wchar_t modulePath[MAX_PATH];
 
-    if (GetModuleFileNameW(NULL, wszPath, ARRAYSIZE(wszPath)) == 0)
+    if (GetModuleFileNameW(NULL, modulePath, ARRAYSIZE(modulePath)) == 0)
     {
         return GetLastError();
     }
@@ -189,7 +300,7 @@ DWORD InstallService()
         SERVICE_WIN32_OWN_PROCESS,  // service type
         dwStartType,                // start type
         SERVICE_ERROR_NORMAL,       // error control type
-        wszPath,                    // service's binary
+        modulePath,                    // service's binary
         NULL,                       // no load ordering group
         NULL,                       // no tag identifier
         NULL,                       // dependencies
@@ -223,7 +334,7 @@ DWORD InstallService()
             SERVICE_WIN32_OWN_PROCESS,
             dwStartType,
             SERVICE_ERROR_NORMAL,
-            wszPath,
+            modulePath,
             L"",
             NULL,
             L"",
@@ -249,10 +360,8 @@ DWORD InstallService()
     return ERROR_SUCCESS;
 }
 
-DWORD UninstallService(bool *rebootRequired)
+DWORD StopService(bool waitForStop)
 {
-    *rebootRequired = false;
-
     CScopedServiceHandle scmHandle = OpenSCManager(
         NULL,               // machine (NULL == local)
         NULL,               // database (NULL == default)
@@ -268,7 +377,7 @@ DWORD UninstallService(bool *rebootRequired)
     CScopedServiceHandle serviceHandle = OpenService(
         scmHandle, 
         MIMP_SERVICE_NAME,
-        DELETE | SERVICE_STOP | SERVICE_QUERY_STATUS);
+        SERVICE_STOP | SERVICE_QUERY_STATUS);
 
     if (!serviceHandle)
     {
@@ -281,6 +390,11 @@ DWORD UninstallService(bool *rebootRequired)
     // try to stop the service
     ControlService(serviceHandle, SERVICE_CONTROL_STOP, &serviceStatus);
 
+    if (!waitForStop)
+    {
+        return ERROR_SUCCESS;
+    }
+
     DWORD startTime = GetTickCount();
 
     while (serviceStatus.dwCurrentState != SERVICE_STOPPED)
@@ -288,7 +402,7 @@ DWORD UninstallService(bool *rebootRequired)
         DWORD dwBytesNeeded;
 
         Sleep(serviceStatus.dwWaitHint);
-        
+
         if (!QueryServiceStatusEx( 
             serviceHandle, 
             SC_STATUS_PROCESS_INFO,
@@ -310,6 +424,38 @@ DWORD UninstallService(bool *rebootRequired)
             printf("Wait timed out\n");
             break;
         }
+    }
+
+    return ERROR_SUCCESS;
+}
+
+DWORD UninstallService(bool *rebootRequired)
+{
+    *rebootRequired = false;
+
+    StopService(true);
+
+    CScopedServiceHandle scmHandle = OpenSCManager(
+        NULL,               // machine (NULL == local)
+        NULL,               // database (NULL == default)
+        SC_MANAGER_CONNECT  // access required
+        );
+
+    if (!scmHandle)
+    {
+        printf("Cannot open SCM to remove service!");
+        return GetLastError(); 
+    }
+
+    CScopedServiceHandle serviceHandle = OpenService(
+        scmHandle, 
+        MIMP_SERVICE_NAME,
+        DELETE | SERVICE_QUERY_STATUS);
+
+    if (!serviceHandle)
+    {
+        printf("Cannot open service");
+        return GetLastError(); 
     }
 
     if (DeleteService(serviceHandle))
@@ -362,9 +508,182 @@ DWORD WINAPI ServiceCtrlHandler(
     return NO_ERROR;
 }
 
+void LaunchMouseImpInOneSession(DWORD sessionID)
+{
+    CScopedHandle impersonationToken;
+    CScopedHandle primaryToken;
+    LPVOID pEnvironment = NULL;
+    TOKEN_MANDATORY_LABEL tokenHighIntegiryLabel = {0};
+    SID_IDENTIFIER_AUTHORITY mandatoryLabelAuthority = SECURITY_MANDATORY_LABEL_AUTHORITY;
+    STARTUPINFO startInfo = {0}; 
+    PROCESS_INFORMATION processInfo = {0};
+
+    WCHAR moduleFolder[MAX_PATH];
+
+    if (GetModuleFileNameW(NULL, moduleFolder, ARRAYSIZE(moduleFolder)) == 0)
+    {
+        goto finally;
+    }
+    PathRemoveFileSpec(moduleFolder);
+
+    if (!WTSQueryUserToken(sessionID, &impersonationToken)) 
+    {
+        goto finally;
+    }
+    
+    if (!DuplicateTokenEx(
+        impersonationToken,
+        MAXIMUM_ALLOWED,
+        NULL,
+        SecurityAnonymous,
+        TokenPrimary,
+        &primaryToken)) 
+    {
+        goto finally;
+    }
+
+    if (!CreateEnvironmentBlock(&pEnvironment, primaryToken, TRUE)) 
+    {
+        goto finally;
+    }
+
+    tokenHighIntegiryLabel.Label.Attributes = SE_GROUP_INTEGRITY;
+
+    if (!AllocateAndInitializeSid(
+        &mandatoryLabelAuthority,
+        1,
+        SECURITY_MANDATORY_HIGH_RID,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        &tokenHighIntegiryLabel.Label.Sid))
+    {
+        goto finally;
+    }
+
+    if (!SetTokenInformation(
+        primaryToken,
+        TokenIntegrityLevel,
+        &tokenHighIntegiryLabel,
+        sizeof(TOKEN_MANDATORY_LABEL) + GetLengthSid(tokenHighIntegiryLabel.Label.Sid)))
+    {
+        goto finally;
+    }
+
+    if (!ImpersonateLoggedOnUser(primaryToken))
+    {
+        goto finally;
+    }
+
+    startInfo.cb = sizeof(startInfo);
+
+    WCHAR modulePath[MAX_PATH];
+    wcscpy_s(modulePath, MAX_PATH, moduleFolder);
+    PathAppend(modulePath, MIMP_HOST_EXE_NAME);
+
+    for( int i = 0; i < 5; i++ )
+    {
+        if (CreateProcessAsUser(
+            primaryToken,
+            NULL,
+            modulePath, 
+            NULL,
+            NULL,
+            FALSE, 
+            CREATE_NO_WINDOW | CREATE_UNICODE_ENVIRONMENT, 
+            pEnvironment,
+            NULL,
+            &startInfo,
+            &processInfo))
+        {
+            break;
+        }
+        Sleep(1000);
+    }
+
+    wcscpy_s(modulePath, MAX_PATH, moduleFolder);
+    PathAppend(modulePath, L"x64\\" MIMP_HOST_EXE_NAME);
+
+    for( int i = 0; i < 5; i++ )
+    {
+        if (CreateProcessAsUser(
+            primaryToken,
+            NULL,
+            modulePath, 
+            NULL,
+            NULL,
+            FALSE, 
+            CREATE_NO_WINDOW | CREATE_UNICODE_ENVIRONMENT, 
+            pEnvironment,
+            NULL,
+            &startInfo,
+            &processInfo))
+        {
+            break;
+        }
+        Sleep(1000);
+    }
+
+    RevertToSelf();
+
+finally:
+
+    if (tokenHighIntegiryLabel.Label.Sid)
+    {
+        FreeSid(tokenHighIntegiryLabel.Label.Sid);
+    }
+    if (pEnvironment)
+    {
+        DestroyEnvironmentBlock( pEnvironment );
+    }
+}
+
+void LaunchMouseImpInEverySession()
+{
+    PWTS_SESSION_INFO sessionInfo = NULL;
+    DWORD sessionCount = 0;
+    
+    if (!WTSEnumerateSessions(
+        WTS_CURRENT_SERVER_HANDLE,
+        0,
+        1,
+        &sessionInfo,
+        &sessionCount))
+    {
+        return;
+    }
+
+    EnablePrivilege(SE_TCB_NAME, true);
+    EnablePrivilege(SE_INCREASE_QUOTA_NAME, true);
+    EnablePrivilege(SE_ASSIGNPRIMARYTOKEN_NAME, true);
+
+    for (DWORD i = 0; i < sessionCount; ++i)
+    {
+        LaunchMouseImpInOneSession(sessionInfo[i].SessionId);
+    }
+
+    WTSFreeMemory(sessionInfo);
+
+    EnablePrivilege(SE_TCB_NAME, false);
+    EnablePrivilege(SE_INCREASE_QUOTA_NAME, false);
+    EnablePrivilege(SE_ASSIGNPRIMARYTOKEN_NAME, false);
+}
+
+
+DWORD WINAPI StopServiceThreadProc(LPVOID)
+{
+    Sleep(5000);
+    StopService(false);
+    return ERROR_SUCCESS;
+}
+
 
 void ServiceMain(
-    DWORD dwArgc,
+    DWORD   dwArgc,
     LPTSTR *lpszArgv)
 {
     g_serviceStatusHandle = RegisterServiceCtrlHandlerEx( 
@@ -375,6 +694,10 @@ void ServiceMain(
     ReportStatusToSCM(SERVICE_START_PENDING);
 
     ReportStatusToSCM(SERVICE_RUNNING);
+
+    LaunchMouseImpInEverySession();
+
+    CloseHandle(CreateThread(NULL, 0, &StopServiceThreadProc, NULL, 0, NULL));
 
     while (!g_serviceMustExit)
     {
@@ -421,6 +744,10 @@ int _tmain(int argc, _TCHAR* argv[])
         }
 
         return lastError;
+    }
+    else if (!wcscmp(argv[1], L"--debug"))
+    {
+        return LaunchMouseImpInEverySession();
     }
 
 	return 0;

@@ -18,3 +18,6 @@
 #include <sddl.h>
 #include <accctrl.h>
 #include <Aclapi.h>
+#include <Wtsapi32.h>
+#include <UserEnv.h>
+#include <shlwapi.h>
