@@ -57,6 +57,9 @@ public:
     return (FARPROC)this; }
 };
 
+#pragma pack(pop)
+
+
 _SL_END
 
 #endif//__SLTHUNK_H
