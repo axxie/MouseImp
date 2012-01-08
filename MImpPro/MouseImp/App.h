@@ -341,6 +341,7 @@ public:
   LRESULT MainWndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
   //timer thunk proc
   void TimerThunkProc(HWND hWnd, UINT uiMsg, UINT_PTR, DWORD);
+  bool CheckIntegrityLevel();
 };
 
 /**********************************************************************

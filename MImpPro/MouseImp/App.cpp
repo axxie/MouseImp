@@ -24,6 +24,8 @@ main functionaly
 
 #include "..\\Slib\\SLResMem.h"
 
+#include "..\\MImpSrv\MImpSrvCtl.h"
+
 namespace help
 {
 //# include "..\\help\\MIPROHLP.H"
@@ -403,32 +405,38 @@ bool CApp::Init(bool& rNewInited)
     };
   };
 
+  //OS-specific actions
+  if(false != bRes)
+  {
+      OSVERSIONINFO OsVer;
+      OsVer.dwOSVersionInfoSize = sizeof(OsVer);
+      if(FALSE != ::GetVersionEx(&OsVer))
+      {
+          if(VER_PLATFORM_WIN32_NT == OsVer.dwPlatformId)
+          {
+              //WinNT - enable for all NT greater then 4
+              pCfgMem->bWin2000PatchRequired = 4 < OsVer.dwMajorVersion;
+              // Vista and higher - check integrity level and start launcher service if needed
+              if (OsVer.dwMajorVersion >= 6)
+              {
+                  bRes = CheckIntegrityLevel();
+              }
+          }
+          else if(VER_PLATFORM_WIN32_WINDOWS == OsVer.dwPlatformId)
+          {
+              //win95
+              pCfgMem->bWin2000PatchRequired = FALSE;
+          };
+      };
+  };
+
+
   //splash
   using slw::CSWSplash;
   CSWSplash Splash;
   if(false != bRes && (FALSE != pCfgMem->bShowSplash || FALSE == pCfgMem->bCryptFirstLayerValid))
   {
     SLCHECK(FALSE != Splash.Create(IDB_SPLASH_BMP, hInst, ULONG_MAX));
-  };
-
-  //try detect Os version for "Win2000 patch" on/off
-  if(false != bRes)
-  {
-    OSVERSIONINFO OsVer;
-    OsVer.dwOSVersionInfoSize = sizeof(OsVer);
-    if(FALSE != ::GetVersionEx(&OsVer))
-    {
-      if(VER_PLATFORM_WIN32_NT == OsVer.dwPlatformId)
-      {
-        //WinNT - enable for all NT greater then 4
-        pCfgMem->bWin2000PatchRequired = 4 < OsVer.dwMajorVersion;
-      }
-      else if(VER_PLATFORM_WIN32_WINDOWS == OsVer.dwPlatformId)
-      {
-        //win95
-        pCfgMem->bWin2000PatchRequired = FALSE;
-      };
-    };
   };
 
   //try init "process info" system
@@ -1768,4 +1776,64 @@ void CApp::ProcessEnumCloseAllToolHelp()
   ::FreeLibrary(hToolHelpModule);
   hToolHelpModule = 0;
 };
+
+
+DWORD GetProcessIntegrityLevel()
+{
+    HANDLE hToken;
+    HANDLE hProcess;
+
+    DWORD dwLengthNeeded;
+    DWORD dwError = ERROR_SUCCESS;
+
+    PTOKEN_MANDATORY_LABEL pTIL = NULL;
+    DWORD dwIntegrityLevel = -1;
+
+    hProcess = GetCurrentProcess();
+    if (OpenProcessToken(hProcess, TOKEN_QUERY, &hToken)) 
+    {
+        // Get the Integrity level.
+        if (!GetTokenInformation(hToken, TokenIntegrityLevel, 
+            NULL, 0, &dwLengthNeeded))
+        {
+            dwError = GetLastError();
+            if (dwError == ERROR_INSUFFICIENT_BUFFER)
+            {
+                pTIL = (PTOKEN_MANDATORY_LABEL)LocalAlloc(0, 
+                    dwLengthNeeded);
+                if (pTIL != NULL)
+                {
+                    if (GetTokenInformation(hToken, TokenIntegrityLevel, 
+                        pTIL, dwLengthNeeded, &dwLengthNeeded))
+                    {
+                        dwIntegrityLevel = *GetSidSubAuthority(pTIL->Label.Sid, 
+                            (DWORD)(UCHAR)(*GetSidSubAuthorityCount(pTIL->Label.Sid)-1));
+                    }
+                    LocalFree(pTIL);
+                }
+            }
+        }
+        CloseHandle(hToken);
+    }
+
+    return dwIntegrityLevel;
+}
+
+bool CApp::CheckIntegrityLevel()
+{
+    DWORD processIntegrityLevel = GetProcessIntegrityLevel();
+
+    if (processIntegrityLevel == -1)
+    {
+        return true;
+    }
+
+    if (processIntegrityLevel < SECURITY_MANDATORY_HIGH_RID)
+    {
+        StartMImpSrv();
+        return false;
+    }
+
+    return true;
+}
 
