@@ -1071,6 +1071,10 @@ inline bool TryShowCfgApp(CMISharedInfo* const cpCfgMem)
   bool bRes = false;
   if(FALSE != ::IsWindow(cpCfgMem->hCfgAppWnd))
   {
+    DWORD processId;
+    GetWindowThreadProcessId(cpCfgMem->hCfgAppWnd, &processId);
+    AllowSetForegroundWindow(processId);
+
     bRes = true;
     ::PostMessage(cpCfgMem->hCfgAppWnd, ecmShowApp, 0, 0);
   };

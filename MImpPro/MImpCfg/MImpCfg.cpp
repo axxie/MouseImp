@@ -105,7 +105,7 @@ void CMImpCfgApp::StartCfg()
   //try bring cfg wnd if exist
   if(false != bRes)
   {
-    TryShowCfgApp(pCfgMem);
+    bRes = !TryShowCfgApp(pCfgMem);
   };
 
   //set help full file 
