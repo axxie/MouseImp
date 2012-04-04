@@ -1,4 +1,4 @@
-//Microsoft Developer Studio generated resource script.
+// Microsoft Visual C++ generated resource script.
 //
 #include "resource.h"
 
@@ -28,18 +28,17 @@ LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDR_STATE_RUN_ICON      ICON    DISCARDABLE     "main.ico"
-IDR_STATE_STOP_ICON     ICON    DISCARDABLE     "stop.ico"
+IDR_STATE_RUN_ICON      ICON                    "main.ico"
+IDR_STATE_STOP_ICON     ICON                    "stop.ico"
 
-#ifndef _MAC
 /////////////////////////////////////////////////////////////////////////////
 //
 // Version
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,3,0,5
- PRODUCTVERSION 1,3,0,5
+ FILEVERSION 7,0,0,1
+ PRODUCTVERSION 7,0,0,1
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -54,18 +53,12 @@ BEGIN
     BEGIN
         BLOCK "000004b0"
         BEGIN
-            VALUE "Comments", "\0"
-            VALUE "CompanyName", "\0"
-            VALUE "FileDescription", "MouseImp PRO Control Panel Applet\0"
-            VALUE "FileVersion", "1, 3, 0, 5\0"
-            VALUE "InternalName", "MIProCtrl\0"
-            VALUE "LegalCopyright", "\0"
-            VALUE "LegalTrademarks", "\0"
-            VALUE "OriginalFilename", "MIProCtrl.dll\0"
-            VALUE "PrivateBuild", "\0"
-            VALUE "ProductName", "MouseImp PRO\0"
-            VALUE "ProductVersion", "1, 3, 0, 5\0"
-            VALUE "SpecialBuild", "\0"
+            VALUE "FileDescription", "MouseImp PRO Control Panel Applet"
+            VALUE "FileVersion", "7.0.0.1"
+            VALUE "InternalName", "MIProCtrl"
+            VALUE "OriginalFilename", "MIProCtrl.dll"
+            VALUE "ProductName", "MouseImp PRO"
+            VALUE "ProductVersion", "7.0.0.1"
         END
     END
     BLOCK "VarFileInfo"
@@ -74,15 +67,13 @@ BEGIN
     END
 END
 
-#endif    // !_MAC
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // String Table
 //
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_NAME                "MouseImp PRO"
     IDS_DESCR               "Improves productivity and convenience when working with mouse."
@@ -107,18 +98,18 @@ LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
 // TEXTINCLUDE
 //
 
-1 TEXTINCLUDE DISCARDABLE 
+1 TEXTINCLUDE 
 BEGIN
     "resource.h\0"
 END
 
-2 TEXTINCLUDE DISCARDABLE 
+2 TEXTINCLUDE 
 BEGIN
     "#include ""afxres.h""\r\n"
     "\0"
 END
 
-3 TEXTINCLUDE DISCARDABLE 
+3 TEXTINCLUDE 
 BEGIN
     "\r\n"
     "\0"
