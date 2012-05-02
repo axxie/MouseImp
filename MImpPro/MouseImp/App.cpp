@@ -263,6 +263,7 @@ void CApp::LoadCfg(bool& rbFirstStart)
 };
 
 void CApp::SaveCfg()
+
 {
   {
     using sl::CSLCfgReg;
@@ -335,6 +336,9 @@ bool CApp::Init(bool& rNewInited)
     hCfgMap = ::OpenFileMapping(FILE_MAP_ALL_ACCESS, FALSE, cpcSharedInfoName);
     //flag
     const bool bcOpenExist = 0 != hCfgMap;
+
+#ifndef _WIN64
+    // only 32-bit version creates mapping
     if(0 == hCfgMap)
     {
       SECURITY_ATTRIBUTES secAttr;
@@ -365,6 +369,8 @@ bool CApp::Init(bool& rNewInited)
       hCfgMap = ::CreateFileMapping(INVALID_HANDLE_VALUE, &secAttr, PAGE_READWRITE, 0, dwcSharedInfoSize, cpcSharedInfoName);
       bInstallNew = true;
     };
+#endif //_WIN64
+
     if(0 != hCfgMap)
     {
       LPVOID const cpPtr = ::MapViewOfFile(hCfgMap, FILE_MAP_ALL_ACCESS, 0, 0, dwcSharedInfoSize);
@@ -390,6 +396,8 @@ bool CApp::Init(bool& rNewInited)
       rNewInited = FALSE == ::IsWindow(pCfgMem->hMainHostWnd);
       bRes = false != rNewInited;
     };
+
+#ifndef _WIN64
     if(false != bRes)
     {
       //init cfg map
@@ -403,6 +411,8 @@ bool CApp::Init(bool& rNewInited)
       //load basic's for reg info
       LoadRegInfo(true);
     };
+#endif //_WIN64
+
   };
 
   //OS-specific actions
@@ -1194,6 +1204,7 @@ LRESULT CApp::MainWndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
   case WM_DESTROY:
   case WM_QUERYENDSESSION:
     //send quit message to main cfg dlg (if present)
+#ifndef _WIN64
     if(FALSE != ::IsWindow(pCfgMem->hCfgAppWnd))
     {
       DWORD dwCfgProcess = 0;
@@ -1201,6 +1212,8 @@ LRESULT CApp::MainWndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
       //enum wnd's in system from cfg process and if find - close it's
       ::EnumWindows(EnumCfgAppExitProc, dwCfgProcess);
     };
+#endif
+
     //del timer
     if(0 != uiTimerId)
     {

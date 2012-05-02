@@ -222,11 +222,30 @@ enum MouseProcessStateEnum
   empMouseProcessLast,
 };
 
+
+#ifdef _WIN64
+#define DECLARE_MEMBER_32(type, name) \
+    ULONG name;
+
+#define DECLARE_MEMBER_BOTH(type, name) \
+    ULONG name##32;                     \
+    type name;
+#else
+#define DECLARE_MEMBER_32(type, name) \
+    type name;
+
+#define DECLARE_MEMBER_BOTH(type, name) \
+    type        name;                   \
+    ULONGLONG   name##64;
+
+#endif
+
+
 //infor for enumlate scroll in IE
 struct CSCrollIEProcessInfo
 {
   //wnd
-  HWND hWnd;
+  DECLARE_MEMBER_BOTH(HWND, hWnd)
   //last "scroll" point
   POINT PntLastStart;
   //point of "start scroll"
@@ -255,11 +274,11 @@ struct CScrollPagerCtrlInfo
   //is pager horisontal
   bool bHorProcess;
   //paget ctrl
-  HWND hPagerCtrl;
+  DECLARE_MEMBER_BOTH(HWND, hPagerCtrl)
   //paget ctrl id
   UINT uiPagerCtrlId;
   //child wnd of pager ctrl
-  HWND hChildWnd;
+  DECLARE_MEMBER_BOTH(HWND, hChildWnd)
   //client rect of pager ctrl
   RECT ClientRect;
   //current scrolling pos
@@ -293,7 +312,7 @@ struct CScrollProcessInfo
     //is process ctrl SB_CTRL/(SB_HROZ/SB_VERT)
     bool bIsCtrl;
     //ctrl wnd (zero if no scroll in this direction present)
-    HWND hWnd;
+    DECLARE_MEMBER_BOTH(HWND, hWnd)
     //scrolling reduction for this direction
     DWORD dwScrollReduction;
   };
@@ -303,15 +322,19 @@ struct CScrollProcessInfo
   CScrollDirInfo VInfo;
 };
 
+
+
+
+
 //global shared struct
 //used for ctore status/cfg and inited by zero's (stored cfg from registry)
 
 struct CMISharedInfo
 {
   //handle of "main host wnd"
-  HWND hMainHostWnd;
+  DECLARE_MEMBER_BOTH(HWND, hMainHostWnd)
   //handle of main window of cfg application (used for start only one instance)
-  HWND hCfgAppWnd;
+  DECLARE_MEMBER_32(HWND, hCfgAppWnd)
 
   //tray icon mode (one of TrayIconClickEnum)
   DWORD dwTrayIconClickMode;
@@ -325,9 +348,10 @@ struct CMISharedInfo
   BOOL bNotSendModuleFileName;
 
   //hook for mouse
-  HHOOK hMouseHook;
+  DECLARE_MEMBER_BOTH(HHOOK, hMouseHook)
   //hook for CallWndProc
-  HHOOK hCBTHook;
+  DECLARE_MEMBER_BOTH(HHOOK, hCBTHook)
+
 
   //skip flag's for mosue btn's - used for skip mouse event's in emulate mouse click's
   UINT uiSkipUpFlag;
@@ -389,9 +413,9 @@ struct CMISharedInfo
   //auto hide enabled
   BOOL bAHideEnabled;
   //last looking wnd
-  HWND hAHideLastLookingWnd;
+  DECLARE_MEMBER_BOTH(HWND, hAHideLastLookingWnd)
   //last "drilling down" window's
-  HWND hAHideLastActiveSendWnd;
+  DECLARE_MEMBER_BOTH(HWND, hAHideLastActiveSendWnd)
   //auto hide "mouse inactivity" timer timer
   DWORD dwAutoHideTimerTime;
   //delay time before open wnd (0 if delay disabled)
@@ -429,7 +453,7 @@ struct CMISharedInfo
   //used for additional process in subclassed wnd's
   //inited ad scroll start
   //cleared in scrollstop
-  HWND hSubClassScrollWnd;
+  DECLARE_MEMBER_BOTH(HWND, hSubClassScrollWnd)
 
   //from what mouse btn mouse control started (scroll bar ctrl)
   //used for identify "need unpress emulate"
@@ -443,7 +467,7 @@ struct CMISharedInfo
   DWORD dwIESCrollConvMove;
 
   //for mem cursor while start scroll
-  HCURSOR hMemWndCursor;
+  DECLARE_MEMBER_BOTH(HCURSOR, hMemWndCursor);
 
   //process, in what scroll start - used for check "deacivate" message to wnd
   DWORD dwScrollStartThread;
@@ -454,7 +478,7 @@ struct CMISharedInfo
   //is need process CBT hook - used for disable subclass new wnd's from CBT hook
   BOOL bProcessAddWndFromCBTHook;
   //is hook'd present - used as host wnd and tested as compare wnd class
-  HWND hHookPresentFlag;
+  DECLARE_MEMBER_BOTH(HWND, hHookPresentFlag);
 
   ////data uncrypted and placed after this struct
   //first - "crypt" section
@@ -485,7 +509,9 @@ struct CMISharedInfo
   ////timer for total MouseImp runnign time 
   //incremented in host and used for show in "productivity" page
   LONGLONG llTotalRunTime;
+
 };
+
 
 //shared info not cleared until init host
 struct CSharedNotClearedInfo
@@ -497,11 +523,8 @@ struct CSharedNotClearedInfo
 };
 
 //name of shared info view (for open from hook dll)
-#ifdef _WIN64
-LPCSTR const cpcSharedInfoName = "MImpProSharedInfo64";
-#else
 LPCSTR const cpcSharedInfoName = "MImpProSharedInfo";
-#endif
+
 //shared info for handle crypted data
 LPCSTR const cpcSharedCryptInfo = "MImpProSharedCInfo";
 
@@ -1068,17 +1091,20 @@ inline void ActivateWndToUser(const HWND hcWnd)
 ////try show cfg application (return false if app not present)
 inline bool TryShowCfgApp(CMISharedInfo* const cpCfgMem)
 {
-  bool bRes = false;
-  if(FALSE != ::IsWindow(cpCfgMem->hCfgAppWnd))
+#ifndef _WIN64
+  if(FALSE == ::IsWindow(cpCfgMem->hCfgAppWnd))
   {
-    DWORD processId;
-    GetWindowThreadProcessId(cpCfgMem->hCfgAppWnd, &processId);
-    AllowSetForegroundWindow(processId);
+    return false;
+  }
 
-    bRes = true;
-    ::PostMessage(cpCfgMem->hCfgAppWnd, ecmShowApp, 0, 0);
-  };
-  return bRes;
+  DWORD processId;
+  GetWindowThreadProcessId(cpCfgMem->hCfgAppWnd, &processId);
+  AllowSetForegroundWindow(processId);
+  
+  ::PostMessage(cpCfgMem->hCfgAppWnd, ecmShowApp, 0, 0);
+#endif
+
+  return true;
 };
 
 //calc size of section of crypted data
