@@ -238,7 +238,9 @@ CApp::CApp(HINSTANCE hInitInstance)
   pFlatSB_GetScrollProp(0),
   pFlatSB_GetScrollInfo(0),
 
-  MemWndList(100)
+  MemWndList(100),
+
+  m_IsHostProcess(false)
 {
 };
 
@@ -1153,6 +1155,18 @@ UINT CApp::DrillChildUp(const HWND hcInitStart, const UINT uicCurrKeyFlag, const
 		rInfo.bLockedScrollDirection = true;
 		rInfo.bHorScroll = false;
 		rInfo.bLockedWheelDelta = true;
+		//goto state
+		uiRes = ehmScrollIEPress;
+		break;
+	}
+	else if (m_IsHostProcess)
+	{
+		//mem info
+		CSCrollIEProcessInfo& rInfo = pCfgMem->ScrollIEProcessInfo;
+		rInfo.hWnd = hLookWnd;
+		rInfo.bLockedScrollDirection = false;
+		rInfo.bLockedWheelDelta = false;
+
 		//goto state
 		uiRes = ehmScrollIEPress;
 		break;
@@ -2099,6 +2113,11 @@ bool CApp::IEScrollStart(const MOUSEHOOKSTRUCT* const cpMsg)
   return bRes;
 };
 
+void CApp::SetIsHostProcess()
+{
+  m_IsHostProcess = true;
+}
+
 
 //////////////////////////////////////////////////////////////////////
 //main init proc
@@ -2180,6 +2199,14 @@ extern "C" LRESULT CALLBACK MIHookFunc(int nCode, WPARAM wParam, LPARAM lParam)
   return 0;
 #endif//__REL_CFG
 };
+
+extern "C" VOID CALLBACK MISetIsHostProcess()
+{
+  if (pApp)
+	  pApp->SetIsHostProcess();
+}
+
+
 
 //get version number for hook module
 extern "C" DWORD MIGetVer()

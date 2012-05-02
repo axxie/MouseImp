@@ -543,6 +543,11 @@ LPCSTR const cpcWndTitle = "MImpProWndTitle";
 LPCSTR const cpcHookGetVerFunc = "MIGetVer";
 extern "C" typedef DWORD (*HookGetVerFuncType)();
 
+//api function for specifying host process
+LPCSTR const cpcSetIsHostProcessFunc = "MISetIsHostProcess";
+extern "C" typedef VOID (*SetIsHostProcessFuncType)();
+
+
 //class of dlg's
 LPCSTR const cpcWndDlgClass = "#32770";
 

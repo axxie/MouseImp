@@ -291,6 +291,8 @@ protected:
   XMLNode xMainNode;
   XMLResults xRes;
 
+  bool m_IsHostProcess;
+
 public:
 
 public:
@@ -312,6 +314,8 @@ public:
 
   //analyser helper for start dll - return true if need drill down for child's (some process)
   inline bool AnalyseStartWndHelper(const HWND hcWnd);
+
+  void SetIsHostProcess();
 
 protected:
 

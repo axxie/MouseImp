@@ -598,14 +598,20 @@ bool CApp::Init(bool& rNewInited)
   if(false != bRes)
   {
     HookGetVerFuncType const cpFinc = reinterpret_cast<HookGetVerFuncType>(::GetProcAddress(hHookLib, cpcHookGetVerFunc));
+    SetIsHostProcessFuncType const cpSetIsHost = reinterpret_cast<SetIsHostProcessFuncType>(::GetProcAddress(hHookLib, cpcSetIsHostProcessFunc));
+
     bRes =
       0 != cpFinc
-      && GetVersionNumber() == cpFinc();
+      && GetVersionNumber() == cpFinc() 
+      && 0 != cpSetIsHost;
     //version failed
     if(false == bRes)
     {
       uiErrorId = IDS_MSG_INV_VER;
-    };
+    } else
+	{
+	  cpSetIsHost();
+	}
   };
 
   //try install hook
