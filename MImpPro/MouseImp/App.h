@@ -659,19 +659,6 @@ inline DWORD CApp::CalcTimeInSec(DWORD& rdwLastTime)
   return dwcTimeDist / eccMilSecInSec;
 };
 
-inline void CApp::BringHelp(const UINT uicCmd, const DWORD dwcData)
-{
-  CHAR cpBuff[MAX_PATH];
-  GetFullBasedName(cpcHelpFileName, cpBuff, hInst);
-  ::WinHelp
-    (
-    (FALSE != ::IsWindow(pCfgMem->hCfgAppWnd)) ? pCfgMem->hCfgAppWnd : pCfgMem->hMainHostWnd,
-    cpBuff,
-    uicCmd,
-    dwcData
-    );
-};
-
 inline void CApp::TimerSaveCfgProcess()
 {
   dwSaveCfgSummTime += eccTimerTime;

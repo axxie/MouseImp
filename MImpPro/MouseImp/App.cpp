@@ -726,8 +726,6 @@ bool CApp::Init(bool& rNewInited)
   if(false != bRes && false != bFirstStart)
   {
     StartCfgApp(true);
-//    using namespace help;
-//    BringHelp(HELP_CONTEXT, Introduction);
   };
 
   //try chng workset size
@@ -820,6 +818,7 @@ void CApp::Finit()
   };
 
   //save "close" time for app run
+  if(0 != pCfgMem)
   {
     pCfgMem->ASOpenProd.llTotalTime += static_cast<LONGLONG>(CalcTimeInSec(dwLastLookAppTime));
   };
