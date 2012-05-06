@@ -72,16 +72,18 @@ bool EnablePrivilege(
 
 VOID DoUpdateSvcDacl(SC_HANDLE serviceHandle)
 {
-    EXPLICIT_ACCESS      ea;
-    SECURITY_DESCRIPTOR  sd;
-    PSECURITY_DESCRIPTOR psd            = NULL;
-    PACL                 pacl           = NULL;
-    PACL                 pNewAcl        = NULL;
-    BOOL                 bDaclPresent   = FALSE;
-    BOOL                 bDaclDefaulted = FALSE;
-    DWORD                dwError        = 0;
-    DWORD                dwSize         = 0;
-    DWORD                dwBytesNeeded  = 0;
+    EXPLICIT_ACCESS          ea;
+    SECURITY_DESCRIPTOR      sd;
+    PSECURITY_DESCRIPTOR     psd            = NULL;
+    PACL                     pacl           = NULL;
+    PACL                     pNewAcl        = NULL;
+    BOOL                     bDaclPresent   = FALSE;
+    BOOL                     bDaclDefaulted = FALSE;
+    DWORD                    dwError        = 0;
+    DWORD                    dwSize         = 0;
+    DWORD                    dwBytesNeeded  = 0;
+    SID_IDENTIFIER_AUTHORITY NtAuthority    = SECURITY_NT_AUTHORITY;
+
 
     // Get the current security descriptor.
 
@@ -126,14 +128,33 @@ VOID DoUpdateSvcDacl(SC_HANDLE serviceHandle)
         goto dacl_cleanup;
     }
 
-    // Build the ACE.
+    PSID pSid = NULL;
 
-    BuildExplicitAccessWithName(
-        &ea,
-        TEXT("INTERACTIVE"),
-        SERVICE_START,
-        GRANT_ACCESS,
-        NO_INHERITANCE);
+    if (!AllocateAndInitializeSid(
+        &NtAuthority,
+        1,
+        SECURITY_INTERACTIVE_RID,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        &pSid))
+    {
+        printf("DoUpdateSvcDacl - AllocateAndInitializeSid failed(%d)\n", GetLastError());
+        goto dacl_cleanup;
+    }
+
+    ea.grfAccessPermissions             = SERVICE_START;
+    ea.grfAccessMode                    = GRANT_ACCESS;
+    ea.grfInheritance                   = NO_INHERITANCE;
+    ea.Trustee.pMultipleTrustee         = NULL;
+    ea.Trustee.MultipleTrusteeOperation = NO_MULTIPLE_TRUSTEE;
+    ea.Trustee.TrusteeForm              = TRUSTEE_IS_SID;
+    ea.Trustee.TrusteeType              = TRUSTEE_IS_WELL_KNOWN_GROUP;
+    ea.Trustee.ptstrName                = (LPWSTR)pSid;
 
     dwError = SetEntriesInAcl(1, &ea, pacl, &pNewAcl);
     if (dwError != ERROR_SUCCESS)
@@ -183,6 +204,7 @@ DWORD InstallService()
 
     if (GetModuleFileNameW(NULL, modulePath, ARRAYSIZE(modulePath)) == 0)
     {
+        printf("GetModuleFileNameW failed (error %d)", GetLastError());
         return GetLastError();
     }
 
@@ -194,6 +216,7 @@ DWORD InstallService()
 
     if (!scmHandle)
     {
+        printf("OpenSCManager failed (error %d), run --install from administrator", GetLastError());
         return GetLastError();
     }
 
@@ -222,6 +245,7 @@ DWORD InstallService()
 
         if (lastError != ERROR_SERVICE_EXISTS)
         {
+            printf("Error on CreateServiceW %d", GetLastError());
             return lastError;
         }
 
