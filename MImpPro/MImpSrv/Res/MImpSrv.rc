@@ -43,10 +43,10 @@ BEGIN
     BEGIN
         BLOCK "000004b0"
         BEGIN
-            VALUE "FileDescription", "MouseImp PRO hook module"
+            VALUE "FileDescription", "MouseImp elevated launcher"
             VALUE "FileVersion", "7.0.0.3"
-            VALUE "InternalName", "MIPro"
-            VALUE "OriginalFilename", "MIPro.dll"
+            VALUE "InternalName", "MImpSrv"
+            VALUE "OriginalFilename", "MImpSrv.exe"
             VALUE "ProductName", "MouseImp PRO"
             VALUE "ProductVersion", "7.0.0.3"
         END
@@ -63,12 +63,6 @@ END
 // Cursor
 //
 
-IDC_SCR_ALL_OPEN_CUR    CURSOR                  "scr_all.cur"
-IDC_SCR_HOR_CLOSE_CUR   CURSOR                  "scr_hor_.cur"
-IDC_SCR_VERT_CLOSE_CUR  CURSOR                  "scr_vert.cur"
-IDC_SCR_HOR_OPEN_CUR    CURSOR                  "cur00001.cur"
-IDC_SCR_VERT_OPEN_CUR   CURSOR                  "cur00002.cur"
-IDC_SCR_NONE_OPEN_CUR   CURSOR                  "scr_none.cur"
 #endif    // Neutral resources
 /////////////////////////////////////////////////////////////////////////////
 
