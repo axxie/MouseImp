@@ -629,16 +629,13 @@ bool CApp::Init(bool& rNewInited)
       pCfgMem->hMouseHook = ::SetWindowsHookEx(WH_MOUSE, reinterpret_cast<HOOKPROC>(cpMouseHook), hHookLib, 0);
       pCfgMem->hCBTHook = ::SetWindowsHookEx(WH_CBT, reinterpret_cast<HOOKPROC>(cpCBTHook), hHookLib, 0);
 #else
-//      pCfgMem->hMouseHook = ::SetWindowsHookEx(WH_MOUSE, reinterpret_cast<HOOKPROC>(cpMouseHook), hHookLib, 0);
-//      pCfgMem->hCBTHook = ::SetWindowsHookEx(WH_CBT, reinterpret_cast<HOOKPROC>(cpCBTHook), hHookLib, 0);
-
       STARTUPINFO si = {0};
       si.cb = sizeof(STARTUPINFO);
       PROCESS_INFORMATION pi = {0};
 
       BOOL bNotepadRes = CreateProcess(
           NULL,
-          "notepad.exe",
+          "C:\\Windows\\SysWOW64\\notepad.exe",
           //"C:\\Program Files\\Internet Explorer\\IEXPLORE.EXE",
           NULL,
           NULL,
@@ -650,51 +647,9 @@ bool CApp::Init(bool& rNewInited)
           &pi);
       MessageBox(NULL, "Wait for notepad", "Message", MB_OK);
 
-
       pCfgMem->hMouseHook = ::SetWindowsHookEx(WH_MOUSE, reinterpret_cast<HOOKPROC>(cpMouseHook), hHookLib, pi.dwThreadId);
       pCfgMem->hCBTHook = ::SetWindowsHookEx(WH_CBT, reinterpret_cast<HOOKPROC>(cpCBTHook), hHookLib, pi.dwThreadId);
 
-
-
-
-/*
-      DWORD dwProcesses[10000];
-      DWORD dwBytesReturned = 0;
-
-      pEnumProcessesFunc(dwProcesses, sizeof(dwProcesses), &dwBytesReturned);
-      for (DWORD i = 0; i < dwBytesReturned/sizeof(DWORD); i++)
-      {
-          TCHAR szProcessName[MAX_PATH] = TEXT("<unknown>");
-
-          // Get a handle to the process.
-
-          HANDLE hProcess = OpenProcess( PROCESS_QUERY_INFORMATION |
-              PROCESS_VM_READ,
-              FALSE, dwProcesses[i] );
-
-          // Get the process name.
-
-          if (NULL != hProcess )
-          {
-              HMODULE hMod;
-              DWORD cbNeeded;
-
-              if ( pEnumProcessModulesFunc( hProcess, &hMod, sizeof(hMod), 
-                  &cbNeeded) )
-              {
-                  pGetModuleBaseNameFunc( hProcess, hMod, szProcessName, 
-                      sizeof(szProcessName)/sizeof(TCHAR) );
-              }
-          }
-
-          // Print the process name and identifier.
-
-          CloseHandle( hProcess );
-      }
-
-//      pCfgMem->hMouseHook = ::SetWindowsHookEx(WH_MOUSE, reinterpret_cast<HOOKPROC>(cpMouseHook), hHookLib, pi.dwThreadId);
-//      pCfgMem->hCBTHook = ::SetWindowsHookEx(WH_CBT, reinterpret_cast<HOOKPROC>(cpCBTHook), hHookLib, pi.dwThreadId);
-*/
 #endif
       //dbg:
       if(0 != pCfgMem->hMouseHook && 0 != pCfgMem->hCBTHook)
@@ -721,6 +676,8 @@ bool CApp::Init(bool& rNewInited)
 
   //splash off
   Splash.WaitForEnd();
+
+  SignalSharedInfoReady();
 
   //if need - show error
   if(false == bRes && 0 != uiErrorId)

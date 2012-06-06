@@ -502,6 +502,10 @@ LPCSTR const cpcSharedInfoName = "MImpProSharedInfo64";
 #else
 LPCSTR const cpcSharedInfoName = "MImpProSharedInfo";
 #endif
+
+//name of shared info initialized event
+LPCSTR const cpcSharedInfoInitializedEventName = "MImpProSharedInfoInitializedEvent";
+
 //shared info for handle crypted data
 LPCSTR const cpcSharedCryptInfo = "MImpProSharedCInfo";
 
@@ -550,6 +554,32 @@ extern "C" typedef VOID (*SetIsHostProcessFuncType)();
 
 //class of dlg's
 LPCSTR const cpcWndDlgClass = "#32770";
+
+inline bool WaitForSharedInfo()
+{
+    HANDLE hEventSharedInitialized = CreateEvent(NULL, TRUE, FALSE, cpcSharedInfoInitializedEventName);
+    if (!hEventSharedInitialized)
+    {
+        return false;
+    }
+
+    // wait 15 seconds
+    bool bRes = (WAIT_OBJECT_0 == WaitForSingleObject(hEventSharedInitialized, 15000));
+    CloseHandle(hEventSharedInitialized);
+    return bRes;
+}
+
+inline void SignalSharedInfoReady()
+{
+    HANDLE hEventSharedInitialized = CreateEvent(NULL, TRUE, FALSE, cpcSharedInfoInitializedEventName);
+    if (!hEventSharedInitialized)
+    {
+        return;
+    }
+
+    SetEvent(hEventSharedInitialized);
+    CloseHandle(hEventSharedInitialized);
+}
 
 
 //////////////////////////////////////////////////////////////////////

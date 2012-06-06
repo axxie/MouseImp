@@ -92,7 +92,10 @@ void CMImpCfgApp::StartCfg()
       CSLProcess HostProcess;
       if(false != HostProcess.Create(cpHostName))
       {
-        bRes = OpenSharedCfg();
+        if (WaitForSharedInfo())
+        {
+          bRes = OpenSharedCfg();
+        }
       };
     };
     //report error
