@@ -81,7 +81,7 @@ void CMImpCfgApp::StartCfg()
   if(false != bRes)
   {
     //try open cfg (if host started - ok)
-    if(false == OpenSharedCfg() || FALSE == ::IsWindow(pCfgMem->hMainHostWnd))
+    if(false == OpenSharedCfg() || FALSE == ::IsWindow(pCfgMem->common64.hMainHostWnd))
     {
       bRes = false;
       //build host app name

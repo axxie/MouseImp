@@ -507,8 +507,8 @@ inline void CApp::AHOpenCalcBenefit(__CAHWndInfo* const cpInfo)
     (WndRect.right - WndRect.left) * (WndRect.bottom - WndRect.top)
     - (ShrinkRect.right - ShrinkRect.left) * (ShrinkRect.bottom - ShrinkRect.top);
   //mem benefit
-  pCfgMem->ASOpenProd.llTotalTime += static_cast<LONGLONG>(dwcAppRunedTime);
-  pCfgMem->ASOpenProd.llWndSqTime += static_cast<LONGLONG>(dwcWndClosedTime * dwcWndSq / max(1, dwcScrSq));
+  pCfgMem->common64.ASOpenProd.llTotalTime += static_cast<LONGLONG>(dwcAppRunedTime);
+  pCfgMem->common64.ASOpenProd.llWndSqTime += static_cast<LONGLONG>(dwcWndClosedTime * dwcWndSq / max(1, dwcScrSq));
 };
 
 inline void CApp::AHCloseWnd(__CAHWndInfo* const cpInfo) const
@@ -554,7 +554,7 @@ inline void CApp::AHWndActivity(const HWND hcWnd)
   if(0 != cpInfo)
   {
     //if currntly delay activation enabled and wnd not already in "delay activate"
-    if(0 != pCfgMem->dwAutoOpenTimerTime)
+    if(0 != pCfgMem->common64.dwAutoOpenTimerTime)
     {
       if(false == cpInfo->bDelayActivateLook)
       {
@@ -712,11 +712,11 @@ inline void CApp::TrayClickTimerSensor(const ULONG ulcTimerTime)
 inline void CApp::TrayClickProcess()
 {
   bool bProcessTrayChng = true;
-  switch(pCfgMem->dwTrayIconClickMode)
+  switch(pCfgMem->common64.dwTrayIconClickMode)
   {
   case etiTrayIconClickSwitchDirectScroll:
     //flip direct scroll cfg
-    pCfgMem->bScrollDisabled = !pCfgMem->bScrollDisabled;
+    pCfgMem->common64.bScrollDisabled = !pCfgMem->common64.bScrollDisabled;
     break;
 
   case etiTrayIconClickSwitchAutoHide:
@@ -739,14 +739,14 @@ inline bool CApp::TrayIconSpecialState() const
 {
   bool bRes = true;
 
-  switch(pCfgMem->dwTrayIconClickMode)
+  switch(pCfgMem->common64.dwTrayIconClickMode)
   {
   case etiTrayIconClickSwitchDirectScroll:
-    bRes = false != pCfgMem->bScrollDisabled;
+    bRes = false != pCfgMem->common64.bScrollDisabled;
     break;
 
   case etiTrayIconClickSwitchAutoHide:
-    bRes = false != pCfgMem->bAHideEnabled;
+    bRes = false != pCfgMem->common64.bAHideEnabled;
     break;
 
   default:
@@ -758,9 +758,9 @@ inline bool CApp::TrayIconSpecialState() const
 
 inline void CApp::AHideFlipSwitch()
 {
-  pCfgMem->bAHideEnabled = !pCfgMem->bAHideEnabled;
-  ::PostMessage(pCfgMem->hMainHostWnd, emcNeedSaveCfg, 0, 0);
-  ::PostMessage(pCfgMem->hMainHostWnd, emcReReadWndPattList, 0, 0);
+  pCfgMem->common64.bAHideEnabled = !pCfgMem->common64.bAHideEnabled;
+  ::PostMessage(pCfgMem->common64.hMainHostWnd, emcNeedSaveCfg, 0, 0);
+  ::PostMessage(pCfgMem->common64.hMainHostWnd, emcReReadWndPattList, 0, 0);
 };
 
 #endif//__APP_H

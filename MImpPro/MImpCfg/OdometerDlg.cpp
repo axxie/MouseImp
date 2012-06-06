@@ -91,22 +91,22 @@ void COdometerDlg::DoDataExchange(CDataExchange* pDX)
   {
     const CMISharedInfo* const cpcInfo = theApp.pCfgMem;
     LONGLONG llSave;
-    FromMousePntsToMetric(cpcInfo->llMoveDistanceSumm, cpcInfo, llSave);
+    FromMousePntsToMetric(cpcInfo->common64.llMoveDistanceSumm, cpcInfo, llSave);
     SetDlgItemText(IDC_MOUSE_DIST_EDIT, BuildDistString(llSave));
     LONGLONG llTotal;
-    FromMousePntsToMetric(cpcInfo->llMoveDistanceSaveSumm, cpcInfo, llTotal);
+    FromMousePntsToMetric(cpcInfo->common64.llMoveDistanceSaveSumm, cpcInfo, llTotal);
     SetDlgItemText(IDC_MOUSE_SAVED_EDIT, BuildDistString(llTotal));
     //AShrink 
-    const LONGLONG llcASPerSent = (0 == cpcInfo->ASOpenProd.llTotalTime)
+    const LONGLONG llcASPerSent = (0 == cpcInfo->common64.ASOpenProd.llTotalTime)
       ? 0
-      : cpcInfo->ASOpenProd.llWndSqTime * 100 / cpcInfo->ASOpenProd.llTotalTime;
+      : cpcInfo->common64.ASOpenProd.llWndSqTime * 100 / cpcInfo->common64.ASOpenProd.llTotalTime;
     CString Str;
     Str.Format(IDS_STR_SH_ODM_MASK, static_cast<DWORD>(llcASPerSent));
     SetDlgItemText(IDC_ASHRINK_SAVED_EDIT, Str);
 
     ////time elapsed since last reset
     Str.Empty();
-    MakeElapsedTimeString(cpcInfo->llTotalRunTime, Str);
+    MakeElapsedTimeString(cpcInfo->common64.llTotalRunTime, Str);
     SetDlgItemText(IDC_ELAPSED_TIME_EDIT, Str);
   };
 }
@@ -134,11 +134,11 @@ BOOL COdometerDlg::OnSetActive()
 void COdometerDlg::OnReset() 
 {
   CMISharedInfo* const cpInfo = theApp.pCfgMem;
-  cpInfo->llMoveDistanceSaveSumm = 0;
-  cpInfo->llMoveDistanceSumm = 0;
-  cpInfo->ASOpenProd.llTotalTime = 0;
-  cpInfo->ASOpenProd.llWndSqTime = 0;
-  cpInfo->llTotalRunTime = 0;
+  cpInfo->common64.llMoveDistanceSaveSumm = 0;
+  cpInfo->common64.llMoveDistanceSumm = 0;
+  cpInfo->common64.ASOpenProd.llTotalTime = 0;
+  cpInfo->common64.ASOpenProd.llWndSqTime = 0;
+  cpInfo->common64.llTotalRunTime = 0;
   UpdateData(FALSE);
 }
 

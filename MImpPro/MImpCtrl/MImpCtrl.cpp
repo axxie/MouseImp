@@ -60,7 +60,7 @@ static inline bool HostRuned()
   if(false != Map.OpenExist(cpcSharedInfoName, sizeof(CMISharedInfo), CSLFileMap::eomRead))
   {
     const CMISharedInfo* const cpcCfgMem = reinterpret_cast<const CMISharedInfo*>(Map.GetPtr());
-    if(FALSE != ::IsWindow(cpcCfgMem->hMainHostWnd))
+    if(FALSE != ::IsWindow(cpcCfgMem->common64.hMainHostWnd))
     {
       bRes = true;
     };

@@ -61,17 +61,17 @@ void CGeneralPage::DoDataExchange(CDataExchange* pDX)
   CMISharedInfo* const cpInfo = theApp.pCfgMem;
 
   //tray anim
-  if(false == theApp.CheckRegBoolCheckBox(m_hWnd, IDC_TICON_ENABLE_CHECK, cpInfo->bEnableTrayIcon, TRUE))
+  if(false == theApp.CheckRegBoolCheckBox(m_hWnd, IDC_TICON_ENABLE_CHECK, cpInfo->common64.bEnableTrayIcon, TRUE))
   {
-    DDX_Check(pDX, IDC_TICON_ENABLE_CHECK, cpInfo->bEnableTrayIcon);
+    DDX_Check(pDX, IDC_TICON_ENABLE_CHECK, cpInfo->common64.bEnableTrayIcon);
   };
   //tray icon animation
-  DDX_Check(pDX, IDC_TICON_ENABLE_ANIM_CHECK, cpInfo->bEnableTrayIconAnim);
+  DDX_Check(pDX, IDC_TICON_ENABLE_ANIM_CHECK, cpInfo->common64.bEnableTrayIconAnim);
   SyncTIconCfg(m_hWnd);
   //splash icon
-  if(false == theApp.CheckRegBoolCheckBox(m_hWnd, IDC_SPLASH_SHOW_CHECK, cpInfo->bShowSplash, TRUE))
+  if(false == theApp.CheckRegBoolCheckBox(m_hWnd, IDC_SPLASH_SHOW_CHECK, cpInfo->common64.bShowSplash, TRUE))
   {
-    DDX_Check(pDX, IDC_SPLASH_SHOW_CHECK, cpInfo->bShowSplash);
+    DDX_Check(pDX, IDC_SPLASH_SHOW_CHECK, cpInfo->common64.bShowSplash);
   };
 
   //load on wndstart
@@ -114,13 +114,13 @@ void CGeneralPage::DoDataExchange(CDataExchange* pDX)
   {
     //save
     using slw::SLWComboControlGetSel;
-    SLWComboControlGetSel(m_hWnd, IDC_TRAY_CLICK_COMBO, theApp.pCfgMem->dwTrayIconClickMode);
+    SLWComboControlGetSel(m_hWnd, IDC_TRAY_CLICK_COMBO, theApp.pCfgMem->common64.dwTrayIconClickMode);
   }
   else
   {
     //load
     using slw::SLWComboControlInit;
-    SLWComboControlInit(AfxGetResourceHandle(), m_hWnd, IDC_TRAY_CLICK_COMBO, theApp.pCfgMem->dwTrayIconClickMode, cpcTrayIconComboInitData, COUNTOF(cpcTrayIconComboInitData));
+    SLWComboControlInit(AfxGetResourceHandle(), m_hWnd, IDC_TRAY_CLICK_COMBO, theApp.pCfgMem->common64.dwTrayIconClickMode, cpcTrayIconComboInitData, COUNTOF(cpcTrayIconComboInitData));
   };
 }
 

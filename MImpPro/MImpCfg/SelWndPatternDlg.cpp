@@ -319,9 +319,9 @@ void CSelWndPatternDlg::SyncDataForFindWnd()
     dwLastLookingProcess = dwWndProcess;
     //zero current
     CMISharedInfo& rInfo = *(theApp.pCfgMem);
-    *(rInfo.cpGetAppNameResultBuff) = '\0';
-    ::SendMessage(rInfo.hMainHostWnd, emcGetAppNameById, 0, dwWndProcess);
-    cpCtrlInfo->AppName = rInfo.cpGetAppNameResultBuff;
+    *(rInfo.common64.cpGetAppNameResultBuff) = '\0';
+    ::SendMessage(rInfo.common64.hMainHostWnd, emcGetAppNameById, 0, dwWndProcess);
+    cpCtrlInfo->AppName = rInfo.common64.cpGetAppNameResultBuff;
   };
   //title
   const LONG lcTitleLen = ::GetWindowTextLength(hCurrFindWnd) + 1;

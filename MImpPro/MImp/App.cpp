@@ -303,7 +303,7 @@ void CApp::InstallSubClassingSendDataToHost()
 
         //try open host process
         DWORD dwHostProc = 0;
-        ::GetWindowThreadProcessId(pCfgMem->hMainHostWnd, &dwHostProc);
+        ::GetWindowThreadProcessId(pCfgMem->common64.hMainHostWnd, &dwHostProc);
         HANDLE hHProc = ::OpenProcess(PROCESS_DUP_HANDLE, FALSE, dwHostProc);
         if(0 != hHProc)
         {
@@ -322,7 +322,7 @@ void CApp::InstallSubClassingSendDataToHost()
             );
           if(FALSE != bcDupOk)
           {
-            ::PostMessage(pCfgMem->hMainHostWnd, emcNewAppStarted, ::GetCurrentProcessId(), reinterpret_cast<LPARAM>(hDestMap));
+            ::PostMessage(pCfgMem->common64.hMainHostWnd, emcNewAppStarted, ::GetCurrentProcessId(), reinterpret_cast<LPARAM>(hDestMap));
           };
           //close host process handle
           ::CloseHandle(hHProc);
@@ -335,7 +335,7 @@ void CApp::InstallSubClassingSendDataToHost()
   else
   {
     //simple pass process id to host app
-    ::PostMessage(pCfgMem->hMainHostWnd, emcNewAppStarted, ::GetCurrentProcessId(), 0);
+    ::PostMessage(pCfgMem->common64.hMainHostWnd, emcNewAppStarted, ::GetCurrentProcessId(), 0);
   };
 };
 
@@ -405,9 +405,9 @@ void CApp::Finit()
   //delete event
 
   //remove from host's process list
-  if(0 != pCfgMem && FALSE != ::IsWindow(pCfgMem->hMainHostWnd))
+  if(0 != pCfgMem && FALSE != ::IsWindow(pCfgMem->common64.hMainHostWnd))
   {
-    ::PostMessage(pCfgMem->hMainHostWnd, emcAppExited, 0, ::GetCurrentProcessId());
+    ::PostMessage(pCfgMem->common64.hMainHostWnd, emcAppExited, 0, ::GetCurrentProcessId());
   };
 
   //clear hook func dispatch table
@@ -488,7 +488,7 @@ LRESULT CApp::ProcessGlbMsg(const HWND hcWnd, WPARAM wParam, LPARAM lParam, CSub
     break;
 
   case egmGetAppName:
-    ::GetModuleFileName(0, pCfgMem->cpGetAppNameResultBuff, COUNTOF(pCfgMem->cpGetAppNameResultBuff));
+    ::GetModuleFileName(0, pCfgMem->common64.cpGetAppNameResultBuff, COUNTOF(pCfgMem->common64.cpGetAppNameResultBuff));
     break;
 
   default:
@@ -1431,7 +1431,7 @@ bool CApp::MouseBtnDown(const UINT uicCurrKeyFlag, const MOUSEHOOKSTRUCT* const 
   if(false != ScrollEnabled(pCfgMem) && 0 != hcPntWnd)
   {
     //look on "IsDisableSScroll key not pressed"
-    if(false == CheckRealKey(pCfgMem->uiDirectScrollTmpDisableKey))
+    if(false == CheckRealKey(pCfgMem->common64.uiDirectScrollTmpDisableKey))
     {
       //now drill up in wnd hierarchy and try find wnd process
       uiNewHookMode = DrillChildUp(hcPntWnd, uicCurrKeyFlag, cpMsg);
@@ -1662,7 +1662,7 @@ bool CApp::MouseMoveAll(const UINT uicCurrKeyFlag, const MOUSEHOOKSTRUCT* const 
     if(DragPresent(pCfgMem->StartMsg, cpMsg->pt))
     {
       //move out of not drag rect - start control of scroll bar
-      if(FALSE != pCfgMem->bBDScrollingEnabled)
+      if(FALSE != pCfgMem->common64.bBDScrollingEnabled)
       {
         SBScrollStartBD(cpMsg);
         //switch to ehmBDScrollProcess mode
@@ -1686,7 +1686,7 @@ bool CApp::MouseMoveAll(const UINT uicCurrKeyFlag, const MOUSEHOOKSTRUCT* const 
       if
         (
         false == pCfgMem->ScrollIEProcessInfo.bLockedScrollDirection
-        && FALSE != pCfgMem->bBDScrollingEnabled 
+        && FALSE != pCfgMem->common64.bBDScrollingEnabled 
         )
       {
         bRes = IEScrollStartBD(cpMsg);
@@ -1752,14 +1752,14 @@ bool CApp::PagerScrollMove(const MOUSEHOOKSTRUCT* const cpMsg)
   //move direction
   POINT MouseShift = cpMsg->pt;
   POINT LastMousePnt = rInfo.PntLastScroll;
-  const bool bcReduct = CheckRealKey(pCfgMem->uiScollReductionKey);
+  const bool bcReduct = CheckRealKey(pCfgMem->common64.uiScollReductionKey);
   SBScrollCalcShift(LastMousePnt, MouseShift, rInfo.LastScrollMagnMiss, bcReduct, egcMagnScrollReduction);
 
   //move size
   LONG lMove = (false != rInfo.bHorProcess)
     ? MouseShift.x
     : MouseShift.y;
-  if(FALSE != pCfgMem->bScrollInv)
+  if(FALSE != pCfgMem->common64.bScrollInv)
   {
     lMove = -lMove;
   };

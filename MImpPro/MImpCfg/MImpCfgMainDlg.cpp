@@ -266,7 +266,7 @@ int CMImpCfgMainDlg::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;
 
   //put
-  theApp.pCfgMem->hCfgAppWnd = m_hWnd;
+  theApp.pCfgMem->common64.hCfgAppWnd = m_hWnd;
 	
 	return 0;
 }
@@ -288,7 +288,7 @@ void CMImpCfgMainDlg::OnDestroy()
   };
 
   //clear
-  theApp.pCfgMem->hCfgAppWnd = 0;	
+  theApp.pCfgMem->common64.hCfgAppWnd = 0;	
 
   //child's
   {
@@ -445,7 +445,7 @@ void CMImpCfgMainDlg::OnApply()
     };
   };
   //save
-  ::SendMessage(theApp.pCfgMem->hMainHostWnd, emcNeedSaveCfg, 0, 0);
+  ::SendMessage(theApp.pCfgMem->common64.hMainHostWnd, emcNeedSaveCfg, 0, 0);
 }
 
 void CMImpCfgMainDlg::OnTimer(UINT nIDEvent) 

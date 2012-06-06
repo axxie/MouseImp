@@ -303,18 +303,90 @@ struct CScrollProcessInfo
   CScrollDirInfo VInfo;
 };
 
+
+struct CMICommonPartWith64bit
+{
+    //handle of "main host wnd"
+    HWND hMainHostWnd;
+#ifndef _WIN64
+    ULONG32 Reserved; // high-order bits of 64-bits window handle, not used
+#endif
+
+    //handle of main window of cfg application (used for start only one instance)
+    HWND hCfgAppWnd;
+#ifndef _WIN64
+    ULONG32 Reserved2; // high-order bits of 64-bits window handle, not used
+#endif
+
+    //tray icon mode (one of TrayIconClickEnum)
+    DWORD dwTrayIconClickMode;
+
+    //enable tray icon
+    BOOL bEnableTrayIcon;
+    //enable tray icon animation
+    BOOL bEnableTrayIconAnim;
+    //need show splash at start
+    BOOL bShowSplash;
+
+    //move distance summ (by cursor)
+    LONGLONG llMoveDistanceSumm;
+    //move distance "save" summ
+    LONGLONG llMoveDistanceSaveSumm;
+
+    //productivity for AutoShrink
+    struct
+    {
+        //time count for "total work time" - sec
+        LONGLONG llTotalTime;
+        //summ of ("wnd open time" multiply ScrSq/WndSq)
+        LONGLONG llWndSqTime;
+    } ASOpenProd;
+
+    ////timer for total MouseImp runnign time 
+    //incremented in host and used for show in "productivity" page
+    LONGLONG llTotalRunTime;
+
+    //auto hide enabled
+    BOOL bAHideEnabled;
+    //auto hide "mouse inactivity" timer timer
+    DWORD dwAutoHideTimerTime;
+    //delay time before open wnd (0 if delay disabled)
+    DWORD dwAutoOpenTimerTime;
+
+    //bidirection scrolling enabled
+    BOOL bBDScrollingEnabled;
+    //not use cursor visualisation (if FALSE)
+    BOOL bCursorVisualise;
+    //control type (from ScrollControlEnum)
+    DWORD dwControlType;
+    BOOL bScrollDisabled;
+    //"inverse" scrilling
+    BOOL bScrollInv;
+    //reduction for scroll (convert from WM_MOUSEMOVE to WM_MOUSEWHELL)
+    //stored as magnifed to egcIEScrollConvMoveMagn
+    DWORD dwIESCrollConvMove;
+    //scrolling normal reduction
+    DWORD dwScrollNormReduction;
+    //scroll shift reduction
+    LONG lScrollReduction;
+    //key for temporary disable DirectScroll
+    UINT uiDirectScrollTmpDisableKey;
+    //scroll reduction virtual key
+    UINT uiScollReductionKey;
+    //mouse key's available for hooking
+    UINT uiValidMouseKeys;
+
+    //buffer for get app name message call
+    CHAR cpGetAppNameResultBuff[MAX_PATH];
+
+};
+
 //global shared struct
 //used for ctore status/cfg and inited by zero's (stored cfg from registry)
 
 struct CMISharedInfo
 {
-  //handle of "main host wnd"
-  HWND hMainHostWnd;
-  //handle of main window of cfg application (used for start only one instance)
-  HWND hCfgAppWnd;
-
-  //tray icon mode (one of TrayIconClickEnum)
-  DWORD dwTrayIconClickMode;
+  CMICommonPartWith64bit common64;
 
   //is OS require Win2000 pathc???
   //inited on host start
@@ -346,29 +418,14 @@ struct CMISharedInfo
   //this mask or'ed while some present in uiCurrWorkKeys
   //this mask cleared (and'ed) while key up'ed and uiCurrWorkKeys is zero
   UINT uiCurrWorkKeysMask;
-  //mouse key's available for hooking
-  UINT uiValidMouseKeys;
   //hook mode (HookModeEnum)
   LONG lHookMode;
-  //scroll shift reduction
-  LONG lScrollReduction;
-  //scroll reduction virtual key
-  UINT uiScollReductionKey;
-  //"inverse" scrilling
-  BOOL bScrollInv;
-  //scrolling normal reduction
-  DWORD dwScrollNormReduction;
   //from what start of control present
   POINT StartMsg;
   //if need set cursor
   BOOL bCursorNeedSet;
   //id of cursor, seted (from LoadCursor)
   UINT uiCursorName;
-  //not use cursor visualisation (if FALSE)
-  BOOL bCursorVisualise;
-  //control type (from ScrollControlEnum)
-  DWORD dwControlType;
-  BOOL bScrollDisabled;
 
   //control states (from MouseProcessStateEnum)
   ULONG ulControlState;
@@ -378,30 +435,17 @@ struct CMISharedInfo
 
   //moving distance section
   //conversion from "point distance" to "metric distance" look in "odometer" page in "cfg application"
-  //move distance summ (by cursor)
-  LONGLONG llMoveDistanceSumm;
-  //move distance "save" summ
-  LONGLONG llMoveDistanceSaveSumm;
   //lasr looking pnt for calc llMoveDistanceSumm
   POINT MoveDistanseLastLookPnt;
 
   //Autohide data section
-  //auto hide enabled
-  BOOL bAHideEnabled;
   //last looking wnd
   HWND hAHideLastLookingWnd;
   //last "drilling down" window's
   HWND hAHideLastActiveSendWnd;
-  //auto hide "mouse inactivity" timer timer
-  DWORD dwAutoHideTimerTime;
-  //delay time before open wnd (0 if delay disabled)
-  DWORD dwAutoOpenTimerTime;
 
   //////////////////////////////////////////////////////////////////////
   //section for get app name from hook module
-
-  //buffer for get app name message call
-  CHAR cpGetAppNameResultBuff[MAX_PATH];
 
   union
   {
@@ -413,17 +457,6 @@ struct CMISharedInfo
     CScrollPagerCtrlInfo ScrollPagerCtrlInfo;
   };
 
-  //key for temporary disable DirectScroll
-  UINT uiDirectScrollTmpDisableKey;
-
-  //productivity for AutoShrink
-  struct
-  {
-    //time count for "total work time" - sec
-    LONGLONG llTotalTime;
-    //summ of ("wnd open time" multiply ScrSq/WndSq)
-    LONGLONG llWndSqTime;
-  } ASOpenProd;
 
   //whis wnd resive notification msg's from scroll
   //used for additional process in subclassed wnd's
@@ -438,9 +471,6 @@ struct CMISharedInfo
   ////prm's for scroll in IE
   //min moving size - if movine more then his size conversion to WM_MOUSEWHELL performed
   DWORD dwIEScrollMinMove;
-  //rediction for scroll (convert from WM_MOUSEMOVE to WM_MOUSEWHELL)
-  //stored as magnifed to egcIEScrollConvMoveMagn
-  DWORD dwIESCrollConvMove;
 
   //for mem cursor while start scroll
   HCURSOR hMemWndCursor;
@@ -468,23 +498,11 @@ struct CMISharedInfo
   BOOL bCryptFirstLayerValid;
   BOOL bCryptPirated;
 
-  //enable tray icon
-  BOOL bEnableTrayIcon;
-  //enable tray icon animation
-  BOOL bEnableTrayIconAnim;
 
-  //bidirection scrolling enabled
-  BOOL bBDScrollingEnabled;
-
-  //need show splash at start
-  BOOL bShowSplash;
 
   //size of screen - used for call AHide benefit and for call scroll bar "AddReduct" valud
   POINT ScrSize;
 
-  ////timer for total MouseImp runnign time 
-  //incremented in host and used for show in "productivity" page
-  LONGLONG llTotalRunTime;
 };
 
 //shared info not cleared until init host
@@ -497,11 +515,7 @@ struct CSharedNotClearedInfo
 };
 
 //name of shared info view (for open from hook dll)
-#ifdef _WIN64
-LPCSTR const cpcSharedInfoName = "MImpProSharedInfo64";
-#else
 LPCSTR const cpcSharedInfoName = "MImpProSharedInfo";
-#endif
 
 //name of shared info initialized event
 LPCSTR const cpcSharedInfoInitializedEventName = "MImpProSharedInfoInitializedEvent";
@@ -1104,14 +1118,14 @@ inline void ActivateWndToUser(const HWND hcWnd)
 inline bool TryShowCfgApp(CMISharedInfo* const cpCfgMem)
 {
   bool bRes = false;
-  if(FALSE != ::IsWindow(cpCfgMem->hCfgAppWnd))
+  if(FALSE != ::IsWindow(cpCfgMem->common64.hCfgAppWnd))
   {
     DWORD processId;
-    GetWindowThreadProcessId(cpCfgMem->hCfgAppWnd, &processId);
+    GetWindowThreadProcessId(cpCfgMem->common64.hCfgAppWnd, &processId);
     AllowSetForegroundWindow(processId);
 
     bRes = true;
-    ::PostMessage(cpCfgMem->hCfgAppWnd, ecmShowApp, 0, 0);
+    ::PostMessage(cpCfgMem->common64.hCfgAppWnd, ecmShowApp, 0, 0);
   };
   return bRes;
 };
@@ -1135,17 +1149,17 @@ inline BYTE* GetCryptRelocSectAddr(const CMISharedInfo* const cpcCfgMem, BYTE* c
 //try exit from host app (with wait)
 inline void TryExitFromHostApp(const CMISharedInfo* const cpcCfgMem)
 {
-  if(FALSE != ::IsWindow(cpcCfgMem->hMainHostWnd))
+  if(FALSE != ::IsWindow(cpcCfgMem->common64.hMainHostWnd))
   {
     //try open process
     HANDLE hProc = 0;
     DWORD dwWndProc = 0;
-    if(0 != ::GetWindowThreadProcessId(cpcCfgMem->hMainHostWnd, &dwWndProc))
+    if(0 != ::GetWindowThreadProcessId(cpcCfgMem->common64.hMainHostWnd, &dwWndProc))
     {
       hProc = ::OpenProcess(SYNCHRONIZE, FALSE, dwWndProc);
     };
     //post close to wnd
-    ::PostMessage(cpcCfgMem->hMainHostWnd, WM_CLOSE, 0, 0);
+    ::PostMessage(cpcCfgMem->common64.hMainHostWnd, WM_CLOSE, 0, 0);
     //try wait for exit from host process
     if(0 != hProc)
     {
@@ -1164,11 +1178,11 @@ inline CSharedNotClearedInfo* GetNotClearInfo(CMISharedInfo* const cpInfo)
 ////prm's for scroll control
 inline bool ScrollEnabled(CMISharedInfo* const cpInfo)
 {
-  return FALSE != cpInfo->bScrollDisabled;
+  return FALSE != cpInfo->common64.bScrollDisabled;
 };
 inline bool ScrollToggleMode(CMISharedInfo* const cpInfo)
 {
-  return escToggleWithEat == cpInfo->dwControlType;
+  return escToggleWithEat == cpInfo->common64.dwControlType;
 };
 inline bool ScrollToggleWithEat(CMISharedInfo* const cpInfo)
 {

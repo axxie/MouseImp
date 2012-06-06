@@ -235,29 +235,29 @@ void CApp::LoadCfg(bool& rbFirstStart)
         };
       };
       //val's
-      Reg.GetVal(cpcCfgScrollEnabled, pCfgMem->bScrollDisabled, TRUE);
-      Reg.GetVal(cpcCfgControlType, pCfgMem->dwControlType, escStandard);
-      Reg.GetVal(cpcCfgValidMouseKey, pCfgMem->uiValidMouseKeys, MK_RBUTTON);
-      Reg.GetVal(cpcCfgScrollReduction, pCfgMem->lScrollReduction, egcDefScrollReduction);
-      Reg.GetVal(cpcCfgScollReductionKey, pCfgMem->uiScollReductionKey, egcDecScollReductionKey);
-      Reg.GetVal(cpcCfgScrollInv, pCfgMem->bScrollInv, FALSE);
-      Reg.GetVal(cpcCfgMoveDistanceSumm, pCfgMem->llMoveDistanceSumm, 0);
-      Reg.GetVal(cpcCfgMoveDistanceSaveSumm, pCfgMem->llMoveDistanceSaveSumm, 0);
-      Reg.GetVal(cpcCfgAHideEnabled, pCfgMem->bAHideEnabled, TRUE);
-      Reg.GetVal(cpcCfgwAutoHideTimerTime, pCfgMem->dwAutoHideTimerTime, egcDefAutoHideTimerTime);
-      Reg.GetVal(cpcCfgwAutoOpenTimerTime, pCfgMem->dwAutoOpenTimerTime, 0);
-      Reg.GetVal(cpcCfgCursorVisualise, pCfgMem->bCursorVisualise, TRUE);
-      Reg.GetVal(cpcCfgDSTempDis, pCfgMem->uiDirectScrollTmpDisableKey, VK_CONTROL);
+      Reg.GetVal(cpcCfgScrollEnabled, pCfgMem->common64.bScrollDisabled, TRUE);
+      Reg.GetVal(cpcCfgControlType, pCfgMem->common64.dwControlType, escStandard);
+      Reg.GetVal(cpcCfgValidMouseKey, pCfgMem->common64.uiValidMouseKeys, MK_RBUTTON);
+      Reg.GetVal(cpcCfgScrollReduction, pCfgMem->common64.lScrollReduction, egcDefScrollReduction);
+      Reg.GetVal(cpcCfgScollReductionKey, pCfgMem->common64.uiScollReductionKey, egcDecScollReductionKey);
+      Reg.GetVal(cpcCfgScrollInv, pCfgMem->common64.bScrollInv, FALSE);
+      Reg.GetVal(cpcCfgMoveDistanceSumm, pCfgMem->common64.llMoveDistanceSumm, 0);
+      Reg.GetVal(cpcCfgMoveDistanceSaveSumm, pCfgMem->common64.llMoveDistanceSaveSumm, 0);
+      Reg.GetVal(cpcCfgAHideEnabled, pCfgMem->common64.bAHideEnabled, TRUE);
+      Reg.GetVal(cpcCfgwAutoHideTimerTime, pCfgMem->common64.dwAutoHideTimerTime, egcDefAutoHideTimerTime);
+      Reg.GetVal(cpcCfgwAutoOpenTimerTime, pCfgMem->common64.dwAutoOpenTimerTime, 0);
+      Reg.GetVal(cpcCfgCursorVisualise, pCfgMem->common64.bCursorVisualise, TRUE);
+      Reg.GetVal(cpcCfgDSTempDis, pCfgMem->common64.uiDirectScrollTmpDisableKey, VK_CONTROL);
       Reg.GetVal(cpcCfgIEScrMinMove, pCfgMem->dwIEScrollMinMove, egcIEScrollMinMoveDef);
-      Reg.GetVal(cpcCfgIEScrConv, pCfgMem->dwIESCrollConvMove, egcIEScrollConvMoveDef);
-      Reg.GetVal(cpcCfgTrayIcon, pCfgMem->bEnableTrayIcon, TRUE);
-      Reg.GetVal(cpcCfgTrayIconAnim, pCfgMem->bEnableTrayIconAnim, TRUE);
-      Reg.GetVal(cpcCfgSplashShow, pCfgMem->bShowSplash, TRUE);
-      Reg.GetVal(cpcCfgBDScrolling, pCfgMem->bBDScrollingEnabled, FALSE);
-      Reg.GetVal(cpcCfgScrollNormRed, pCfgMem->dwScrollNormReduction, egcMagnScrollReduction);
-      Reg.GetVal(cpcCfgTotalTime, pCfgMem->llTotalRunTime, 0);
+      Reg.GetVal(cpcCfgIEScrConv, pCfgMem->common64.dwIESCrollConvMove, egcIEScrollConvMoveDef);
+      Reg.GetVal(cpcCfgTrayIcon, pCfgMem->common64.bEnableTrayIcon, TRUE);
+      Reg.GetVal(cpcCfgTrayIconAnim, pCfgMem->common64.bEnableTrayIconAnim, TRUE);
+      Reg.GetVal(cpcCfgSplashShow, pCfgMem->common64.bShowSplash, TRUE);
+      Reg.GetVal(cpcCfgBDScrolling, pCfgMem->common64.bBDScrollingEnabled, FALSE);
+      Reg.GetVal(cpcCfgScrollNormRed, pCfgMem->common64.dwScrollNormReduction, egcMagnScrollReduction);
+      Reg.GetVal(cpcCfgTotalTime, pCfgMem->common64.llTotalRunTime, 0);
       //AS productivity
-      Reg.ReadBuff(cpcCfgASProd, reinterpret_cast<BYTE*>(&(pCfgMem->ASOpenProd)), sizeof(pCfgMem->ASOpenProd));
+      Reg.ReadBuff(cpcCfgASProd, reinterpret_cast<BYTE*>(&(pCfgMem->common64.ASOpenProd)), sizeof(pCfgMem->common64.ASOpenProd));
     };
   };
 };
@@ -269,29 +269,29 @@ void CApp::SaveCfg()
     CSLCfgReg Reg;
     Reg.Open(cpcCfgKeyName, true);
     //val's
-    Reg.PutVal(cpcCfgScrollEnabled, pCfgMem->bScrollDisabled);
-    Reg.PutVal(cpcCfgControlType, pCfgMem->dwControlType);
-    Reg.PutVal(cpcCfgValidMouseKey, pCfgMem->uiValidMouseKeys);
-    Reg.PutVal(cpcCfgScrollReduction, pCfgMem->lScrollReduction);
-    Reg.PutVal(cpcCfgScollReductionKey, pCfgMem->uiScollReductionKey);
-    Reg.PutVal(cpcCfgScrollInv, pCfgMem->bScrollInv);
-    Reg.PutVal(cpcCfgMoveDistanceSumm, pCfgMem->llMoveDistanceSumm),
-    Reg.PutVal(cpcCfgMoveDistanceSaveSumm, pCfgMem->llMoveDistanceSaveSumm),
-    Reg.PutVal(cpcCfgAHideEnabled, pCfgMem->bAHideEnabled);
-    Reg.PutVal(cpcCfgwAutoHideTimerTime, pCfgMem->dwAutoHideTimerTime);
-    Reg.PutVal(cpcCfgwAutoOpenTimerTime, pCfgMem->dwAutoOpenTimerTime);
-    Reg.PutVal(cpcCfgCursorVisualise, pCfgMem->bCursorVisualise);
-    Reg.PutVal(cpcCfgDSTempDis, pCfgMem->uiDirectScrollTmpDisableKey);
+    Reg.PutVal(cpcCfgScrollEnabled, pCfgMem->common64.bScrollDisabled);
+    Reg.PutVal(cpcCfgControlType, pCfgMem->common64.dwControlType);
+    Reg.PutVal(cpcCfgValidMouseKey, pCfgMem->common64.uiValidMouseKeys);
+    Reg.PutVal(cpcCfgScrollReduction, pCfgMem->common64.lScrollReduction);
+    Reg.PutVal(cpcCfgScollReductionKey, pCfgMem->common64.uiScollReductionKey);
+    Reg.PutVal(cpcCfgScrollInv, pCfgMem->common64.bScrollInv);
+    Reg.PutVal(cpcCfgMoveDistanceSumm, pCfgMem->common64.llMoveDistanceSumm),
+    Reg.PutVal(cpcCfgMoveDistanceSaveSumm, pCfgMem->common64.llMoveDistanceSaveSumm),
+    Reg.PutVal(cpcCfgAHideEnabled, pCfgMem->common64.bAHideEnabled);
+    Reg.PutVal(cpcCfgwAutoHideTimerTime, pCfgMem->common64.dwAutoHideTimerTime);
+    Reg.PutVal(cpcCfgwAutoOpenTimerTime, pCfgMem->common64.dwAutoOpenTimerTime);
+    Reg.PutVal(cpcCfgCursorVisualise, pCfgMem->common64.bCursorVisualise);
+    Reg.PutVal(cpcCfgDSTempDis, pCfgMem->common64.uiDirectScrollTmpDisableKey);
     Reg.PutVal(cpcCfgIEScrMinMove, pCfgMem->dwIEScrollMinMove);
-    Reg.PutVal(cpcCfgIEScrConv, pCfgMem->dwIESCrollConvMove);
-    Reg.PutVal(cpcCfgTrayIcon, pCfgMem->bEnableTrayIcon);
-    Reg.PutVal(cpcCfgTrayIconAnim, pCfgMem->bEnableTrayIconAnim);
-    Reg.PutVal(cpcCfgSplashShow, pCfgMem->bShowSplash);
-    Reg.PutVal(cpcCfgBDScrolling, pCfgMem->bBDScrollingEnabled);
-    Reg.PutVal(cpcCfgScrollNormRed, pCfgMem->dwScrollNormReduction);
-    Reg.PutVal(cpcCfgTotalTime, pCfgMem->llTotalRunTime);
+    Reg.PutVal(cpcCfgIEScrConv, pCfgMem->common64.dwIESCrollConvMove);
+    Reg.PutVal(cpcCfgTrayIcon, pCfgMem->common64.bEnableTrayIcon);
+    Reg.PutVal(cpcCfgTrayIconAnim, pCfgMem->common64.bEnableTrayIconAnim);
+    Reg.PutVal(cpcCfgSplashShow, pCfgMem->common64.bShowSplash);
+    Reg.PutVal(cpcCfgBDScrolling, pCfgMem->common64.bBDScrollingEnabled);
+    Reg.PutVal(cpcCfgScrollNormRed, pCfgMem->common64.dwScrollNormReduction);
+    Reg.PutVal(cpcCfgTotalTime, pCfgMem->common64.llTotalRunTime);
     //AS productivity
-    Reg.WriteBuff(cpcCfgASProd, reinterpret_cast<const BYTE*>(&(pCfgMem->ASOpenProd)), sizeof(pCfgMem->ASOpenProd));
+    Reg.WriteBuff(cpcCfgASProd, reinterpret_cast<const BYTE*>(&(pCfgMem->common64.ASOpenProd)), sizeof(pCfgMem->common64.ASOpenProd));
   };
 };
 
@@ -387,7 +387,7 @@ bool CApp::Init(bool& rNewInited)
     //if "open exist file mapping" - look on "HostWnd" is valid - if ok - exit
     if(false != bRes && false != bcOpenExist)
     {
-      rNewInited = FALSE == ::IsWindow(pCfgMem->hMainHostWnd);
+      rNewInited = FALSE == ::IsWindow(pCfgMem->common64.hMainHostWnd);
       bRes = false != rNewInited;
     };
     if(false != bRes)
@@ -434,7 +434,7 @@ bool CApp::Init(bool& rNewInited)
   //splash
   using slw::CSWSplash;
   CSWSplash Splash;
-  if(false != bRes && (FALSE != pCfgMem->bShowSplash || FALSE == pCfgMem->bCryptFirstLayerValid))
+  if(false != bRes && (FALSE != pCfgMem->common64.bShowSplash || FALSE == pCfgMem->bCryptFirstLayerValid))
   {
     SLCHECK(FALSE != Splash.Create(IDB_SPLASH_BMP, hInst, ULONG_MAX));
   };
@@ -524,7 +524,7 @@ bool CApp::Init(bool& rNewInited)
       {
         this->hcWnd = hcWnd;
         //mem main wnd in shared cfg
-        pCfgMem->hMainHostWnd = hcWnd;
+        pCfgMem->common64.hMainHostWnd = hcWnd;
         bRes = true;
       };
     };
@@ -547,7 +547,7 @@ bool CApp::Init(bool& rNewInited)
   {
     //ini tray icon data
     TrayIconData.cbSize = sizeof(TrayIconData);
-    TrayIconData.hWnd = pCfgMem->hMainHostWnd;
+    TrayIconData.hWnd = pCfgMem->common64.hMainHostWnd;
     TrayIconData.uID = 0;
     TrayIconData.uCallbackMessage = emcToHostTrayIconNotifyMsg;
     TrayIconData.hIcon = 0;
@@ -635,7 +635,7 @@ bool CApp::Init(bool& rNewInited)
 
       BOOL bNotepadRes = CreateProcess(
           NULL,
-          "C:\\Windows\\SysWOW64\\notepad.exe",
+          "notepad.exe",
           //"C:\\Program Files\\Internet Explorer\\IEXPLORE.EXE",
           NULL,
           NULL,
@@ -655,7 +655,7 @@ bool CApp::Init(bool& rNewInited)
       if(0 != pCfgMem->hMouseHook && 0 != pCfgMem->hCBTHook)
       {
         bRes = true;
-        pCfgMem->hHookPresentFlag = pCfgMem->hMainHostWnd;
+        pCfgMem->hHookPresentFlag = pCfgMem->common64.hMainHostWnd;
         //increment hook install count
         ::InterlockedIncrement(&(GetNotClearInfo(pCfgMem)->lHookInstallCount));
       };
@@ -671,7 +671,7 @@ bool CApp::Init(bool& rNewInited)
   //post message for scan
   if(false != bRes)
   {
-    ::PostMessage(pCfgMem->hMainHostWnd, emcReReadWndPattList, 0, FALSE);
+    ::PostMessage(pCfgMem->common64.hMainHostWnd, emcReReadWndPattList, 0, FALSE);
   };
 
   //splash off
@@ -783,7 +783,7 @@ void CApp::Finit()
   //save "close" time for app run
   if(0 != pCfgMem)
   {
-    pCfgMem->ASOpenProd.llTotalTime += static_cast<LONGLONG>(CalcTimeInSec(dwLastLookAppTime));
+    pCfgMem->common64.ASOpenProd.llTotalTime += static_cast<LONGLONG>(CalcTimeInSec(dwLastLookAppTime));
   };
 
   //tray icon's
@@ -887,10 +887,10 @@ void CApp::TrayIconMessageFunction(LPARAM lParam)
       //default
       SubMenu.MarkDefault(ID_TRAY_CFG);
       //check enable/disable cfg
-      ::CheckMenuItem(SubMenu, ID_TRAY_ENABLE_AUTOSHRINK, MF_BYCOMMAND | ((FALSE != pCfgMem->bAHideEnabled) ? MF_CHECKED : MF_UNCHECKED));
-      ::CheckMenuItem(SubMenu, ID_TRAY_ENABLE_BIDIRECTION, MF_BYCOMMAND | ((FALSE != pCfgMem->bBDScrollingEnabled) ? MF_CHECKED : MF_UNCHECKED));
-      ::CheckMenuItem(SubMenu, ID_TRAY_ENABLE_INVERCE, MF_BYCOMMAND | ((FALSE != pCfgMem->bScrollInv) ? MF_CHECKED : MF_UNCHECKED));
-      ::CheckMenuItem(SubMenu, ID_TRAY_ENABLE_DIRECTSCROLL, MF_BYCOMMAND | ((FALSE != pCfgMem->bScrollDisabled) ? MF_CHECKED : MF_UNCHECKED));
+      ::CheckMenuItem(SubMenu, ID_TRAY_ENABLE_AUTOSHRINK, MF_BYCOMMAND | ((FALSE != pCfgMem->common64.bAHideEnabled) ? MF_CHECKED : MF_UNCHECKED));
+      ::CheckMenuItem(SubMenu, ID_TRAY_ENABLE_BIDIRECTION, MF_BYCOMMAND | ((FALSE != pCfgMem->common64.bBDScrollingEnabled) ? MF_CHECKED : MF_UNCHECKED));
+      ::CheckMenuItem(SubMenu, ID_TRAY_ENABLE_INVERCE, MF_BYCOMMAND | ((FALSE != pCfgMem->common64.bScrollInv) ? MF_CHECKED : MF_UNCHECKED));
+      ::CheckMenuItem(SubMenu, ID_TRAY_ENABLE_DIRECTSCROLL, MF_BYCOMMAND | ((FALSE != pCfgMem->common64.bScrollDisabled) ? MF_CHECKED : MF_UNCHECKED));
 
       //control type
       ::CheckMenuRadioItem
@@ -898,7 +898,7 @@ void CApp::TrayIconMessageFunction(LPARAM lParam)
         SubMenu,
         ID_TRAY_ENABLE_CTYPE_STANDARD,
         ID_TRAY_ENABLE_CTYPE_MIX,
-        (COUNTOF(cpcScrollControlCommands) > pCfgMem->dwControlType) ? cpcScrollControlCommands[pCfgMem->dwControlType] : ID_TRAY_ENABLE_CTYPE_STANDARD,
+        (COUNTOF(cpcScrollControlCommands) > pCfgMem->common64.dwControlType) ? cpcScrollControlCommands[pCfgMem->common64.dwControlType] : ID_TRAY_ENABLE_CTYPE_STANDARD,
         MF_BYCOMMAND
         );
       //registered option's
@@ -908,33 +908,33 @@ void CApp::TrayIconMessageFunction(LPARAM lParam)
       };
       //switch result
       bool bSaveCfg = true;
-      switch(SubMenu.TrackTray(pCfgMem->hMainHostWnd))
+      switch(SubMenu.TrackTray(pCfgMem->common64.hMainHostWnd))
       {
       case ID_TRAY_ENABLE_CTYPE_STANDARD:
-        pCfgMem->dwControlType = escStandard;
+        pCfgMem->common64.dwControlType = escStandard;
         break;
 
       case ID_TRAY_ENABLE_CTYPE_TOGGLE:
-        pCfgMem->dwControlType = escToggleWithEat;
+        pCfgMem->common64.dwControlType = escToggleWithEat;
         break;
 
       case ID_TRAY_ENABLE_DIRECTSCROLL:
-        pCfgMem->bScrollDisabled = !pCfgMem->bScrollDisabled;
+        pCfgMem->common64.bScrollDisabled = !pCfgMem->common64.bScrollDisabled;
         TrayAnimProcess(true);
         break;
 
       case ID_TRAY_ENABLE_CTYPE_MIX:
-        pCfgMem->dwControlType = escScrollModeMix;
+        pCfgMem->common64.dwControlType = escScrollModeMix;
         break;
 
         //inv scrolling
       case ID_TRAY_ENABLE_INVERCE:
-        pCfgMem->bScrollInv = !pCfgMem->bScrollInv;
+        pCfgMem->common64.bScrollInv = !pCfgMem->common64.bScrollInv;
         break;
 
         //flip bidirectional
       case ID_TRAY_ENABLE_BIDIRECTION:
-        pCfgMem->bBDScrollingEnabled = !pCfgMem->bBDScrollingEnabled;
+        pCfgMem->common64.bBDScrollingEnabled = !pCfgMem->common64.bBDScrollingEnabled;
         break;
 
         //flip hide
@@ -953,7 +953,7 @@ void CApp::TrayIconMessageFunction(LPARAM lParam)
         //quit
       case ID_TRAY_EXIT:
         bSaveCfg = false;
-        PostMessage(pCfgMem->hMainHostWnd, WM_CLOSE, 0, 0);
+        PostMessage(pCfgMem->common64.hMainHostWnd, WM_CLOSE, 0, 0);
         break;
 
       default:
@@ -962,7 +962,7 @@ void CApp::TrayIconMessageFunction(LPARAM lParam)
       };
       if(false != bSaveCfg)
       {
-        ::PostMessage(pCfgMem->hMainHostWnd, emcNeedSaveCfg, 0, 0);
+        ::PostMessage(pCfgMem->common64.hMainHostWnd, emcNeedSaveCfg, 0, 0);
       };
     };
     break;
@@ -1030,7 +1030,7 @@ void CApp::StartCfgApp(const bool bcLikeQuickTour)
 
 void CApp::TrayAnimProcess(const bool bcForceCycle)
 {
-  if(FALSE != pCfgMem->bEnableTrayIcon || FALSE == pCfgMem->bCryptFirstLayerValid)
+  if(FALSE != pCfgMem->common64.bEnableTrayIcon || FALSE == pCfgMem->bCryptFirstLayerValid)
   {
     ////need process tray icon
     //look on "residual" time for tray animation
@@ -1062,7 +1062,7 @@ void CApp::TrayAnimProcess(const bool bcForceCycle)
       const UINT uiOpenEyeIcon = (false != bcTrayIconSpecialDistabled)
         ? IDI_TRAY_MAIN_3_ICON
         : IDI_TRAY_MAIN_1_ICON;
-      const UINT uicRes = (FALSE == pCfgMem->bEnableTrayIconAnim)
+      const UINT uicRes = (FALSE == pCfgMem->common64.bEnableTrayIconAnim)
         ? uiOpenEyeIcon
         : ((false != bTrayAnimEyesClosed) ? IDI_TRAY_MAIN_2_ICON : uiOpenEyeIcon);
       const HICON hcIcon = ::LoadIcon(hInst, MAKEINTRESOURCE(uicRes));
@@ -1157,10 +1157,10 @@ LRESULT CApp::MainWndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
   case WM_DESTROY:
   case WM_QUERYENDSESSION:
     //send quit message to main cfg dlg (if present)
-    if(FALSE != ::IsWindow(pCfgMem->hCfgAppWnd))
+    if(FALSE != ::IsWindow(pCfgMem->common64.hCfgAppWnd))
     {
       DWORD dwCfgProcess = 0;
-      ::GetWindowThreadProcessId(pCfgMem->hCfgAppWnd, &dwCfgProcess);
+      ::GetWindowThreadProcessId(pCfgMem->common64.hCfgAppWnd, &dwCfgProcess);
       //enum wnd's in system from cfg process and if find - close it's
       ::EnumWindows(EnumCfgAppExitProc, dwCfgProcess);
     };
@@ -1200,7 +1200,7 @@ LRESULT CApp::MainWndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
       //return to caller
       if(0 != pInfo)
       {
-        lstrcpy(pCfgMem->cpGetAppNameResultBuff, pInfo->pAppName);
+        lstrcpy(pCfgMem->common64.cpGetAppNameResultBuff, pInfo->pAppName);
         lRes = TRUE;
       };
     };
@@ -1254,7 +1254,7 @@ void CApp::AHTimerLooking()
   //else - increment WndLastLooking timer count - if more then specified - hide wnd
   //if not find - remove and hide wnd
 
-  if(FALSE != pCfgMem->bAHideEnabled && ehmNone == pCfgMem->lHookMode)
+  if(FALSE != pCfgMem->common64.bAHideEnabled && ehmNone == pCfgMem->lHookMode)
   {
     //FromMouseToTop wnd set
     bool bSetBuilded = false;
@@ -1300,7 +1300,7 @@ void CApp::AHTimerLooking()
             {
               //mouse not in wnd - increment count and look on "is wnd need hide"
               cpInfo->dwTimerLastLookCount += eccTimerTime;
-              if(pCfgMem->dwAutoHideTimerTime < cpInfo->dwTimerLastLookCount)
+              if(pCfgMem->common64.dwAutoHideTimerTime < cpInfo->dwTimerLastLookCount)
               {
                 cpInfo->dwTimerLastLookCount = 0;
                 //hide
@@ -1328,7 +1328,7 @@ void CApp::AHTimerLooking()
           {
             //mouse in wnd - increment activation timer if time elapsed - activate wnd
             cpInfo->dwTimerLastLookCount += eccTimerTime;
-            if(pCfgMem->dwAutoOpenTimerTime <= cpInfo->dwTimerLastLookCount)
+            if(pCfgMem->common64.dwAutoOpenTimerTime <= cpInfo->dwTimerLastLookCount)
             {
               //delay activisation time elapsed - activate wnd now
               cpInfo->bDelayActivateLook = false;
@@ -1553,7 +1553,7 @@ bool CApp::AHCheckWndByPatternList(const HWND hcWnd, bool& rFindSimpleProcessInP
   rFindSimpleProcessInPattenrs = false;
 
   //only is passed is wnd and AShrink enabled
-  if(FALSE != pCfgMem->bAHideEnabled && FALSE != ::IsWindow(hcWnd))
+  if(FALSE != pCfgMem->common64.bAHideEnabled && FALSE != ::IsWindow(hcWnd))
   {
     //wnd info
     //app name
@@ -1614,13 +1614,13 @@ UINT CApp::MsgBox(LPCSTR const cpcMsg, const UINT uicType) const
 {
   CHAR cpTitle[50];
   SLCHECK(0 != ::LoadString(hInst, IDS_STR_MSG_TITLE, cpTitle, COUNTOF(cpTitle)));
-  return ::MessageBox((0 == pCfgMem) ? 0 : pCfgMem->hMainHostWnd, cpcMsg, cpTitle, uicType | MB_SETFOREGROUND | MB_TOPMOST);
+  return ::MessageBox((0 == pCfgMem) ? 0 : pCfgMem->common64.hMainHostWnd, cpcMsg, cpTitle, uicType | MB_SETFOREGROUND | MB_TOPMOST);
 };
 
 UINT CApp::MsgBox(const UINT uicResId, const UINT uicType) const
 {
   using slw::SLWMessageBox;
-  return SLWMessageBox((0 == pCfgMem) ? 0 : pCfgMem->hMainHostWnd, uicResId, IDS_STR_MSG_TITLE, uicType | MB_SETFOREGROUND | MB_TOPMOST, hInst);
+  return SLWMessageBox((0 == pCfgMem) ? 0 : pCfgMem->common64.hMainHostWnd, uicResId, IDS_STR_MSG_TITLE, uicType | MB_SETFOREGROUND | MB_TOPMOST, hInst);
 };
 
 void CApp::TimerThunkProc(HWND hWnd, UINT uiMsg, UINT_PTR, DWORD)
@@ -1628,7 +1628,7 @@ void CApp::TimerThunkProc(HWND hWnd, UINT uiMsg, UINT_PTR, DWORD)
   AHTimerLooking();
   TrayClickTimerSensor(eccTimerTime);
   TrayAnimProcess(false);
-  pCfgMem->llTotalRunTime += eccTimerTime;
+  pCfgMem->common64.llTotalRunTime += eccTimerTime;
   TimerSaveCfgProcess();
 };
 

@@ -667,7 +667,7 @@ inline bool CApp::MouseDownEvent(const UINT uicAddKey, const MOUSEHOOKSTRUCT* co
     const bool bcNoOtherPresentBefore = 0 == pCfgMem->uiCurrMouseKeys;
     pCfgMem->uiCurrMouseKeys |= uicValidKey;
     bRes = 0 != pCfgMem->uiCurrWorkKeys;
-    const UINT uicNewWorkKey = (pCfgMem->uiCurrWorkKeys | uicAddKey) & pCfgMem->uiValidMouseKeys & egcValidMouseKeysMask;
+    const UINT uicNewWorkKey = (pCfgMem->uiCurrWorkKeys | uicAddKey) & pCfgMem->common64.uiValidMouseKeys & egcValidMouseKeysMask;
     if
       (
       //not some pressed before
@@ -723,7 +723,7 @@ inline bool CApp::MouseDownEvent(const UINT uicAddKey, const MOUSEHOOKSTRUCT* co
           //mem "start" key's
           pCfgMem->dwMouseControlStartKey = ecStartBtn;
           //try start work here
-          switch(pCfgMem->dwControlType)
+          switch(pCfgMem->common64.dwControlType)
           {
           default:
           case escStandard:
@@ -815,7 +815,7 @@ inline bool CApp::MouseUpEvent(const UINT uicDelKey, const MOUSEHOOKSTRUCT* cons
       pCfgMem->uiCurrMouseKeys &= (~uicDelKey);
       //look on "work" key's
       bRes = 0 != pCfgMem->uiCurrWorkKeys;
-      pCfgMem->uiCurrWorkKeys &= ((~uicDelKey) & pCfgMem->uiValidMouseKeys & egcValidMouseKeysMask);
+      pCfgMem->uiCurrWorkKeys &= ((~uicDelKey) & pCfgMem->common64.uiValidMouseKeys & egcValidMouseKeysMask);
       
       if(false != bRes && 0 == pCfgMem->uiCurrWorkKeys)
       {
@@ -959,7 +959,7 @@ inline void CApp::SBScrollCalcShift(POINT& rFromPnt, POINT& rToPnt, POINT& rMemM
 {
   //calc reduction value
   LONG lReductVal = (false != bcReduct)
-    ? pCfgMem->lScrollReduction
+    ? pCfgMem->common64.lScrollReduction
     : egcMagnScrollReduction;
 
   //apply "additional reduction"
@@ -1056,7 +1056,7 @@ inline void CApp::ChngHookMode(const UINT uicNewMode)
 
 inline void CApp::MouseMoveDistSensor(const POINT& rcCurrPnt) const
 {
-  CalcPointDistance(pCfgMem->MoveDistanseLastLookPnt, rcCurrPnt, pCfgMem->llMoveDistanceSumm);
+  CalcPointDistance(pCfgMem->MoveDistanseLastLookPnt, rcCurrPnt, pCfgMem->common64.llMoveDistanceSumm);
   pCfgMem->MoveDistanseLastLookPnt = rcCurrPnt;
 };
 
@@ -1069,7 +1069,7 @@ inline void CApp::CalcPointDistance(const POINT& rcFrom, const POINT& rcTo, LONG
 
 inline void CApp::CalcSaveDistance(const POINT& rcPnt, const POINT& rcToPnt) const
 {
-  CalcPointDistance(rcPnt, rcToPnt, pCfgMem->llMoveDistanceSaveSumm);
+  CalcPointDistance(rcPnt, rcToPnt, pCfgMem->common64.llMoveDistanceSaveSumm);
 };
 
 inline void CApp::AHideMoveSensor(const HWND hcWnd)
@@ -1094,7 +1094,7 @@ inline void CApp::AHideMoveSensor(const HWND hcWnd)
       //active chnged
       pCfgMem->hAHideLastActiveSendWnd = hFindActive;
       //to host
-      ::PostMessage(pCfgMem->hMainHostWnd, emcAHWndActivity, 0, reinterpret_cast<LPARAM>(hFindActive));
+      ::PostMessage(pCfgMem->common64.hMainHostWnd, emcAHWndActivity, 0, reinterpret_cast<LPARAM>(hFindActive));
     };
   };
 };
@@ -1106,7 +1106,7 @@ inline void CApp::AShowSensor(const HWND hcWnd, const bool bcNotLookStyle)
   //to host
   if(false != bcNotLookStyle || FALSE != AHideCheckWndStyle(hcWnd))
   {
-    ::PostMessage(pCfgMem->hMainHostWnd, emcAHWndShow, CheckWndActive(hcWnd), reinterpret_cast<LPARAM>(hcWnd));
+    ::PostMessage(pCfgMem->common64.hMainHostWnd, emcAHWndShow, CheckWndActive(hcWnd), reinterpret_cast<LPARAM>(hcWnd));
   };
 };
 
@@ -1117,7 +1117,7 @@ inline void CApp::AHideSensor(const HWND hcWnd)
   //to host
   if(FALSE != AHideCheckWndStyle(hcWnd))
   {
-    ::PostMessage(pCfgMem->hMainHostWnd, emcAHWndHide, 0, reinterpret_cast<LPARAM>(hcWnd));
+    ::PostMessage(pCfgMem->common64.hMainHostWnd, emcAHWndHide, 0, reinterpret_cast<LPARAM>(hcWnd));
   };
 };
 
@@ -1126,7 +1126,7 @@ inline void CApp::AHideDestroySensor(const HWND hcWnd)
   //to host
   if(FALSE != AHideCheckWndStyle(hcWnd))
   {
-    ::PostMessage(pCfgMem->hMainHostWnd, emcAHWndDestroy, 0, reinterpret_cast<LPARAM>(hcWnd));
+    ::PostMessage(pCfgMem->common64.hMainHostWnd, emcAHWndDestroy, 0, reinterpret_cast<LPARAM>(hcWnd));
   };
 };
 
@@ -1135,7 +1135,7 @@ inline void CApp::AHideActivateSensor(const HWND hcWnd, const bool bcActive)
   //to host
   if(FALSE != AHideCheckWndStyle(hcWnd))
   {
-    ::PostMessage(pCfgMem->hMainHostWnd, emcAHWndActive, bcActive, reinterpret_cast<LPARAM>(hcWnd));
+    ::PostMessage(pCfgMem->common64.hMainHostWnd, emcAHWndActive, bcActive, reinterpret_cast<LPARAM>(hcWnd));
   };
 };
 
@@ -1147,7 +1147,7 @@ inline LRESULT CApp::SendWndMsg(const HWND hcWnd, const UINT uicMsg, WPARAM wPar
 
 inline void CApp::SetCursorForScroll()
 {
-  if(FALSE != pCfgMem->bCursorVisualise && FALSE != pCfgMem->bCursorNeedSet)
+  if(FALSE != pCfgMem->common64.bCursorVisualise && FALSE != pCfgMem->bCursorNeedSet)
   {
     ::SetCursor(::LoadCursor(hInstance, MAKEINTRESOURCE(pCfgMem->uiCursorName)));
   };
@@ -1309,7 +1309,7 @@ inline void CApp::TryUnLock(const HWND hcWnd, CSubClassInfo* const cpInfo)
         //first check
         0 != pCfgMem->hHookPresentFlag
         //check "host wnd class"
-        && 0 != ::GetClassName(pCfgMem->hMainHostWnd, cpClassBuff, COUNTOF(cpClassBuff))
+        && 0 != ::GetClassName(pCfgMem->common64.hMainHostWnd, cpClassBuff, COUNTOF(cpClassBuff))
         && false != ASCompareClassSimple(cpClassBuff, cpcWndClass)
         //check again (apssoble exit while PostThreadMessage time)
         && 0 != pCfgMem->hHookPresentFlag
@@ -1782,14 +1782,14 @@ inline void CApp::SBScrollMoveInt(CScrollProcessInfo& rProcessInfo, CScrollProce
   //for easy
 
   //call mouse shift
-  const bool bcReduct = CheckRealKey(pCfgMem->uiScollReductionKey);
+  const bool bcReduct = CheckRealKey(pCfgMem->common64.uiScollReductionKey);
   POINT MouseShift = rcPnt;
   SBScrollCalcShift(rProcessInfo.LastProcessLookPnt, MouseShift, rProcessInfo.LastScrollMagnMiss, bcReduct, rDirInfo.dwScrollReduction);
   int iMouseShift = (false != bcIsHor)
     ? MouseShift.x
     : MouseShift.y;
   //move direction (by InvFlag)
-  if(FALSE != pCfgMem->bScrollInv)
+  if(FALSE != pCfgMem->common64.bScrollInv)
   {
     iMouseShift = -iMouseShift;
   };
@@ -1950,7 +1950,7 @@ inline void CApp::SBScrollStopInt(CScrollProcessInfo& rProcessInfo, CScrollProce
 
 inline DWORD CApp::ScrollGetCurrentReduction() const
 {
-  return MyMulDiv(egcMagnScrollReduction, pCfgMem->dwScrollNormReduction, egcMagnScrollReduction);
+  return MyMulDiv(egcMagnScrollReduction, pCfgMem->common64.dwScrollNormReduction, egcMagnScrollReduction);
 };
 
 inline DWORD CApp::SBScrollCalcAddReduct(const HWND hcWnd, const bool bcIsCtrl, const bool bcIsHor, const bool bcIsFlat) const
@@ -2057,7 +2057,7 @@ inline bool CApp::IEScrollStartInt(const MOUSEHOOKSTRUCT* const cpMsg, CSCrollIE
 inline bool CApp::IEScrollMoveInt(const MOUSEHOOKSTRUCT* const cpMsg, CSCrollIEProcessInfo& rScrollInfo)
 {
   //calc dist from last "looking" to "curr"
-  const bool bcReduct = CheckRealKey(pCfgMem->uiScollReductionKey);
+  const bool bcReduct = CheckRealKey(pCfgMem->common64.uiScollReductionKey);
   POINT MouseShift = cpMsg->pt;
   SBScrollCalcShift(rScrollInfo.PntLastStart, MouseShift, rScrollInfo.LastScrollMagnMiss, bcReduct, egcMagnScrollReduction);
 
@@ -2065,7 +2065,7 @@ inline bool CApp::IEScrollMoveInt(const MOUSEHOOKSTRUCT* const cpMsg, CSCrollIEP
   int iMouseShift = (false != rScrollInfo.bHorScroll)
     ? MouseShift.x
     : MouseShift.y;
-  if(FALSE != pCfgMem->bScrollInv)
+  if(FALSE != pCfgMem->common64.bScrollInv)
   {
     iMouseShift = -iMouseShift;
   };
@@ -2077,7 +2077,7 @@ inline bool CApp::IEScrollMoveInt(const MOUSEHOOKSTRUCT* const cpMsg, CSCrollIEP
     {
       //ie vertical scrolling
       //calc mouse shift
-      const int icCalcMouseShift = rScrollInfo.lRemand + iMouseShift * pCfgMem->dwIESCrollConvMove;
+      const int icCalcMouseShift = rScrollInfo.lRemand + iMouseShift * pCfgMem->common64.dwIESCrollConvMove;
       //actual wheel shift
       const int icTmpDelVal = egcIEScrollConvMoveMagn * pCfgMem->dwIEScrollMinMove;
       const int icTmpCalcVal = icCalcMouseShift / icTmpDelVal;
@@ -2093,19 +2093,19 @@ inline bool CApp::IEScrollMoveInt(const MOUSEHOOKSTRUCT* const cpMsg, CSCrollIEP
       //winamp vertical scrolling
 
       //call mouse shift
-      const bool bcReduct = CheckRealKey(pCfgMem->uiScollReductionKey);
+      const bool bcReduct = CheckRealKey(pCfgMem->common64.uiScollReductionKey);
       POINT MouseShift = cpMsg->pt;
       SBScrollCalcShift
         (
         rScrollInfo.LastScrollPnt,
         MouseShift, 
         rScrollInfo.LastScrollMagnMiss, 
-        CheckRealKey(pCfgMem->uiScollReductionKey), 
+        CheckRealKey(pCfgMem->common64.uiScollReductionKey), 
         ScrollGetCurrentReduction()
         );
       int iMouseShift = MouseShift.y;
       //move direction (by InvFlag)
-      if(FALSE != pCfgMem->bScrollInv)
+      if(FALSE != pCfgMem->common64.bScrollInv)
       {
         iMouseShift = -iMouseShift;
       };
@@ -2126,7 +2126,7 @@ inline bool CApp::IEScrollMoveInt(const MOUSEHOOKSTRUCT* const cpMsg, CSCrollIEP
   {
     ////hor scroll throught "arrow clicks"
 
-    const LONG lcUseShiftVal = rScrollInfo.lRemand + iMouseShift * pCfgMem->dwIESCrollConvMove;
+    const LONG lcUseShiftVal = rScrollInfo.lRemand + iMouseShift * pCfgMem->common64.dwIESCrollConvMove;
     const LONG lcDivVal = 20 * egcIEScrollConvMoveMagn;
     const LONG lcRealShiftVal = lcUseShiftVal / lcDivVal;
     rScrollInfo.lRemand = lcUseShiftVal - lcRealShiftVal * lcDivVal;
