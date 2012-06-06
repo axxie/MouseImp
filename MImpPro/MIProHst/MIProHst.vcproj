@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8,00"
-	Name="MouseImp"
+	Name="MIProHst"
 	ProjectGUID="{30875039-3A54-420D-ACD2-C0C1B88EB64D}"
-	RootNamespace="MouseImp"
+	RootNamespace="MIProHst"
 	>
 	<Platforms>
 		<Platform
@@ -303,11 +303,11 @@
 			Name="Src"
 			>
 			<File
-				RelativePath="App.cpp"
+				RelativePath=".\MIProHst.cpp"
 				>
 			</File>
 			<File
-				RelativePath="App.h"
+				RelativePath=".\MIProHst.h"
 				>
 			</File>
 			<File
@@ -383,10 +383,6 @@
 				>
 			</File>
 		</Filter>
-		<File
-			RelativePath="..\MIGlobal.h"
-			>
-		</File>
 	</Files>
 	<Globals>
 	</Globals>

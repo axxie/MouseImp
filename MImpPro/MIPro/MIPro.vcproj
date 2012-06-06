@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8,00"
-	Name="MImp"
+	Name="MIPro"
 	ProjectGUID="{642D304F-CE5A-4ED1-8E97-15E47D74A426}"
-	RootNamespace="MImp"
+	RootNamespace="MIPro"
 	>
 	<Platforms>
 		<Platform
@@ -315,19 +315,19 @@
 			Name="Src"
 			>
 			<File
-				RelativePath="App.cpp"
+				RelativePath=".\MIPro.cpp"
 				>
 			</File>
 			<File
-				RelativePath="App.h"
+				RelativePath=".\MIPro.h"
 				>
 			</File>
 			<File
-				RelativePath="App_WndDummyProc.txt"
+				RelativePath=".\MIPro_WndDummyProc.txt"
 				>
 			</File>
 			<File
-				RelativePath="App_WndProc.txt"
+				RelativePath=".\MIPro_WndProc.txt"
 				>
 			</File>
 			<File
@@ -424,7 +424,7 @@
 			>
 		</File>
 		<File
-			RelativePath="MIGlobal.h"
+			RelativePath="..\Include\MIGlobal.h"
 			>
 		</File>
 		<File

@@ -5,7 +5,7 @@ mouse imp hok dll
 #include "StdAfx.h"
 
 
-#include "App.h"
+#include "MIPro.h"
 
 
 #include "..\\SLibWin\\SLWDbg.h"
@@ -167,56 +167,56 @@ static inline void ClickActivateWnd(const HWND hcWnd, const MOUSEHOOKSTRUCT* con
 LRESULT CSubClassInfo::WndProcA(HWND hWnd, UINT uiMsg, WPARAM wParam, LPARAM lParam)
 {
 #define CallWindowProc_(WndProc, hWnd, uiMsg, wParam, lParam) CallWindowProcA(WndProc, hWnd, uiMsg, wParam, lParam)
-#include "App_WndProc.txt"
+#include "MIPro_WndProc.txt"
 #undef CallWindowProc_
 };
 
 LRESULT CSubClassInfo::WndProcW(HWND hWnd, UINT uiMsg, WPARAM wParam, LPARAM lParam)
 {
 #define CallWindowProc_(WndProc, hWnd, uiMsg, wParam, lParam) CallWindowProcW(WndProc, hWnd, uiMsg, wParam, lParam)
-#include "App_WndProc.txt"
+#include "MIPro_WndProc.txt"
 #undef CallWindowProc_
 };
 
 LRESULT CSubClassInfo::WndProcADef(HWND hWnd, UINT uiMsg, WPARAM wParam, LPARAM lParam)
 {
 #define CallWindowProc_(WndProc, hWnd, uiMsg, wParam, lParam) DefWindowProcA(hWnd, uiMsg, wParam, lParam)
-#include "App_WndProc.txt"
+#include "MIPro_WndProc.txt"
 #undef CallWindowProc_
 };
 
 LRESULT CSubClassInfo::WndProcWDef(HWND hWnd, UINT uiMsg, WPARAM wParam, LPARAM lParam)
 {
 #define CallWindowProc_(WndProc, hWnd, uiMsg, wParam, lParam) DefWindowProcW(hWnd, uiMsg, wParam, lParam)
-#include "App_WndProc.txt"
+#include "MIPro_WndProc.txt"
 #undef CallWindowProc_
 };
 
 LRESULT CSubClassInfo::DummyWndProcA(HWND hWnd, UINT uiMsg, WPARAM wParam, LPARAM lParam)
 {
 #define CallWindowProc_(WndProc, hWnd, uiMsg, wParam, lParam) CallWindowProcA(WndProc, hWnd, uiMsg, wParam, lParam)
-#include "App_WndDummyProc.txt"
+#include "MIPro_WndDummyProc.txt"
 #undef CallWindowProc_
 };
 
 LRESULT CSubClassInfo::DummyWndProcW(HWND hWnd, UINT uiMsg, WPARAM wParam, LPARAM lParam)
 {
 #define CallWindowProc_(WndProc, hWnd, uiMsg, wParam, lParam) CallWindowProcW(WndProc, hWnd, uiMsg, wParam, lParam)
-#include "App_WndDummyProc.txt"
+#include "MIPro_WndDummyProc.txt"
 #undef CallWindowProc_
 };
 
 LRESULT CSubClassInfo::DummyWndProcADef(HWND hWnd, UINT uiMsg, WPARAM wParam, LPARAM lParam)
 {
 #define CallWindowProc_(WndProc, hWnd, uiMsg, wParam, lParam) DefWindowProcA(hWnd, uiMsg, wParam, lParam)
-#include "App_WndDummyProc.txt"
+#include "MIPro_WndDummyProc.txt"
 #undef CallWindowProc_
 };
 
 LRESULT CSubClassInfo::DummyWndProcWDef(HWND hWnd, UINT uiMsg, WPARAM wParam, LPARAM lParam)
 {
 #define CallWindowProc_(WndProc, hWnd, uiMsg, wParam, lParam) DefWindowProcW(hWnd, uiMsg, wParam, lParam)
-#include "App_WndDummyProc.txt"
+#include "MIPro_WndDummyProc.txt"
 #undef CallWindowProc_
 };
 

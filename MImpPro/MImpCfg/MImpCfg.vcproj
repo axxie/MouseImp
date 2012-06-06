@@ -655,10 +655,6 @@
 			RelativePath="..\MICrptInfoImpl.h"
 			>
 		</File>
-		<File
-			RelativePath="..\MIGlobal.h"
-			>
-		</File>
 	</Files>
 	<Globals>
 	</Globals>

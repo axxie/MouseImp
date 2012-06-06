@@ -5,7 +5,7 @@ main functionaly
 #include "StdAfx.h"
 
 
-#include "App.h"
+#include "MIProHst.h"
 
 
 #include "..\\SLibWin\\SLWDbg.h"
