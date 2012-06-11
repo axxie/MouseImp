@@ -271,7 +271,8 @@ inline void SignalSharedInfoReady()
     }
 
     SetEvent(hEventSharedInitialized);
-    CloseHandle(hEventSharedInitialized);
+    // the handle leak is intentional, leave event in signaled state
+    //CloseHandle(hEventSharedInitialized);
 }
 
 
