@@ -25,7 +25,7 @@ static LPCTSTR const cpcEditClassName = _T("EDIT");
 void EnableWnd(const HWND hcWnd, const BOOL bcEnable)
 {
   TCHAR szClassName[50];
-  GetClassName(hcWnd, szClassName, COUNTOF(szClassName));
+  GetClassName(hcWnd, szClassName, ARRAYSIZE(szClassName));
   if(0 == _tcsicmp(cpcEditClassName, szClassName))
   {
     ::SendMessage(hcWnd, EM_SETREADONLY, !bcEnable, 0L);
@@ -94,7 +94,7 @@ void SLWComboControlInit(HINSTANCE hInst, HWND hDlg, const UINT uicCtrl, const D
   for(const __CSLWListBoxInitData* pcLook = cpcInitData; cpcInitData + dwcDayaSize > pcLook; pcLook++)
   {
     *cpBuff = '\0';
-    const DWORD dwcLen = ::LoadString(hInst, pcLook->dwResId, cpBuff, COUNTOF(cpBuff));
+    const DWORD dwcLen = ::LoadString(hInst, pcLook->dwResId, cpBuff, ARRAYSIZE(cpBuff));
     _ASSERT(0 != dwcLen);
     const DWORD dwcInd = ::SendDlgItemMessage(hDlg, uicCtrl, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(cpBuff));
     ::SendDlgItemMessage(hDlg, uicCtrl, CB_SETITEMDATA, dwcInd, pcLook->dwDataId);

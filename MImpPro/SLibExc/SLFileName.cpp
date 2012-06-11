@@ -584,7 +584,7 @@ void CSLFileName::GetSpecial(const BFileNamesEnum eName)
 
   case esnSysRoot:
     {
-      ::GetWindowsDirectory(cpPathBuff, COUNTOF(cpPathBuff));
+      ::GetWindowsDirectory(cpPathBuff, ARRAYSIZE(cpPathBuff));
       dwParts = enpFullPath;
     };
     break;

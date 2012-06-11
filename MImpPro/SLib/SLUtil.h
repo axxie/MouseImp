@@ -20,6 +20,7 @@ utility classes
 _SL_BEG
 
 //tchar.h functionaly
+
 #ifndef _T
 # ifndef _UNICODE
 #   define _T(x) x
@@ -74,9 +75,9 @@ inline bool SLPtrStr(LPCTSTR const cpcPtr)
 //////////////////////////////////////////////////////////////////////
 //Helper's
 
-#ifndef COUNTOF
-#define COUNTOF(pMass) (sizeof(pMass) / sizeof(pMass[0]))
-#endif//COUNTOF
+#ifndef ARRAYSIZE
+#define ARRAYSIZE(pMass) (sizeof(pMass) / sizeof(pMass[0]))
+#endif//ARRAYSIZE
 
 template<class Type>
 inline Type SLMaxUVal(const Type& rDummyVal)

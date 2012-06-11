@@ -7,7 +7,7 @@ app class
 
 #pragma once
 
-#include "..\Include\MIGlobal.h"
+#include "..\Include\MIHostInterface.h"
 
 #include "resource.h"
 
@@ -26,7 +26,7 @@ public:
   //shared cfg
   HANDLE hCfgMap;
   //cfg mem
-  CMISharedInfo* pCfgMem;
+  CMICommonPartWith64bit* pCommon64;
   //instruction for popup find show to user
   bool bPopUpInstShowed;
   

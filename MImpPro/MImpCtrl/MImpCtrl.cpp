@@ -7,7 +7,7 @@
 
 #include "cpl.h"
 
-#include "..\Include\MIGlobal.h"
+#include "..\Include\MIHostInterface.h"
 
 #include "..\\Slib\\SLFileMap.h"
 
@@ -25,8 +25,8 @@ static inline void RunCfg()
   CSLFileMap Map;
   if
     (
-    false == Map.OpenExist(cpcSharedInfoName, sizeof(CMISharedInfo), CSLFileMap::eomRead)
-    || false == TryShowCfgApp(reinterpret_cast<CMISharedInfo*>(Map.GetPtr()))
+    false == Map.OpenExist(cpcSharedInfoName, sizeof(CMICommonPartWith64bit), CSLFileMap::eomRead)
+    || false == TryShowCfgApp(reinterpret_cast<CMICommonPartWith64bit*>(Map.GetPtr()))
     )
   {
     //try run exist
@@ -37,7 +37,7 @@ static inline void RunCfg()
     if
       (
       false != Reg.IsPresent(cpcCfgInstallDirEnt)
-      && false != Reg.ReadStr(cpcCfgInstallDirEnt, cpPath, COUNTOF(cpPath))
+      && false != Reg.ReadStr(cpcCfgInstallDirEnt, cpPath, ARRAYSIZE(cpPath))
       )
     {
       //attach cfg module name to path
@@ -57,10 +57,10 @@ static inline bool HostRuned()
 
   using sl::CSLFileMap;
   CSLFileMap Map;
-  if(false != Map.OpenExist(cpcSharedInfoName, sizeof(CMISharedInfo), CSLFileMap::eomRead))
+  if(false != Map.OpenExist(cpcSharedInfoName, sizeof(CMICommonPartWith64bit), CSLFileMap::eomRead))
   {
-    const CMISharedInfo* const cpcCfgMem = reinterpret_cast<const CMISharedInfo*>(Map.GetPtr());
-    if(FALSE != ::IsWindow(cpcCfgMem->common64.hMainHostWnd))
+    const CMICommonPartWith64bit* const pCommon64 = reinterpret_cast<const CMICommonPartWith64bit*>(Map.GetPtr());
+    if(FALSE != ::IsWindow(pCommon64->hMainHostWnd))
     {
       bRes = true;
     };
@@ -108,8 +108,8 @@ LONG APIENTRY CPlApplet(HWND hwndCPl,UINT uMsg,LONG lParam1,LONG lParam2)
       cpInfo->dwSize = sizeof(*cpInfo);
       cpInfo->lData = 1;
       cpInfo->hIcon = ::LoadIcon(hMemMod, MAKEINTRESOURCE(IDR_STATE_RUN_ICON));
-      ::LoadString(hMemMod, IDS_NAME, cpInfo->szName, COUNTOF(cpInfo->szName));
-      ::LoadString(hMemMod, IDS_DESCR, cpInfo->szInfo, COUNTOF(cpInfo->szInfo));
+      ::LoadString(hMemMod, IDS_NAME, cpInfo->szName, ARRAYSIZE(cpInfo->szName));
+      ::LoadString(hMemMod, IDS_DESCR, cpInfo->szInfo, ARRAYSIZE(cpInfo->szInfo));
     };
     break;
 

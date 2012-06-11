@@ -199,7 +199,7 @@ inline CSLFileName::CSLFileName()
 inline CSLFileName::CSLFileName(HMODULE hModule)
 {
   TCHAR cpBuff[MAX_PATH];
-  ::GetModuleFileName(hModule, cpBuff, COUNTOF(cpBuff));
+  ::GetModuleFileName(hModule, cpBuff, ARRAYSIZE(cpBuff));
   Parse(cpBuff, enpAll);
 };
 

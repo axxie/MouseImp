@@ -450,7 +450,7 @@ inline LPCTSTR CSLCfgRegEnum::GetName() const
 inline void CSLCfgRegEnum::InternalNext()
 {
   FILETIME LastTime;
-  DWORD dwNameSize = COUNTOF(cpName);
+  DWORD dwNameSize = ARRAYSIZE(cpName);
   const LONG lcRes = ::RegEnumKeyEx
     (
     hKey,

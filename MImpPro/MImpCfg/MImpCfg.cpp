@@ -42,7 +42,7 @@ END_MESSAGE_MAP()
 
 CMImpCfgApp::CMImpCfgApp()
   :hCfgMap(0),
-  pCfgMem(0),
+  pCommon64(0),
   bPopUpInstShowed(false)
 {
 }
@@ -81,7 +81,7 @@ void CMImpCfgApp::StartCfg()
   if(false != bRes)
   {
     //try open cfg (if host started - ok)
-    if(false == OpenSharedCfg() || FALSE == ::IsWindow(pCfgMem->common64.hMainHostWnd))
+    if(false == OpenSharedCfg() || FALSE == ::IsWindow(pCommon64->hMainHostWnd))
     {
       bRes = false;
       //build host app name
@@ -108,7 +108,7 @@ void CMImpCfgApp::StartCfg()
   //try bring cfg wnd if exist
   if(false != bRes)
   {
-    bRes = !TryShowCfgApp(pCfgMem);
+    bRes = !TryShowCfgApp(pCommon64);
   };
 
   //set help full file 
@@ -140,7 +140,7 @@ void CMImpCfgApp::QuitFromImp()
 {
   if(false != OpenSharedCfg())
   {
-    TryExitFromHostApp(pCfgMem);
+    TryExitFromHostApp(pCommon64);
     CloseSharedCfg();
   };
 };
@@ -207,10 +207,10 @@ bool CMImpCfgApp::OpenSharedCfg()
       FILE_MAP_ALL_ACCESS,
       0,
       0,
-      sizeof(*pCfgMem)
+      sizeof(*pCommon64)
       );
-    pCfgMem = reinterpret_cast<CMISharedInfo*>(cpAddr);
-    bRes = 0 != pCfgMem;
+    pCommon64 = reinterpret_cast<CMICommonPartWith64bit*>(cpAddr);
+    bRes = 0 != pCommon64;
   };
 
   return bRes;
@@ -222,10 +222,10 @@ void CMImpCfgApp::CloseSharedCfg()
   //close map
 
   //mem
-  if(0 != pCfgMem)
+  if(0 != pCommon64)
   {
-    ::UnmapViewOfFile(pCfgMem);
-    pCfgMem = 0;
+    ::UnmapViewOfFile(pCommon64);
+    pCommon64 = 0;
   };
 
 

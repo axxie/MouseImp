@@ -50,8 +50,8 @@ static int CALLBACK SortFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort)
   //get string's
   TCHAR cpFirst[100];
   TCHAR cpSecond[100];
-  cpcInfo->pList->GetItemText(icFirst, cpcInfo->iCol, cpFirst, COUNTOF(cpFirst));
-  cpcInfo->pList->GetItemText(icSecond, cpcInfo->iCol, cpSecond, COUNTOF(cpSecond));
+  cpcInfo->pList->GetItemText(icFirst, cpcInfo->iCol, cpFirst, ARRAYSIZE(cpFirst));
+  cpcInfo->pList->GetItemText(icSecond, cpcInfo->iCol, cpSecond, ARRAYSIZE(cpSecond));
 
   const int icVal = (false != cpcInfo->bPosOrder)
     ? lstrcmp(cpFirst, cpSecond)

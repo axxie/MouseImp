@@ -86,16 +86,16 @@ void CScrollPage::DoDataExchange(CDataExchange* pDX)
 	//}}AFX_DATA_MAP
 
   //direct transfer
-  CMISharedInfo* const cpInfo = theApp.pCfgMem;
+  CMICommonPartWith64bit& common64 = *theApp.pCommon64;
 
   //scroll inversion 
-  DDX_Check(pDX, IDC_INV_CHECK, cpInfo->common64.bScrollInv);
+  DDX_Check(pDX, IDC_INV_CHECK, common64.bScrollInv);
   //"use cursor"
-  DDX_Check(pDX, IDC_USE_CURSOR_CHECK, cpInfo->common64.bCursorVisualise);
+  DDX_Check(pDX, IDC_USE_CURSOR_CHECK, common64.bCursorVisualise);
   //bidirection
-  if(false == theApp.CheckRegBoolCheckBox(m_hWnd, IDC_BD_SCROLL_CHECK, cpInfo->common64.bBDScrollingEnabled, FALSE))
+  if(false == theApp.CheckRegBoolCheckBox(m_hWnd, IDC_BD_SCROLL_CHECK, common64.bBDScrollingEnabled, FALSE))
   {
-    DDX_Check(pDX, IDC_BD_SCROLL_CHECK, cpInfo->common64.bBDScrollingEnabled);
+    DDX_Check(pDX, IDC_BD_SCROLL_CHECK, common64.bBDScrollingEnabled);
   };
 
   //reduction
@@ -108,14 +108,14 @@ void CScrollPage::DoDataExchange(CDataExchange* pDX)
       const DWORD dwcSetVal = (0 != dwcPsRedVal)
         ? egcNumberPerCentValue * egcMagnScrollReduction / dwcPsRedVal
         : 0;
-      cpInfo->common64.lScrollReduction = dwcSetVal;
+      common64.lScrollReduction = dwcSetVal;
     };
     //normal reduction
     {
       const DWORD dwcPsRedVal = min(max(GetDlgItemInt(IDC_NORM_RED_EDIT, 0, FALSE), egcMarginScrollReductionPsMin), egcMarginScrollReductionPsMax);
       //to cfg
       const DWORD dwcSetVal = dwcPsRedVal * egcMagnScrollReduction / egcNumberPerCentValue;
-      cpInfo->common64.dwScrollNormReduction = dwcSetVal;
+      common64.dwScrollNormReduction = dwcSetVal;
     };
     //IE move sens
     {
@@ -123,7 +123,7 @@ void CScrollPage::DoDataExchange(CDataExchange* pDX)
       const DWORD dwcMoveSensVal = (0 != egcNumberPerCentValue)
         ? dwcPSMoveSensVal * egcIEScrollConvMoveMagn / egcNumberPerCentValue
         : 0;
-      cpInfo->common64.dwIESCrollConvMove = dwcMoveSensVal;
+      common64.dwIESCrollConvMove = dwcMoveSensVal;
     };
   }
   else
@@ -132,24 +132,24 @@ void CScrollPage::DoDataExchange(CDataExchange* pDX)
       //range for spin
       SendDlgItemMessage(IDC_RED_SPIN, UDM_SETRANGE, 0, MAKELONG(egcMarginScrollReductionPsMax, egcMarginScrollReductionPsMin));
       //load reduction
-      const DWORD dwRedPsVal = (0 == cpInfo->common64.lScrollReduction)
+      const DWORD dwRedPsVal = (0 == common64.lScrollReduction)
         ? 0
-        : egcNumberPerCentValue * egcMagnScrollReduction / cpInfo->common64.lScrollReduction;
+        : egcNumberPerCentValue * egcMagnScrollReduction / common64.lScrollReduction;
       SetDlgItemInt(IDC_RED_EDIT, min(max(dwRedPsVal, egcMarginScrollReductionPsMin), egcMarginScrollReductionPsMax), FALSE);
     };
     //normal reduction
     {
       SendDlgItemMessage(IDC_NORM_RED_SPIN, UDM_SETRANGE, 0, MAKELONG(egcMarginScrollReductionPsMax, egcMarginScrollReductionPsMin));
-      const DWORD dwRedPsVal = egcNumberPerCentValue * cpInfo->common64.dwScrollNormReduction / egcMagnScrollReduction;
+      const DWORD dwRedPsVal = egcNumberPerCentValue * common64.dwScrollNormReduction / egcMagnScrollReduction;
       SetDlgItemInt(IDC_NORM_RED_EDIT, min(max(dwRedPsVal, egcMarginScrollReductionPsMin), egcMarginScrollReductionPsMax), FALSE);
     };
     {
       //IE move sens
       SendDlgItemMessage(IDC_IE_MOVE_SENS_SPIN, UDM_SETRANGE, 0, MAKELONG(egcIEScrollConvMoveMax, egcIEScrollConvMoveMin));
       //load 
-      const DWORD dwcMoveSendPs = (0 == cpInfo->common64.dwIESCrollConvMove)
+      const DWORD dwcMoveSendPs = (0 == common64.dwIESCrollConvMove)
         ? 0
-        : cpInfo->common64.dwIESCrollConvMove * egcNumberPerCentValue / egcIEScrollConvMoveMagn;
+        : common64.dwIESCrollConvMove * egcNumberPerCentValue / egcIEScrollConvMoveMagn;
       SetDlgItemInt(IDC_IE_MOVE_SENS_EDIT, min(max(dwcMoveSendPs, egcIEScrollConvMoveMin), egcIEScrollConvMoveMax));
     };
   };
@@ -163,26 +163,26 @@ void CScrollPage::DoDataExchange(CDataExchange* pDX)
     const int icKeyInd = CtrlKeyCombo.GetCurSel();
     if(0 <= icKeyInd)
     {
-      cpInfo->common64.uiValidMouseKeys = CtrlKeyCombo.GetItemData(icKeyInd);
+      common64.uiValidMouseKeys = CtrlKeyCombo.GetItemData(icKeyInd);
     };
     //smart key
     const int icSmartKeyInd = SmartKeyCombo.GetCurSel();
     if(0 <= icSmartKeyInd)
     {
-      cpInfo->common64.uiScollReductionKey = SmartKeyCombo.GetItemData(icSmartKeyInd);
+      common64.uiScollReductionKey = SmartKeyCombo.GetItemData(icSmartKeyInd);
     };
     //disble key
     const int icDisKeyInd = DisableKeyCombo.GetCurSel();
     if(0 <= icDisKeyInd)
     {
-      cpInfo->common64.uiDirectScrollTmpDisableKey = DisableKeyCombo.GetItemData(icDisKeyInd);
+      common64.uiDirectScrollTmpDisableKey = DisableKeyCombo.GetItemData(icDisKeyInd);
     };
     //control type
-    cpInfo->common64.bScrollDisabled = BST_CHECKED == IsDlgButtonChecked(IDC_ENABLED_CHECK);
+    common64.bScrollDisabled = BST_CHECKED == IsDlgButtonChecked(IDC_ENABLED_CHECK);
     const int icControlTypeInd = ControlTypeCombo.GetCurSel();
     if(0 <= icControlTypeInd)
     {
-      cpInfo->common64.dwControlType = ControlTypeCombo.GetItemData(icControlTypeInd);
+      common64.dwControlType = ControlTypeCombo.GetItemData(icControlTypeInd);
     };
   }
   else
@@ -194,7 +194,7 @@ void CScrollPage::DoDataExchange(CDataExchange* pDX)
       const int icNumb = CtrlKeyCombo.GetCount();
       for(int iCount = 0; icNumb > iCount; iCount++)
       {
-        if(CtrlKeyCombo.GetItemData(iCount) == cpInfo->common64.uiValidMouseKeys)
+        if(CtrlKeyCombo.GetItemData(iCount) == common64.uiValidMouseKeys)
         {
           CtrlKeyCombo.SetCurSel(iCount);
           break;
@@ -206,7 +206,7 @@ void CScrollPage::DoDataExchange(CDataExchange* pDX)
       const int icNumb = SmartKeyCombo.GetCount();
       for(int iCount = 0; icNumb > iCount; iCount++)
       {
-        if(SmartKeyCombo.GetItemData(iCount) == cpInfo->common64.uiScollReductionKey)
+        if(SmartKeyCombo.GetItemData(iCount) == common64.uiScollReductionKey)
         {
           SmartKeyCombo.SetCurSel(iCount);
           break;
@@ -218,7 +218,7 @@ void CScrollPage::DoDataExchange(CDataExchange* pDX)
       const int icNumb = DisableKeyCombo.GetCount();
       for(int iCount = 0; icNumb > iCount; iCount++)
       {
-        if(DisableKeyCombo.GetItemData(iCount) == cpInfo->common64.uiDirectScrollTmpDisableKey)
+        if(DisableKeyCombo.GetItemData(iCount) == common64.uiDirectScrollTmpDisableKey)
         {
           DisableKeyCombo.SetCurSel(iCount);
           break;
@@ -226,12 +226,12 @@ void CScrollPage::DoDataExchange(CDataExchange* pDX)
       };
     };
     //control type
-    CheckDlgButton(IDC_ENABLED_CHECK, (FALSE != cpInfo->common64.bScrollDisabled) ? BST_CHECKED : BST_UNCHECKED);
+    CheckDlgButton(IDC_ENABLED_CHECK, (FALSE != common64.bScrollDisabled) ? BST_CHECKED : BST_UNCHECKED);
     {
       const int icNumb = ControlTypeCombo.GetCount();
       for(int iCount = 0; icNumb > iCount; iCount++)
       {
-        if(ControlTypeCombo.GetItemData(iCount) == cpInfo->common64.dwControlType)
+        if(ControlTypeCombo.GetItemData(iCount) == common64.dwControlType)
         {
           ControlTypeCombo.SetCurSel(iCount);
           break;
@@ -262,7 +262,7 @@ BOOL CScrollPage::OnInitDialog()
 
   //ctrl key's
   {
-    for(DWORD dwCount = 0; COUNTOF(cpcInitKeyMass) > dwCount; dwCount++)
+    for(DWORD dwCount = 0; ARRAYSIZE(cpcInitKeyMass) > dwCount; dwCount++)
     {
       //fill
       CString Str;
@@ -274,7 +274,7 @@ BOOL CScrollPage::OnInitDialog()
 
   //smart key's
   {
-    for(DWORD dwCount = 0; COUNTOF(cpcInitSmartKeyMass) > dwCount; dwCount++)
+    for(DWORD dwCount = 0; ARRAYSIZE(cpcInitSmartKeyMass) > dwCount; dwCount++)
     {
       CString Str;
       SLCHECK(FALSE != Str.LoadString(cpcInitSmartKeyMass[dwCount].uiResStr));
@@ -285,7 +285,7 @@ BOOL CScrollPage::OnInitDialog()
 
   //disble key
   {
-    for(DWORD dwCount = 0; COUNTOF(cpcInitDisableKeyMass) > dwCount; dwCount++)
+    for(DWORD dwCount = 0; ARRAYSIZE(cpcInitDisableKeyMass) > dwCount; dwCount++)
     {
       CString Str;
       SLCHECK(FALSE != Str.LoadString(cpcInitDisableKeyMass[dwCount].uiResStr));
@@ -296,7 +296,7 @@ BOOL CScrollPage::OnInitDialog()
 
   //control type
   {
-    for(DWORD dwCount = 0; COUNTOF(cpcInitControlType) > dwCount; dwCount++)
+    for(DWORD dwCount = 0; ARRAYSIZE(cpcInitControlType) > dwCount; dwCount++)
     {
       CString Str;
       SLCHECK(FALSE != Str.LoadString(cpcInitControlType[dwCount].uiResStr));

@@ -16,9 +16,9 @@ base utilites
 #define _SLW_USE using namespace slw;
 
 
-#ifndef COUNTOF
-#define COUNTOF(pMass) (sizeof(pMass) / sizeof(pMass[0]))
-#endif//COUNTOF
+#ifndef ARRAYSIZE
+#define ARRAYSIZE(pMass) (sizeof(pMass) / sizeof(pMass[0]))
+#endif//ARRAYSIZE
 
 
 

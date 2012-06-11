@@ -61,14 +61,14 @@ END_MESSAGE_MAP()
 
 void CQuickTourDlg::SyncBtns()
 {
-  _ASSERT(COUNTOF(cpcBmpResMass) > ulBmpResPos);
+  _ASSERT(ARRAYSIZE(cpcBmpResMass) > ulBmpResPos);
   Bmp.LoadBmpFromRes(cpcBmpResMass[ulBmpResPos]);
 
   HWND hCtrl = 0;
   GetDlgItem(IDC_PREV_BTN, &hCtrl);
   ::EnableWindow(hCtrl, 0 < ulBmpResPos);
   GetDlgItem(IDC_NEXT_BTN, &hCtrl);
-  ::EnableWindow(hCtrl, ulBmpResPos + 1 < COUNTOF(cpcBmpResMass));
+  ::EnableWindow(hCtrl, ulBmpResPos + 1 < ARRAYSIZE(cpcBmpResMass));
 };
 
 void CQuickTourDlg::OnNextBtn() 

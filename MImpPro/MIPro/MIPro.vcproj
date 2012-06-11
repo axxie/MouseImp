@@ -428,6 +428,10 @@
 			>
 		</File>
 		<File
+			RelativePath="..\Include\MIHostInterface.h"
+			>
+		</File>
+		<File
 			RelativePath="MImp.def"
 			>
 		</File>

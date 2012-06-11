@@ -4,18 +4,9 @@ mouse imp hok dll
 
 #include "StdAfx.h"
 
-
 #include "MIPro.h"
 
-
-#include "..\\SLibWin\\SLWDbg.h"
-
 #include <limits.h>
-
-#include "..\\Slib\\SLExcHandler.h"
-
-#include "..\\slib\\SLcont.h"
-
 
 //////////////////////////////////////////////////////////////////////
 //global's
@@ -374,20 +365,7 @@ bool CApp::Init()
 
   // read configuration file
   char szFileName[MAX_PATH];
-  memset(szFileName, 0, MAX_PATH);
-  GetModuleFileName(GetModuleHandle("MIPro.dll"), szFileName, MAX_PATH);
-
-  char drive[_MAX_DRIVE];
-  char dir[_MAX_DIR];
-  char fname[_MAX_FNAME];
-  char ext[_MAX_EXT];
-
-  _splitpath(szFileName, drive, dir, fname, ext);
-  memset(szFileName, 0, MAX_PATH);
-  strcat(szFileName,drive);
-  strcat(szFileName,dir);
-  strcat(szFileName,"mimpwnds.xml");
-
+  GetFullBasedName("mimpwnds.xml", szFileName, hInstance);
   xMainNode = XMLNode::parseFile(szFileName, "config", &xRes);
 
   //init (if ok)
@@ -488,7 +466,7 @@ LRESULT CApp::ProcessGlbMsg(const HWND hcWnd, WPARAM wParam, LPARAM lParam, CSub
     break;
 
   case egmGetAppName:
-    ::GetModuleFileName(0, pCfgMem->common64.cpGetAppNameResultBuff, COUNTOF(pCfgMem->common64.cpGetAppNameResultBuff));
+    ::GetModuleFileName(0, pCfgMem->common64.cpGetAppNameResultBuff, ARRAYSIZE(pCfgMem->common64.cpGetAppNameResultBuff));
     break;
 
   default:
@@ -870,7 +848,7 @@ void CApp::AnalyseForDrillChildDown(const HWND hcAnalyseWnd, const MOUSEHOOKSTRU
   CScrollProcessInfo& rProcessInfo = pCfgMem->ScrollProcessInfo;
 
   TCHAR cpBuff[egcWndClassTextLen];
-  ::GetClassName(hcAnalyseWnd, cpBuff, COUNTOF(cpBuff));
+  ::GetClassName(hcAnalyseWnd, cpBuff, ARRAYSIZE(cpBuff));
   if(false != ASCompareClassSimple(cpBuff, cpcScrollBarClassName))
   {
     //it's scroll bar ctrl - look on it's style
@@ -990,7 +968,7 @@ UINT CApp::DrillChildUp(const HWND hcInitStart, const UINT uicCurrKeyFlag, const
 
     //try look "is this wnd IE explorer wnd"
     TCHAR cpBuff[egcWndClassTextLen];
-    ::GetClassName(hLookWnd, cpBuff, COUNTOF(cpBuff));
+    ::GetClassName(hLookWnd, cpBuff, ARRAYSIZE(cpBuff));
     
 	// if xml configuration file exists, try using it
 	if(!xRes.error)
@@ -1477,7 +1455,7 @@ bool CApp::MouseBtnUp(const UINT uicCurrKeyFlag, const MOUSEHOOKSTRUCT* const cp
   case ehmScrollPress:
   case ehmScrollIEPress:
     {
-      _ASSERT(COUNTOF(cpcStopMouseNCInfo) > uicMouseBtnNumb);
+      _ASSERT(ARRAYSIZE(cpcStopMouseNCInfo) > uicMouseBtnNumb);
       const StopMouseMsg& rcInfo = cpcStopMouseNCInfo[uicMouseBtnNumb];
       //emulate click
       pCfgMem->uiSkipUpFlag |= rcInfo.uiSkipMask;

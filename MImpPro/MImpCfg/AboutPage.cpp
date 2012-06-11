@@ -7,9 +7,6 @@ AboutDlg
 
 #include "Aboutpage.h"
 
-
-#include "..\Include\MIGlobal.h"
-
 #include "..\\SlibExc\\SLVerInfo.h"
 
 #include "..\\SlibExc\\SLAutoPtr.h"

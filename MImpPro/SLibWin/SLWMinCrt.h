@@ -300,7 +300,7 @@ extern "C" void mainCRTStartup()
   //build cmd line
   char* cpCmdLine[128];
   char* pDynMem = 0;
-  const int icArgCount = __ConvertCommandLineToArgcArgv(cpCmdLine, COUNTOF(cpCmdLine), &pDynMem);
+  const int icArgCount = __ConvertCommandLineToArgcArgv(cpCmdLine, ARRAYSIZE(cpCmdLine), &pDynMem);
   //call module
   iRes = main(icArgCount, cpCmdLine);
   //free mem for cmd line

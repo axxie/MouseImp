@@ -24,22 +24,22 @@ UINT SLWMessageBox(const HWND hWnd, const UINT uicResStr, const UINT uicResCap, 
 
   //try load string
   TCHAR cpBuff[2048];
-  const int icSize = LoadString(hInst, uicResStr, cpBuff, COUNTOF(cpBuff));
+  const int icSize = LoadString(hInst, uicResStr, cpBuff, ARRAYSIZE(cpBuff));
   //string not found
   _ASSERT(0 != icSize);
   //string too long
-  _ASSERT(COUNTOF(cpBuff) > icSize + 1);
+  _ASSERT(ARRAYSIZE(cpBuff) > icSize + 1);
 
   //try load caption 
   LPCSTR pCaption = 0;
   TCHAR cpCapBuff[100];
   if(0 != uicResCap && static_cast<UINT>(-1) != uicResCap)
   {
-    const int icCapLen = LoadString(hInst, uicResCap, cpCapBuff, COUNTOF(cpCapBuff));
+    const int icCapLen = LoadString(hInst, uicResCap, cpCapBuff, ARRAYSIZE(cpCapBuff));
     //strign apsent
     _ASSERT(0 != icCapLen);
     //strign too long
-    _ASSERT(COUNTOF(cpCapBuff) > icCapLen + 1);
+    _ASSERT(ARRAYSIZE(cpCapBuff) > icCapLen + 1);
     pCaption = cpCapBuff;
   };
 

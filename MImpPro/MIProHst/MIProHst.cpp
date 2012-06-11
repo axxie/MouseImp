@@ -212,7 +212,7 @@ void CApp::LoadCfg(bool& rbFirstStart)
           for(DWORD dwCount = 0; false != bDoCycle; dwCount++)
           {
             TCHAR cpKeyName[MAX_PATH];
-            DWORD dwKeyNameSize = COUNTOF(cpKeyName);
+            DWORD dwKeyNameSize = ARRAYSIZE(cpKeyName);
             DWORD dwValType = 0;
             DWORD dwKeySize =0;
             bDoCycle = ERROR_SUCCESS == ::RegEnumValue(OldCfg, dwCount, cpKeyName, &dwKeyNameSize, 0, &dwValType, 0, &dwKeySize);
@@ -551,7 +551,7 @@ bool CApp::Init(bool& rNewInited)
     TrayIconData.uID = 0;
     TrayIconData.uCallbackMessage = emcToHostTrayIconNotifyMsg;
     TrayIconData.hIcon = 0;
-    SLCHECK(FALSE != ::LoadString(hInst, IDS_STR_TRAY_DEF, TrayIconData.szTip, COUNTOF(TrayIconData.szTip)));
+    SLCHECK(FALSE != ::LoadString(hInst, IDS_STR_TRAY_DEF, TrayIconData.szTip, ARRAYSIZE(TrayIconData.szTip)));
   };
 
   //try register self as service process - for invisibility under Win95
@@ -864,7 +864,7 @@ static inline BOOL CALLBACK EnumCfgAppExitProc(HWND hwnd, LPARAM lCloseWndProces
     //some process - need close
     CHAR cpClass[egcWndClassTextLen];
     cpClass[0] = '\0';
-    ::GetClassName(hwnd, cpClass, COUNTOF(cpClass));
+    ::GetClassName(hwnd, cpClass, ARRAYSIZE(cpClass));
     if(false != ASCompareClassSimple(cpcWndDlgClass, cpClass))
     {
       //dlg
@@ -898,7 +898,7 @@ void CApp::TrayIconMessageFunction(LPARAM lParam)
         SubMenu,
         ID_TRAY_ENABLE_CTYPE_STANDARD,
         ID_TRAY_ENABLE_CTYPE_MIX,
-        (COUNTOF(cpcScrollControlCommands) > pCfgMem->common64.dwControlType) ? cpcScrollControlCommands[pCfgMem->common64.dwControlType] : ID_TRAY_ENABLE_CTYPE_STANDARD,
+        (ARRAYSIZE(cpcScrollControlCommands) > pCfgMem->common64.dwControlType) ? cpcScrollControlCommands[pCfgMem->common64.dwControlType] : ID_TRAY_ENABLE_CTYPE_STANDARD,
         MF_BYCOMMAND
         );
       //registered option's
@@ -1010,7 +1010,7 @@ void CApp::TrayIconMessageFunction(LPARAM lParam)
 
 void CApp::StartCfgApp(const bool bcLikeQuickTour)
 {
-  if(false != bcLikeQuickTour || false == TryShowCfgApp(pCfgMem))
+  if(false != bcLikeQuickTour || false == TryShowCfgApp(&pCfgMem->common64))
   {
     //current cfg app handle is not valid - create new process
 
@@ -1580,7 +1580,7 @@ bool CApp::AHCheckWndByPatternList(const HWND hcWnd, bool& rFindSimpleProcessInP
       //class
       TCHAR cpClass[egcWndClassTextLen];
       *cpClass = '\0';
-      if(0 != ::GetClassName(hcWnd, cpClass, COUNTOF(cpClass)))
+      if(0 != ::GetClassName(hcWnd, cpClass, ARRAYSIZE(cpClass)))
       {
         //cycle and look
         for(WndPatternListIterType Iter = WndPatternList.IterBegin(); false != WndPatternList.IterIsOk(Iter); Iter = WndPatternList.IterNext(Iter))
@@ -1613,7 +1613,7 @@ bool CApp::AHCheckWndByPatternList(const HWND hcWnd, bool& rFindSimpleProcessInP
 UINT CApp::MsgBox(LPCSTR const cpcMsg, const UINT uicType) const
 {
   CHAR cpTitle[50];
-  SLCHECK(0 != ::LoadString(hInst, IDS_STR_MSG_TITLE, cpTitle, COUNTOF(cpTitle)));
+  SLCHECK(0 != ::LoadString(hInst, IDS_STR_MSG_TITLE, cpTitle, ARRAYSIZE(cpTitle)));
   return ::MessageBox((0 == pCfgMem) ? 0 : pCfgMem->common64.hMainHostWnd, cpcMsg, cpTitle, uicType | MB_SETFOREGROUND | MB_TOPMOST);
 };
 
@@ -1647,7 +1647,7 @@ void CApp::TrayIconSet(HICON hIcon, LPCTSTR const cpcTipText, const bool bcForce
     TrayIconData.uFlags = NIF_ICON;
     if(0 != cpcTipText)
     {
-      ::lstrcpyn(TrayIconData.szTip, cpcTipText, COUNTOF(TrayIconData.szTip));
+      ::lstrcpyn(TrayIconData.szTip, cpcTipText, ARRAYSIZE(TrayIconData.szTip));
       TrayIconData.uFlags |= NIF_TIP;
     };
 

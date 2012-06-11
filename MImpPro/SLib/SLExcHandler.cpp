@@ -344,12 +344,12 @@ static void SLGenReport(HANDLE hFile, _EXCEPTION_POINTERS *pExceptionInfo)
   *cpFaultModule = '\0';
   DWORD dwSection = 0;
   DWORD dwOffset = 0;
-  SLGetLogicalAddress(pExcRec->ExceptionAddress, cpFaultModule, COUNTOF(cpFaultModule), dwSection, dwOffset);
+  SLGetLogicalAddress(pExcRec->ExceptionAddress, cpFaultModule, ARRAYSIZE(cpFaultModule), dwSection, dwOffset);
   //out
   SLPrintf(hFile, _T("Fault address : %08X %02X:%08X \"%s\"\n"), pExcRec->ExceptionAddress, dwSection, dwOffset, cpFaultModule);
   ////host module
   *cpFaultModule = '\0';
-  ::GetModuleFileName(0, cpFaultModule, COUNTOF(cpFaultModule));
+  ::GetModuleFileName(0, cpFaultModule, ARRAYSIZE(cpFaultModule));
   SLPrintf(hFile, _T("HostModule : \"%s\"\n"), cpFaultModule);
 
   // Show the registers
@@ -426,7 +426,7 @@ void SLExcInstall(LPCTSTR const cpcRepFileName, const bool bcInstallGlobal)
   if(0 == cpcRepFileName)
   {
     //build
-    const DWORD dwcLen = ::GetModuleFileName(::GetModuleHandle(0), cpRepFileName, COUNTOF(cpRepFileName));
+    const DWORD dwcLen = ::GetModuleFileName(::GetModuleHandle(0), cpRepFileName, ARRAYSIZE(cpRepFileName));
     //scan for extention
     for(DWORD dwCount = 0; dwcLen > dwCount; dwCount++)
     {

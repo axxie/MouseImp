@@ -11,13 +11,14 @@ mouse imp hok dll
 
 #include "resource.h"
 
+#include "xmlParser.h"
+
 #include "..\\SLib\\SLDbg.h"
 
 #include "..\\Slib\\SLCont.h"
 
 #include "..\\Slib\\SLWndProcThunk.h"
 
-#include "xmlParser.h"
 
 #include <ZMOUSE.H>
 
@@ -1309,7 +1310,7 @@ inline void CApp::TryUnLock(const HWND hcWnd, CSubClassInfo* const cpInfo)
         //first check
         0 != pCfgMem->hHookPresentFlag
         //check "host wnd class"
-        && 0 != ::GetClassName(pCfgMem->common64.hMainHostWnd, cpClassBuff, COUNTOF(cpClassBuff))
+        && 0 != ::GetClassName(pCfgMem->common64.hMainHostWnd, cpClassBuff, ARRAYSIZE(cpClassBuff))
         && false != ASCompareClassSimple(cpClassBuff, cpcWndClass)
         //check again (apssoble exit while PostThreadMessage time)
         && 0 != pCfgMem->hHookPresentFlag
@@ -1384,7 +1385,7 @@ inline bool CApp::SubClassWnd(const HWND hcWnd)
       if(0 == lLockCount)
       {
         CHAR cpName[MAX_PATH];
-        ::GetModuleFileName(hInstance, cpName, COUNTOF(cpName));
+        ::GetModuleFileName(hInstance, cpName, ARRAYSIZE(cpName));
         ::LoadLibrary(cpName);
       };
       ::InterlockedIncrement(&lLockCount);

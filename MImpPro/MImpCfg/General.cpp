@@ -7,9 +7,6 @@ AboutDlg
 
 #include "General.h"
 
-
-#include "..\Include\MIGlobal.h"
-
 #include "MImpCfg.h"
 
 #include <RegStr.h>
@@ -58,20 +55,20 @@ void CGeneralPage::DoDataExchange(CDataExchange* pDX)
 	//}}AFX_DATA_MAP
 
   //info
-  CMISharedInfo* const cpInfo = theApp.pCfgMem;
+  CMICommonPartWith64bit& common64 = *theApp.pCommon64;
 
   //tray anim
-  if(false == theApp.CheckRegBoolCheckBox(m_hWnd, IDC_TICON_ENABLE_CHECK, cpInfo->common64.bEnableTrayIcon, TRUE))
+  if(false == theApp.CheckRegBoolCheckBox(m_hWnd, IDC_TICON_ENABLE_CHECK, common64.bEnableTrayIcon, TRUE))
   {
-    DDX_Check(pDX, IDC_TICON_ENABLE_CHECK, cpInfo->common64.bEnableTrayIcon);
+    DDX_Check(pDX, IDC_TICON_ENABLE_CHECK, common64.bEnableTrayIcon);
   };
   //tray icon animation
-  DDX_Check(pDX, IDC_TICON_ENABLE_ANIM_CHECK, cpInfo->common64.bEnableTrayIconAnim);
+  DDX_Check(pDX, IDC_TICON_ENABLE_ANIM_CHECK, common64.bEnableTrayIconAnim);
   SyncTIconCfg(m_hWnd);
   //splash icon
-  if(false == theApp.CheckRegBoolCheckBox(m_hWnd, IDC_SPLASH_SHOW_CHECK, cpInfo->common64.bShowSplash, TRUE))
+  if(false == theApp.CheckRegBoolCheckBox(m_hWnd, IDC_SPLASH_SHOW_CHECK, common64.bShowSplash, TRUE))
   {
-    DDX_Check(pDX, IDC_SPLASH_SHOW_CHECK, cpInfo->common64.bShowSplash);
+    DDX_Check(pDX, IDC_SPLASH_SHOW_CHECK, common64.bShowSplash);
   };
 
   //load on wndstart
@@ -114,13 +111,13 @@ void CGeneralPage::DoDataExchange(CDataExchange* pDX)
   {
     //save
     using slw::SLWComboControlGetSel;
-    SLWComboControlGetSel(m_hWnd, IDC_TRAY_CLICK_COMBO, theApp.pCfgMem->common64.dwTrayIconClickMode);
+    SLWComboControlGetSel(m_hWnd, IDC_TRAY_CLICK_COMBO, theApp.pCommon64->dwTrayIconClickMode);
   }
   else
   {
     //load
     using slw::SLWComboControlInit;
-    SLWComboControlInit(AfxGetResourceHandle(), m_hWnd, IDC_TRAY_CLICK_COMBO, theApp.pCfgMem->common64.dwTrayIconClickMode, cpcTrayIconComboInitData, COUNTOF(cpcTrayIconComboInitData));
+    SLWComboControlInit(AfxGetResourceHandle(), m_hWnd, IDC_TRAY_CLICK_COMBO, theApp.pCommon64->dwTrayIconClickMode, cpcTrayIconComboInitData, ARRAYSIZE(cpcTrayIconComboInitData));
   };
 }
 

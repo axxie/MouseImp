@@ -12,8 +12,6 @@ WndPattern cfg dlg
 
 #include "..\\SlibExc\\SLMemMgr.h"
 
-#include "..\Include\MIGlobal.h"
-
 #include "MyListCtrl.h"
 
 using sl::CSLTmplChunk;

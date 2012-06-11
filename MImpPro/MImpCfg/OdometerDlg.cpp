@@ -32,7 +32,7 @@ enum ModuleConstEnum
 };
 
 //transfer from "mouse pnt's" to "metric" (milimeters) distance (used conversion's from CMISharedInfo)
-static inline void FromMousePntsToMetric(const LONGLONG& rcDist, const CMISharedInfo* const cpcConvInfo, LONGLONG& rRes)
+static inline void FromMousePntsToMetric(const LONGLONG& rcDist, LONGLONG& rRes)
 {
   //dummy coefficient for MouseInput odometer
   rRes = rcDist * 4 / 150;
@@ -89,24 +89,25 @@ void COdometerDlg::DoDataExchange(CDataExchange* pDX)
   //transfer "read only" data
   if(FALSE == pDX->m_bSaveAndValidate)
   {
-    const CMISharedInfo* const cpcInfo = theApp.pCfgMem;
+    CMICommonPartWith64bit& common64 = *theApp.pCommon64;
+
     LONGLONG llSave;
-    FromMousePntsToMetric(cpcInfo->common64.llMoveDistanceSumm, cpcInfo, llSave);
+    FromMousePntsToMetric(common64.llMoveDistanceSumm, llSave);
     SetDlgItemText(IDC_MOUSE_DIST_EDIT, BuildDistString(llSave));
     LONGLONG llTotal;
-    FromMousePntsToMetric(cpcInfo->common64.llMoveDistanceSaveSumm, cpcInfo, llTotal);
+    FromMousePntsToMetric(common64.llMoveDistanceSaveSumm, llTotal);
     SetDlgItemText(IDC_MOUSE_SAVED_EDIT, BuildDistString(llTotal));
     //AShrink 
-    const LONGLONG llcASPerSent = (0 == cpcInfo->common64.ASOpenProd.llTotalTime)
+    const LONGLONG llcASPerSent = (0 == common64.ASOpenProd.llTotalTime)
       ? 0
-      : cpcInfo->common64.ASOpenProd.llWndSqTime * 100 / cpcInfo->common64.ASOpenProd.llTotalTime;
+      : common64.ASOpenProd.llWndSqTime * 100 / common64.ASOpenProd.llTotalTime;
     CString Str;
     Str.Format(IDS_STR_SH_ODM_MASK, static_cast<DWORD>(llcASPerSent));
     SetDlgItemText(IDC_ASHRINK_SAVED_EDIT, Str);
 
     ////time elapsed since last reset
     Str.Empty();
-    MakeElapsedTimeString(cpcInfo->common64.llTotalRunTime, Str);
+    MakeElapsedTimeString(common64.llTotalRunTime, Str);
     SetDlgItemText(IDC_ELAPSED_TIME_EDIT, Str);
   };
 }
@@ -133,12 +134,12 @@ BOOL COdometerDlg::OnSetActive()
 
 void COdometerDlg::OnReset() 
 {
-  CMISharedInfo* const cpInfo = theApp.pCfgMem;
-  cpInfo->common64.llMoveDistanceSaveSumm = 0;
-  cpInfo->common64.llMoveDistanceSumm = 0;
-  cpInfo->common64.ASOpenProd.llTotalTime = 0;
-  cpInfo->common64.ASOpenProd.llWndSqTime = 0;
-  cpInfo->common64.llTotalRunTime = 0;
+  CMICommonPartWith64bit& common64 = *theApp.pCommon64;
+  common64.llMoveDistanceSaveSumm = 0;
+  common64.llMoveDistanceSumm = 0;
+  common64.ASOpenProd.llTotalTime = 0;
+  common64.ASOpenProd.llWndSqTime = 0;
+  common64.llTotalRunTime = 0;
   UpdateData(FALSE);
 }
 

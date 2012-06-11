@@ -4,14 +4,11 @@ base for property child's
 
 #include "stdafx.h"
 
-
 #include "ChildDlg.h"
-
 
 #include "Appconst.h"
 
-
-
+#include "..\Include\MIHostInterface.h"
 
 
 #ifdef _DEBUG

@@ -4,11 +4,9 @@ WndPattern cfg dlg
 
 #include "stdafx.h"
 
+#include "MImpCfg.h"
 
 #include "AutoHidePatterns.h"
-
-
-#include "MImpCfg.h"
 
 #include "..\\SlibExc\\SLAutoPtr.h"
 
@@ -69,10 +67,10 @@ void CAutoShrinkPatterns::DoDataExchange(CDataExchange* pDX)
 	//}}AFX_DATA_MAP
 
   //easy
-  CMISharedInfo* const cpInfo = theApp.pCfgMem;
+  CMICommonPartWith64bit& common64 = *theApp.pCommon64;
 
   //disabled
-  DDX_Check(pDX, IDC_ENABLED_CHECK, cpInfo->common64.bAHideEnabled);
+  DDX_Check(pDX, IDC_ENABLED_CHECK, common64.bAHideEnabled);
 
   //hide time
   if(FALSE != pDX->m_bSaveAndValidate)
@@ -81,14 +79,14 @@ void CAutoShrinkPatterns::DoDataExchange(CDataExchange* pDX)
     float fVal = 0;
     DDX_Text(pDX, IDC_HIDE_TIME_EDIT, fVal);
     const ULONG ulcRealVal = static_cast<ULONG>(fVal * egcAutoHideTimerMagnifer);
-    cpInfo->common64.dwAutoHideTimerTime = (0 == ulcRealVal)
+    common64.dwAutoHideTimerTime = (0 == ulcRealVal)
       ? 0
       : min(egcMaxAutoHideTimerTime, max(egcMinAutoHideTimerTime, ulcRealVal));
   }
   else
   {
     //load
-    float fVal = static_cast<float>(cpInfo->common64.dwAutoHideTimerTime) / static_cast<float>(egcAutoHideTimerMagnifer);
+    float fVal = static_cast<float>(common64.dwAutoHideTimerTime) / static_cast<float>(egcAutoHideTimerMagnifer);
     DDX_Text(pDX, IDC_HIDE_TIME_EDIT, fVal);
     SendDlgItemMessage(IDC_HIDE_TIME_SPIN, UDM_SETRANGE, 0, MAKELONG(egcMaxAutoHideTimerTime / egcAutoHideTimerMagnifer, egcMinAutoHideTimerTime / egcAutoHideTimerMagnifer));
   };
@@ -98,23 +96,23 @@ void CAutoShrinkPatterns::DoDataExchange(CDataExchange* pDX)
     ////save
     if(BST_CHECKED != IsDlgButtonChecked(IDC_DELAY_OPEN_CHECK))
     {
-      cpInfo->common64.dwAutoOpenTimerTime = 0;
+      common64.dwAutoOpenTimerTime = 0;
     }
     else
     {
       float fVal = 0;
       DDX_Text(pDX, IDC_DELAY_OPEN_EDIT, fVal);
-      cpInfo->common64.dwAutoOpenTimerTime = min(egcMaxAutoHideTimerTime, max(egcMinAutoHideTimerTime, static_cast<DWORD>(fVal * egcAutoHideTimerMagnifer)));
+      common64.dwAutoOpenTimerTime = min(egcMaxAutoHideTimerTime, max(egcMinAutoHideTimerTime, static_cast<DWORD>(fVal * egcAutoHideTimerMagnifer)));
     };
   }
   else
   {
     ////load
-    const DWORD dwcVal = min(egcMaxAutoHideTimerTime, max(egcMinAutoHideTimerTime, cpInfo->common64.dwAutoOpenTimerTime));
+    const DWORD dwcVal = min(egcMaxAutoHideTimerTime, max(egcMinAutoHideTimerTime, common64.dwAutoOpenTimerTime));
     float fVal = static_cast<float>(dwcVal) / static_cast<float>(egcAutoHideTimerMagnifer);
     DDX_Text(pDX, IDC_DELAY_OPEN_EDIT, fVal);
     SendDlgItemMessage(IDC_DELAY_OPEN_SPIN, UDM_SETRANGE, 0, MAKELONG(egcMaxAutoHideTimerTime / egcAutoHideTimerMagnifer, egcMinAutoHideTimerTime / egcAutoHideTimerMagnifer));
-    CheckDlgButton(IDC_DELAY_OPEN_CHECK, (0 != cpInfo->common64.dwAutoOpenTimerTime) ? BST_CHECKED : BST_UNCHECKED);
+    CheckDlgButton(IDC_DELAY_OPEN_CHECK, (0 != common64.dwAutoOpenTimerTime) ? BST_CHECKED : BST_UNCHECKED);
     SyncOpenCtrls();
   };
   //wnd pattern's
@@ -370,8 +368,8 @@ void CAutoShrinkPatterns::RegSaveData()
     };
 
     //info to host
-    CMISharedInfo& rInfo = *(theApp.pCfgMem);
-    ::PostMessage(rInfo.common64.hMainHostWnd, emcReReadWndPattList, 0, false != bSomePatternsChnged);
+    CMICommonPartWith64bit& common64 = *theApp.pCommon64;
+    ::PostMessage(common64.hMainHostWnd, emcReReadWndPattList, 0, false != bSomePatternsChnged);
   };
   bSomePatternsChnged = false;
   bEnableChnged = true;

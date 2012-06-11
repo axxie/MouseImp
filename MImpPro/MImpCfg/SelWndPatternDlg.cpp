@@ -4,15 +4,11 @@ WndPattern finder dlg
 
 #include "stdafx.h"
 
+#include "MImpCfg.h"
 
 #include "SelWndPatternDlg.h"
 
-
 #include "AutoHidePatterns.h"
-
-#include "..\Include\MIGlobal.h"
-
-#include "MImpCfg.h"
 
 #include "..\\SLibExc\\SLCfgStr.h"
 
@@ -318,10 +314,10 @@ void CSelWndPatternDlg::SyncDataForFindWnd()
   {
     dwLastLookingProcess = dwWndProcess;
     //zero current
-    CMISharedInfo& rInfo = *(theApp.pCfgMem);
-    *(rInfo.common64.cpGetAppNameResultBuff) = '\0';
-    ::SendMessage(rInfo.common64.hMainHostWnd, emcGetAppNameById, 0, dwWndProcess);
-    cpCtrlInfo->AppName = rInfo.common64.cpGetAppNameResultBuff;
+    CMICommonPartWith64bit& common64 = *theApp.pCommon64;
+    *(common64.cpGetAppNameResultBuff) = '\0';
+    ::SendMessage(common64.hMainHostWnd, emcGetAppNameById, 0, dwWndProcess);
+    cpCtrlInfo->AppName = common64.cpGetAppNameResultBuff;
   };
   //title
   const LONG lcTitleLen = ::GetWindowTextLength(hCurrFindWnd) + 1;
@@ -330,7 +326,7 @@ void CSelWndPatternDlg::SyncDataForFindWnd()
   cpCtrlInfo->TitleName.ReleaseBuffer();
   //class
   TCHAR cpClass[egcWndClassTextLen];
-  SLCHECK(0 != ::GetClassName(hCurrFindWnd, cpClass, COUNTOF(cpClass)));
+  SLCHECK(0 != ::GetClassName(hCurrFindWnd, cpClass, ARRAYSIZE(cpClass)));
   cpCtrlInfo->ClassName = cpClass;
   //update
   UpdateData(FALSE);
@@ -444,7 +440,7 @@ BOOL CSelWndPatternDlg::OnInitDialog()
 {
   //type combo
   TypeCombo.SubclassDlgItem(IDC_TYPE_COMBO, this);
-  for(DWORD dwCount = 0; COUNTOF(cpcInitTypeCombo) > dwCount; dwCount++)
+  for(DWORD dwCount = 0; ARRAYSIZE(cpcInitTypeCombo) > dwCount; dwCount++)
   {
     CString Str;
     SLCHECK(FALSE != Str.LoadString(cpcInitTypeCombo[dwCount]));
@@ -547,7 +543,7 @@ void CSelWndPatternDlg::OnFindBtn()
     if(false == theApp.bPopUpInstShowed)
     {
       TCHAR cpKeyName[100];
-      ::GetKeyNameText(dwScanCode << 16, cpKeyName, COUNTOF(cpKeyName));
+      ::GetKeyNameText(dwScanCode << 16, cpKeyName, ARRAYSIZE(cpKeyName));
       //get key text
       CString Str;
       Str.Format(IDS_MSG_POP_FIND_INSTR, cpKeyName);
