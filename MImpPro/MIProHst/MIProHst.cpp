@@ -676,8 +676,10 @@ bool CApp::Init(bool& rNewInited)
 
   //splash off
   Splash.WaitForEnd();
-
-  SignalSharedInfoReady();
+  if(false != bRes)
+  {
+      SignalSharedInfoReady();
+  }
 
   //if need - show error
   if(false == bRes && 0 != uiErrorId)
