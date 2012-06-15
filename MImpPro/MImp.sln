@@ -41,6 +41,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MIProHst", "MIProHst\MIProH
 		{D1B9C290-650C-4F7A-8C20-D7CC15509F75} = {D1B9C290-650C-4F7A-8C20-D7CC15509F75}
 	EndProjectSection
 EndProject
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "MImpSetup", "MImpSetup\MImpSetup.wixproj", "{D6445B49-2F35-4A51-BB7C-ABDADAEE0B07}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -131,6 +133,11 @@ Global
 		{30875039-3A54-420D-ACD2-C0C1B88EB64D}.Release|Win32.Build.0 = Release|Win32
 		{30875039-3A54-420D-ACD2-C0C1B88EB64D}.Release|x64.ActiveCfg = Release|x64
 		{30875039-3A54-420D-ACD2-C0C1B88EB64D}.Release|x64.Build.0 = Release|x64
+		{D6445B49-2F35-4A51-BB7C-ABDADAEE0B07}.Debug|Win32.ActiveCfg = Debug|x86
+		{D6445B49-2F35-4A51-BB7C-ABDADAEE0B07}.Debug|Win32.Build.0 = Debug|x86
+		{D6445B49-2F35-4A51-BB7C-ABDADAEE0B07}.Debug|x64.ActiveCfg = Debug|x64
+		{D6445B49-2F35-4A51-BB7C-ABDADAEE0B07}.Release|Win32.ActiveCfg = Release|x86
+		{D6445B49-2F35-4A51-BB7C-ABDADAEE0B07}.Release|x64.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
