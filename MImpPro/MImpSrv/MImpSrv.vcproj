@@ -52,7 +52,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="WtsApi32.lib shlwapi.lib Userenv.lib"
-				SubSystem="1"
+				SubSystem="2"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -117,7 +117,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="WtsApi32.lib shlwapi.lib Userenv.lib"
-				SubSystem="1"
+				SubSystem="2"
 			/>
 			<Tool
 				Name="VCALinkTool"

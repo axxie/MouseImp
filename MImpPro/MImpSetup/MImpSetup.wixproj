@@ -5,7 +5,7 @@
     <ProductVersion>3.5</ProductVersion>
     <ProjectGuid>{d6445b49-2f35-4a51-bb7c-abdadaee0b07}</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
-    <OutputName>MImpSetup</OutputName>
+    <OutputName>MouseImp</OutputName>
     <OutputType>Package</OutputType>
     <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' AND '$(MSBuildExtensionsPath32)' != '' ">$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
     <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
@@ -14,6 +14,10 @@
     <OutputPath>$(SolutionDir)\..\Bin\Win32\$(Configuration)\</OutputPath>
     <IntermediateOutputPath>..\..\Intermediate\MImpSetup\$(Platform)\$(Configuration)</IntermediateOutputPath>
     <DefineConstants>Debug</DefineConstants>
+    <SuppressIces>ICE57</SuppressIces>
+    <LinkerAdditionalOptions>
+    </LinkerAdditionalOptions>
+    <Cultures>en-US</Cultures>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <OutputPath>$(SolutionDir)\..\Bin\$(PlatformName)\$(ConfigurationName)\</OutputPath>
@@ -89,6 +93,16 @@
     <Content Include="$(SolutionDir)\..\Bin\Win32\$(Configuration)\MIProCpl.cpl">
       <Link>MIProCpl.cpl</Link>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <WixExtension Include="WixUtilExtension">
+      <HintPath>$(WixExtDir)\WixUtilExtension.dll</HintPath>
+      <Name>WixUtilExtension</Name>
+    </WixExtension>
+    <WixExtension Include="WixUIExtension">
+      <HintPath>$(WixExtDir)\WixUIExtension.dll</HintPath>
+      <Name>WixUIExtension</Name>
+    </WixExtension>
   </ItemGroup>
   <Import Project="$(WixTargetsPath)" />
   <!--

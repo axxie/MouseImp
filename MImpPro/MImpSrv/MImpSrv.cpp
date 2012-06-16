@@ -4,6 +4,99 @@
 #include "stdafx.h"
 #include "MImpSrvCtl.h"
 
+class CLogger
+{
+public:
+    CLogger()
+    :
+        m_logFileHandle(INVALID_HANDLE_VALUE)
+    {
+    }
+
+    ~CLogger()
+    {
+        if (m_logFileHandle != INVALID_HANDLE_VALUE)
+        {
+            CloseHandle(m_logFileHandle);
+        }
+    }
+
+    bool Init()
+    {
+        WCHAR tempFilePath[MAX_PATH];
+
+        if (!GetTempPath(ARRAYSIZE(tempFilePath), tempFilePath))
+        {
+            return false;
+        }
+
+        for (int i = 1; i < 1500; i++)
+        {
+            WCHAR logFilePath[MAX_PATH];
+            SYSTEMTIME systemTime;
+            GetSystemTime(&systemTime);
+
+            swprintf_s(
+                logFilePath,
+                ARRAYSIZE(logFilePath),
+                L"%s\\MImpSrv_Setup_%d-%02d-%02d_#%03d.txt",
+                tempFilePath,
+                systemTime.wYear,
+                systemTime.wMonth,
+                systemTime.wDay,
+                i);
+
+            m_logFileHandle = CreateFile(
+                logFilePath,
+                GENERIC_ALL,
+                FILE_SHARE_READ,
+                NULL,
+                CREATE_NEW,
+                FILE_ATTRIBUTE_NORMAL,
+                NULL);
+
+            if (m_logFileHandle != INVALID_HANDLE_VALUE)
+            {
+                Log(L"Log started");
+                return true;
+            }
+
+            if (GetLastError() != ERROR_FILE_EXISTS)
+            {
+                return false;
+            }
+        }
+
+        return false;
+    }
+
+    void Log(PWCHAR formatString, ...)
+    {
+        va_list args;
+        va_start( args, formatString );
+        WCHAR buffer[16384];
+
+        vswprintf_s(buffer, ARRAYSIZE(buffer), formatString, args);
+        wcscat_s(buffer, ARRAYSIZE(buffer), L"\r\n");
+        OutputDebugString(buffer);
+        if (m_logFileHandle != INVALID_HANDLE_VALUE)
+        {
+            DWORD bytesWritten;
+            WriteFile(
+                m_logFileHandle,
+                buffer,
+                wcslen(buffer)*sizeof(WCHAR),
+                &bytesWritten,
+                NULL);
+        }
+    }
+
+private:
+    HANDLE m_logFileHandle;
+
+} g_logger;
+
+
 bool SetPrivilege(
     HANDLE  tokenHandle,          
     LPCTSTR privilegeName,  
@@ -17,7 +110,7 @@ bool SetPrivilege(
         privilegeName,   // privilege to lookup 
         &luid))          // receives LUID of privilege
     {
-        printf("LookupPrivilegeValue error: %u\n", GetLastError() ); 
+        g_logger.Log(L"LookupPrivilegeValue error: %u\n", GetLastError() ); 
         return false; 
     }
 
@@ -41,14 +134,14 @@ bool SetPrivilege(
         (PTOKEN_PRIVILEGES) NULL, 
         (PDWORD) NULL))
     { 
-        printf("AdjustTokenPrivileges error: %u\n", GetLastError() ); 
+        g_logger.Log(L"AdjustTokenPrivileges error: %u\n", GetLastError() ); 
         return false; 
     } 
 
     if (GetLastError() == ERROR_NOT_ALL_ASSIGNED)
 
     {
-        printf("The token does not have the specified privilege. \n");
+        g_logger.Log(L"The token does not have the specified privilege. \n");
         return false;
     } 
 
@@ -101,20 +194,20 @@ VOID DoUpdateSvcDacl(SC_HANDLE serviceHandle)
             if (psd == NULL)
             {
                 // Note: HeapAlloc does not support GetLastError.
-                printf("HeapAlloc failed\n");
+                g_logger.Log(L"HeapAlloc failed\n");
                 goto dacl_cleanup;
             }
 
             if (!QueryServiceObjectSecurity(serviceHandle,
                 DACL_SECURITY_INFORMATION, psd, dwSize, &dwBytesNeeded))
             {
-                printf("QueryServiceObjectSecurity failed (%d)\n", GetLastError());
+                g_logger.Log(L"QueryServiceObjectSecurity failed (%d)\n", GetLastError());
                 goto dacl_cleanup;
             }
         }
         else 
         {
-            printf("QueryServiceObjectSecurity failed (%d)\n", GetLastError());
+            g_logger.Log(L"QueryServiceObjectSecurity failed (%d)\n", GetLastError());
             goto dacl_cleanup;
         }
     }
@@ -124,7 +217,7 @@ VOID DoUpdateSvcDacl(SC_HANDLE serviceHandle)
     if (!GetSecurityDescriptorDacl(psd, &bDaclPresent, &pacl,
         &bDaclDefaulted))
     {
-        printf("GetSecurityDescriptorDacl failed(%d)\n", GetLastError());
+        g_logger.Log(L"GetSecurityDescriptorDacl failed(%d)\n", GetLastError());
         goto dacl_cleanup;
     }
 
@@ -143,7 +236,7 @@ VOID DoUpdateSvcDacl(SC_HANDLE serviceHandle)
         0,
         &pSid))
     {
-        printf("DoUpdateSvcDacl - AllocateAndInitializeSid failed(%d)\n", GetLastError());
+        g_logger.Log(L"DoUpdateSvcDacl - AllocateAndInitializeSid failed(%d)\n", GetLastError());
         goto dacl_cleanup;
     }
 
@@ -159,7 +252,7 @@ VOID DoUpdateSvcDacl(SC_HANDLE serviceHandle)
     dwError = SetEntriesInAcl(1, &ea, pacl, &pNewAcl);
     if (dwError != ERROR_SUCCESS)
     {
-        printf("SetEntriesInAcl failed(%d)\n", dwError);
+        g_logger.Log(L"SetEntriesInAcl failed(%d)\n", dwError);
         goto dacl_cleanup;
     }
 
@@ -168,7 +261,7 @@ VOID DoUpdateSvcDacl(SC_HANDLE serviceHandle)
     if (!InitializeSecurityDescriptor(&sd, 
         SECURITY_DESCRIPTOR_REVISION))
     {
-        printf("InitializeSecurityDescriptor failed(%d)\n", GetLastError());
+        g_logger.Log(L"InitializeSecurityDescriptor failed(%d)\n", GetLastError());
         goto dacl_cleanup;
     }
 
@@ -176,7 +269,7 @@ VOID DoUpdateSvcDacl(SC_HANDLE serviceHandle)
 
     if (!SetSecurityDescriptorDacl(&sd, TRUE, pNewAcl, FALSE))
     {
-        printf("SetSecurityDescriptorDacl failed(%d)\n", GetLastError());
+        g_logger.Log(L"SetSecurityDescriptorDacl failed(%d)\n", GetLastError());
         goto dacl_cleanup;
     }
 
@@ -185,10 +278,10 @@ VOID DoUpdateSvcDacl(SC_HANDLE serviceHandle)
     if (!SetServiceObjectSecurity(serviceHandle, 
         DACL_SECURITY_INFORMATION, &sd))
     {
-        printf("SetServiceObjectSecurity failed(%d)\n", GetLastError());
+        g_logger.Log(L"SetServiceObjectSecurity failed(%d)\n", GetLastError());
         goto dacl_cleanup;
     }
-    else printf("Service DACL updated successfully\n");
+    else g_logger.Log(L"Service DACL updated successfully\n");
 
 dacl_cleanup:
 
@@ -204,7 +297,7 @@ DWORD InstallService()
 
     if (GetModuleFileNameW(NULL, modulePath, ARRAYSIZE(modulePath)) == 0)
     {
-        printf("GetModuleFileNameW failed (error %d)", GetLastError());
+        g_logger.Log(L"GetModuleFileNameW failed (error %d)", GetLastError());
         return GetLastError();
     }
 
@@ -216,7 +309,7 @@ DWORD InstallService()
 
     if (!scmHandle)
     {
-        printf("OpenSCManager failed (error %d), run --install from administrator", GetLastError());
+        g_logger.Log(L"OpenSCManager failed (error %d), run --install from administrator", GetLastError());
         return GetLastError();
     }
 
@@ -245,7 +338,7 @@ DWORD InstallService()
 
         if (lastError != ERROR_SERVICE_EXISTS)
         {
-            printf("Error on CreateServiceW %d", GetLastError());
+            g_logger.Log(L"Error on CreateServiceW %d", GetLastError());
             return lastError;
         }
 
@@ -258,7 +351,7 @@ DWORD InstallService()
 
         if (!serviceHandle)
         {
-            printf("Cannot open service for repair!");
+            g_logger.Log(L"Cannot open service for repair!");
             return GetLastError();
         }
 
@@ -275,7 +368,7 @@ DWORD InstallService()
             L"",
             MIMP_SERVICE_DISPLAY_NAME))
         {
-            printf("Can't change service config, please reboot and try again");
+            g_logger.Log(L"Can't change service config, please reboot and try again");
             return GetLastError();
         }
     }
@@ -305,8 +398,14 @@ DWORD UninstallService(bool *rebootRequired)
 
     if (!serviceHandle)
     {
-        printf("Cannot open service");
-        return GetLastError(); 
+        g_logger.Log(L"UninstallService: Cannot open service");
+        DWORD lastError = GetLastError();
+        if (lastError == ERROR_SERVICE_DOES_NOT_EXIST)
+        {
+            g_logger.Log(L"UninstallService: Cannot open service - service does not exist - success");
+            return ERROR_SUCCESS;
+        }
+        return lastError; 
     }
 
     if (DeleteService(serviceHandle))
@@ -316,6 +415,7 @@ DWORD UninstallService(bool *rebootRequired)
 
     if (GetLastError() == ERROR_SERVICE_MARKED_FOR_DELETE)
     {
+        g_logger.Log(L"UninstallService: rebootRequired=true");
         *rebootRequired = true;
         return ERROR_SUCCESS;
     }
@@ -574,8 +674,19 @@ DWORD ExecuteAsService()
     return ERROR_SUCCESS;
 }
 
-int _tmain(int argc, _TCHAR* argv[])
+int
+WINAPI
+_tWinMain(
+    __in HINSTANCE hInstance,
+    __in_opt HINSTANCE hPrevInstance,
+    __in LPWSTR lpCmdLine,
+    __in int nShowCmd)
 {
+    LPWSTR *argv;
+    int argc;
+
+    argv = CommandLineToArgvW(GetCommandLineW(), &argc);
+
     if (argc < 2)
     {
         return ExecuteAsService();
@@ -583,10 +694,14 @@ int _tmain(int argc, _TCHAR* argv[])
 
     if (!wcscmp(argv[1], L"--install"))
     {
+        g_logger.Init();
+        g_logger.Log(L"Install");
         return InstallService();
     }
     else if (!wcscmp(argv[1], L"--uninstall"))
     {
+        g_logger.Init();
+        g_logger.Log(L"Uninstall");
         bool rebootRequired;
         DWORD lastError = UninstallService(&rebootRequired);
         if (rebootRequired)
@@ -598,7 +713,8 @@ int _tmain(int argc, _TCHAR* argv[])
     }
     else if (!wcscmp(argv[1], L"--debug"))
     {
-        return LaunchMouseImpInEverySession();
+        LaunchMouseImpInEverySession();
+        return 0;
     }
 
 	return 0;
