@@ -706,7 +706,7 @@ _tWinMain(
         DWORD lastError = UninstallService(&rebootRequired);
         if (rebootRequired)
         {
-            return MIMP_ERROR_REBOOT_REQUIRED;
+            return 0;
         }
 
         return lastError;

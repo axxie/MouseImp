@@ -11,8 +11,9 @@
 		<?define PlatformProgramFilesFolder = "ProgramFilesFolder" ?>
 	<?endif ?>
 
-	<?define ProgramFiles=MIPro.dll;MIProHst.exe;MIProCfg.exe;MIProCpl.cpl?>
-	
+	<?define ProgramFiles=MIPro.dll;MIProHst.exe;MIProCfg.exe?>
+	<?define AdditionalFiles=MImpPro.chm;License.txt;License_rus.txt;mimpwnds.xml?>
+
 	<Product 
 		Id="981ee878-3853-4b83-8e25-450636cd07b0"
 		Name="$(var.ProductName)"
@@ -38,11 +39,13 @@
 							<File Id='$(var.FileName)' Name='$(var.FileName)' DiskId='1' Source='$(var.SolutionDir)\..\Bin\Win32\$(var.Configuration)\$(var.FileName)' KeyPath='yes'/>
 						</Component>
 					<?endforeach?>
+					<?foreach FileName in $(var.AdditionalFiles)?>
+						<Component Id='$(var.FileName)'>
+							<File Id='$(var.FileName)' Name='$(var.FileName)' DiskId='1' Source='$(var.SolutionDir)\MImpSetup\Files\$(var.FileName)' KeyPath='yes'/>
+						</Component>
+					<?endforeach?>
 					<Component Id='MImpSrv.exe'>
 						<File Id='MImpSrv.exe' Name='MImpSrv.exe' DiskId='1' Source='$(var.SolutionDir)\..\Bin\Win32\$(var.Configuration)\MImpSrv.exe' KeyPath='yes'/>
-					</Component>
-					<Component Id='mimpwnds.xml'>
-						<File Id='mimpwnds.xml' Name='mimpwnds.xml' DiskId='1' Source='$(var.SolutionDir)\XML config sample\mimpwnds.xml' KeyPath='yes'/>
 					</Component>
 
 				</Directory>
@@ -67,6 +70,11 @@
 							 Name='MouseImp PRO'
 							 Target="[INSTALLLOCATION]MIProHst.exe"
 							 WorkingDirectory="INSTALLLOCATION" />
+						<Shortcut
+							 Id='Help'
+							 Name='Documentation'
+							 Target="[INSTALLLOCATION]MImpPro.chm"
+							 WorkingDirectory="INSTALLLOCATION" />
 						<RemoveFolder Id="MouseImpGroup" On="uninstall"/>
 						<RegistryValue Id="MouseImpReg" Root="HKMU" Key="Software\[ProductName]" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
 					</Component>
@@ -77,6 +85,9 @@
 		<Feature Id="ProductFeature" Title="Program Files" Level="1">
 			<?foreach FileName in $(var.ProgramFiles)?>
 				<ComponentRef Id="$(var.FileName)" />
+			<?endforeach?>
+			<?foreach FileName in $(var.AdditionalFiles)?>
+			<ComponentRef Id="$(var.FileName)" />
 			<?endforeach?>
 			<ComponentRef Id="mimpwnds.xml" />
 			<ComponentRef Id="Shortcuts" />
@@ -90,16 +101,6 @@
 			<Condition Level="1"><![CDATA[VersionNT >= 600]]></Condition>
 		</Feature>
 
-
-		<!--<CustomAction Id='RunSndVolEx' FileKey='SndVolEx' ExeCommand='' Return='asyncNoWait'/>
-		<CustomAction Id='QuitSndVolEx' FileKey='SndVolEx' ExeCommand='/QUIT'/>
-		<CustomAction Id='InstallShFolder' BinaryKey='ShFolderInstaller' ExeCommand='/Q'/>
-		<InstallExecuteSequence>
-			<Custom Action='RunSndVolEx' After='InstallFinalize'>(NOT Installed) OR REINSTALLMODE</Custom>
-			<Custom Action='QuitSndVolEx' Before='RemoveFiles'>Installed OR REINSTALLMODE</Custom>
-			<Custom Action='InstallShFolder' After='InstallFiles'>(NOT Installed) AND (VersionNT = 400)</Custom>
-		</InstallExecuteSequence>-->
-
 		<CustomActionRef Id="WixFailWhenDeferred" />
 		
 		<CustomAction Id='CA.Install.MImpLauncherService'   FileKey='MImpSrv.exe' ExeCommand='--install'   Execute='deferred' Impersonate='no'/>
@@ -107,10 +108,10 @@
 		<CustomAction Id='CA.Uninstall.MImpLauncherService' FileKey='MImpSrv.exe' ExeCommand='--uninstall' Execute='deferred' Impersonate='no'/>
 		<CustomAction Id='CA.Rollback.Uninstall.MImpLauncherService' FileKey='MImpSrv.exe' ExeCommand='--install' Execute='rollback' Impersonate='no'/>
 		<InstallExecuteSequence>
-			<Custom Action='CA.Rollback.Install.MImpLauncherService'   Before='CA.Install.MImpLauncherService'>(NOT Installed) OR REINSTALLMODE</Custom>
-			<Custom Action='CA.Install.MImpLauncherService'   Before='InstallFinalize'>(NOT Installed) OR REINSTALLMODE</Custom>
-			<Custom Action='CA.Rollback.Uninstall.MImpLauncherService' Before='CA.Uninstall.MImpLauncherService'>Installed OR REINSTALLMODE</Custom>
-			<Custom Action='CA.Uninstall.MImpLauncherService' Before='RemoveFiles'>Installed OR REINSTALLMODE</Custom>
+			<Custom Action='CA.Rollback.Install.MImpLauncherService'   Before='CA.Install.MImpLauncherService'>(VersionNT >= 600) AND ((NOT Installed) OR REINSTALLMODE)</Custom>
+			<Custom Action='CA.Install.MImpLauncherService'            Before='InstallFinalize'>               (VersionNT >= 600) AND ((NOT Installed) OR REINSTALLMODE)</Custom>
+			<Custom Action='CA.Rollback.Uninstall.MImpLauncherService' Before='CA.Uninstall.MImpLauncherService'>(VersionNT >= 600) AND (Installed OR REINSTALLMODE)</Custom>
+			<Custom Action='CA.Uninstall.MImpLauncherService'          Before='RemoveFiles'>                     (VersionNT >= 600) AND (Installed OR REINSTALLMODE)</Custom>
 		</InstallExecuteSequence>
 
 		<Property Id="WIXUI_INSTALLDIR" Value="INSTALLLOCATION" />

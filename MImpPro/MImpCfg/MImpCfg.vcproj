@@ -71,6 +71,7 @@
 			/>
 			<Tool
 				Name="VCManifestTool"
+				AdditionalManifestFiles="res\MIProCfg.exe.manifest"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -143,6 +144,7 @@
 			/>
 			<Tool
 				Name="VCManifestTool"
+				AdditionalManifestFiles="res\MIProCfg.exe.manifest"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -214,6 +216,7 @@
 			/>
 			<Tool
 				Name="VCManifestTool"
+				AdditionalManifestFiles="res\MIProCfg.exe.manifest"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -286,6 +289,7 @@
 			/>
 			<Tool
 				Name="VCManifestTool"
+				AdditionalManifestFiles="res\MIProCfg.exe.manifest"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -657,5 +661,9 @@
 		</File>
 	</Files>
 	<Globals>
+		<Global
+			Name="RESOURCE_FILE"
+			Value="MImpCfg.rc"
+		/>
 	</Globals>
 </VisualStudioProject>

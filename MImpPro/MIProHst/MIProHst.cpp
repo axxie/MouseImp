@@ -346,20 +346,22 @@ bool CApp::Init(bool& rNewInited)
       SetSecurityDescriptorDacl(secAttr.lpSecurityDescriptor, TRUE, 0, FALSE);
 
       PSECURITY_DESCRIPTOR pSD;
-      ConvertStringSecurityDescriptorToSecurityDescriptor(
+      if (ConvertStringSecurityDescriptorToSecurityDescriptor(
         "S:(ML;;NW;;;LW)", // this means "low integrity"
         SDDL_REVISION_1,
         &pSD,
-        NULL);
-      PACL pSacl = NULL;                  // not allocated
-      BOOL fSaclPresent = FALSE;
-      BOOL fSaclDefaulted = FALSE;
-      GetSecurityDescriptorSacl(
-        pSD,
-        &fSaclPresent,
-        &pSacl,
-        &fSaclDefaulted);
-      SetSecurityDescriptorSacl(secAttr.lpSecurityDescriptor, TRUE, pSacl, FALSE);
+        NULL) && pSD != NULL)
+      {
+          PACL pSacl = NULL;                  // not allocated
+          BOOL fSaclPresent = FALSE;
+          BOOL fSaclDefaulted = FALSE;
+          GetSecurityDescriptorSacl(
+              pSD,
+              &fSaclPresent,
+              &pSacl,
+              &fSaclDefaulted);
+          SetSecurityDescriptorSacl(secAttr.lpSecurityDescriptor, TRUE, pSacl, FALSE);
+      }
 
       //open failed - create new
       hCfgMap = ::CreateFileMapping(INVALID_HANDLE_VALUE, &secAttr, PAGE_READWRITE, 0, dwcSharedInfoSize, cpcSharedInfoName);

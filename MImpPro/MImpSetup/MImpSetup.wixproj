@@ -44,14 +44,6 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLLOCATION</RefTargetDir>
     </ProjectReference>
-    <ProjectReference Include="..\MImpCtrl\MImpCtrl.vcproj">
-      <Name>MImpCtrl</Name>
-      <Project>{985d0604-3d34-4887-bd62-588f4fd2a566}</Project>
-      <Private>True</Private>
-      <DoNotHarvest>True</DoNotHarvest>
-      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
-      <RefTargetDir>INSTALLLOCATION</RefTargetDir>
-    </ProjectReference>
     <ProjectReference Include="..\MImpSrv\MImpSrv.vcproj">
       <Name>MImpSrv</Name>
       <Project>{433bbc19-ad15-4d78-97e6-b82eb981a088}</Project>
@@ -89,9 +81,6 @@
     </Content>
     <Content Include="$(SolutionDir)\..\Bin\Win32\$(Configuration)\MImpSrv.exe">
       <Link>MImpSrv.exe</Link>
-    </Content>
-    <Content Include="$(SolutionDir)\..\Bin\Win32\$(Configuration)\MIProCpl.cpl">
-      <Link>MIProCpl.cpl</Link>
     </Content>
   </ItemGroup>
   <ItemGroup>

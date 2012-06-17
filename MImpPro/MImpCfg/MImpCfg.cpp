@@ -239,38 +239,9 @@ void CMImpCfgApp::CloseSharedCfg()
 
 void CMImpCfgApp::OnHelp()
 {
-  //try find help id from wnd's (from focus wnd to top wnd)
-  //if find - display some topic
-  //else - display default help
-
-  //defautl vald for not find help topic
-  UINT uiCmd = HELP_FINDER;
-  DWORD dwContext = 0;
-
-  for(HWND hLookWnd = ::GetFocus(); 0 != hLookWnd; hLookWnd = ::GetParent(hLookWnd))
-  {
-    //if some process
-    DWORD dwWndPrc = 0;
-    ::GetWindowThreadProcessId(hLookWnd, &dwWndPrc);
-    if(::GetCurrentProcessId() != dwWndPrc)
-    {
-      //not some process
-      break;
-    };
-
-    //get help context
-    const LRESULT lRes = ::SendMessage(hLookWnd, ecmGetHelpId, 0, 0);
-    if(0 != lRes)
-    {
-      //find help topic
-      uiCmd = HELP_CONTEXT;
-      dwContext = lRes;
-      break;
-    };
-  };
-
-  //call help
-  CWinApp::WinHelp(dwContext, uiCmd);
+  // just launch chm for now. TODO: open proper topic
+  ShellExecute(*m_pMainWnd, "open", "MImpPro.chm", "", ".", SW_SHOWDEFAULT);
+  return;
 };
 
 void CMImpCfgApp::PumpMessageOnce()
