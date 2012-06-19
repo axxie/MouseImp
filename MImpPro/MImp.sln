@@ -133,6 +133,7 @@ Global
 		{D6445B49-2F35-4A51-BB7C-ABDADAEE0B07}.Debug|Win32.Build.0 = Debug|x86
 		{D6445B49-2F35-4A51-BB7C-ABDADAEE0B07}.Debug|x64.ActiveCfg = Debug|x64
 		{D6445B49-2F35-4A51-BB7C-ABDADAEE0B07}.Release|Win32.ActiveCfg = Release|x86
+		{D6445B49-2F35-4A51-BB7C-ABDADAEE0B07}.Release|Win32.Build.0 = Release|x86
 		{D6445B49-2F35-4A51-BB7C-ABDADAEE0B07}.Release|x64.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution

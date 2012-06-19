@@ -87,7 +87,7 @@
 				<ComponentRef Id="$(var.FileName)" />
 			<?endforeach?>
 			<?foreach FileName in $(var.AdditionalFiles)?>
-			<ComponentRef Id="$(var.FileName)" />
+				<ComponentRef Id="$(var.FileName)" />
 			<?endforeach?>
 			<ComponentRef Id="mimpwnds.xml" />
 			<ComponentRef Id="Shortcuts" />
@@ -103,19 +103,30 @@
 
 		<CustomActionRef Id="WixFailWhenDeferred" />
 		
-		<CustomAction Id='CA.Install.MImpLauncherService'   FileKey='MImpSrv.exe' ExeCommand='--install'   Execute='deferred' Impersonate='no'/>
-		<CustomAction Id='CA.Rollback.Install.MImpLauncherService'   FileKey='MImpSrv.exe' ExeCommand='--uninstall'   Execute='rollback' Impersonate='no'/>
-		<CustomAction Id='CA.Uninstall.MImpLauncherService' FileKey='MImpSrv.exe' ExeCommand='--uninstall' Execute='deferred' Impersonate='no'/>
-		<CustomAction Id='CA.Rollback.Uninstall.MImpLauncherService' FileKey='MImpSrv.exe' ExeCommand='--install' Execute='rollback' Impersonate='no'/>
+		<CustomAction Id='CA.Install.MImpLauncherService'			 FileKey='MImpSrv.exe' ExeCommand='--install'   Execute='deferred' Impersonate='no'/>
+		<CustomAction Id='CA.Rollback.Install.MImpLauncherService'   FileKey='MImpSrv.exe' ExeCommand='--uninstall' Execute='rollback' Impersonate='no'/>
+		<CustomAction Id='CA.Uninstall.MImpLauncherService'		     FileKey='MImpSrv.exe' ExeCommand='--uninstall' Execute='deferred' Impersonate='no'/>
+		<CustomAction Id='CA.Rollback.Uninstall.MImpLauncherService' FileKey='MImpSrv.exe' ExeCommand='--install'   Execute='rollback' Impersonate='no'/>
+
+		<CustomAction Id='CA.RunMIProHst' FileKey='MIProHst.exe' Execute='immediate' ExeCommand='' Return='asyncNoWait'/>
+		<CustomAction Id='CA.QuitMIProHst' FileKey='MIProCfg.exe' ExeCommand='/QUIT'/>
+
 		<InstallExecuteSequence>
+			<!-- Service install/uninstall -->
 			<Custom Action='CA.Rollback.Install.MImpLauncherService'   Before='CA.Install.MImpLauncherService'>(VersionNT >= 600) AND ((NOT Installed) OR REINSTALLMODE)</Custom>
 			<Custom Action='CA.Install.MImpLauncherService'            Before='InstallFinalize'>               (VersionNT >= 600) AND ((NOT Installed) OR REINSTALLMODE)</Custom>
 			<Custom Action='CA.Rollback.Uninstall.MImpLauncherService' Before='CA.Uninstall.MImpLauncherService'>(VersionNT >= 600) AND (Installed OR REINSTALLMODE)</Custom>
 			<Custom Action='CA.Uninstall.MImpLauncherService'          Before='RemoveFiles'>                     (VersionNT >= 600) AND (Installed OR REINSTALLMODE)</Custom>
+
+			<!-- Quit MIProHst -->
+			<Custom Action='CA.QuitMIProHst'						   Before='RemoveFiles'>(Installed OR REINSTALLMODE)</Custom>
 		</InstallExecuteSequence>
 
 		<Property Id="WIXUI_INSTALLDIR" Value="INSTALLLOCATION" />
-
+		
+		<Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOX" Value="1"/>
+		<Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="Launch $(var.ProductName)" />		
+		
 		<UI Id="WixUI_InstallDir">
 			<TextStyle Id="WixUI_Font_Normal" FaceName="Tahoma" Size="8" />
 			<TextStyle Id="WixUI_Font_Bigger" FaceName="Tahoma" Size="12" />
@@ -161,6 +172,8 @@
 			<Publish Dialog="MaintenanceTypeDlg" Control="RemoveButton" Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
 			<Publish Dialog="MaintenanceTypeDlg" Control="Back" Event="NewDialog" Value="MaintenanceWelcomeDlg">1</Publish>
 
+			<Publish Dialog="ExitDialog" Control="Finish" Order="1" Event="DoAction" Value="CA.RunMIProHst">WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1 and NOT Installed</Publish>
+			
 			<Property Id="ARPNOMODIFY" Value="1" />
 		</UI>
 

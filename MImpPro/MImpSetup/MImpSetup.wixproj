@@ -20,17 +20,23 @@
     <Cultures>en-US</Cultures>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <OutputPath>$(SolutionDir)\..\Bin\$(PlatformName)\$(ConfigurationName)\</OutputPath>
+    <OutputPath>$(SolutionDir)\..\Bin\Win32\$(Configuration)\</OutputPath>
     <IntermediateOutputPath>..\..\Intermediate\MImpSetup\$(Platform)\$(Configuration)</IntermediateOutputPath>
+    <SuppressIces>ICE57</SuppressIces>
+    <Cultures>en-US</Cultures>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
     <DefineConstants>Debug</DefineConstants>
     <OutputPath>$(SolutionDir)\..\Bin\x64\$(Configuration)\</OutputPath>
     <IntermediateOutputPath>..\..\Intermediate\MImpSetup\$(Platform)\$(Configuration)</IntermediateOutputPath>
+    <SuppressIces>ICE57</SuppressIces>
+    <Cultures>en-US</Cultures>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
     <OutputPath>$(SolutionDir)\..\Bin\x64\$(Configuration)\</OutputPath>
     <IntermediateOutputPath>..\..\Intermediate\MImpSetup\$(Platform)\$(Configuration)</IntermediateOutputPath>
+    <SuppressIces>ICE57</SuppressIces>
+    <Cultures>en-US</Cultures>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Product.wxs" />
@@ -93,6 +99,9 @@
       <Name>WixUIExtension</Name>
     </WixExtension>
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Strings.wxl" />
+  </ItemGroup>
   <Import Project="$(WixTargetsPath)" />
   <!--
     To modify your build process, add your task inside one of the targets below and uncomment it.
@@ -102,4 +111,7 @@
     <Target Name="AfterBuild">
     </Target>
     -->
+  <PropertyGroup>
+    <PostBuildEvent>cscript /NoLogo "$(ProjectDir)RepositionCheckbox.js" "$(OutDir)\en-US\$(TargetFileName)"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

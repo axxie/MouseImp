@@ -1032,6 +1032,27 @@ void CApp::StartCfgApp(const bool bcLikeQuickTour)
   };
 };
 
+static bool IsDefaultDPI()
+{
+    bool bRes;
+
+    HDC screen = ::GetDC(0);
+    bRes =  (96 == GetDeviceCaps(screen, LOGPIXELSX)) &&
+            (96 == GetDeviceCaps(screen, LOGPIXELSY));
+    ::ReleaseDC(0, screen);
+    return bRes;
+}
+
+static HICON LoadBestTrayIcon(HINSTANCE hInst, LPCTSTR lpIconName)
+{
+    UINT sizeIcon = 32;
+    if (IsDefaultDPI())
+    {
+        sizeIcon = 16;
+    }
+    return (HICON)LoadImage(hInst, lpIconName, IMAGE_ICON, sizeIcon, sizeIcon, LR_SHARED);
+}
+
 void CApp::TrayAnimProcess(const bool bcForceCycle)
 {
   if(FALSE != pCfgMem->common64.bEnableTrayIcon || FALSE == pCfgMem->bCryptFirstLayerValid)
@@ -1069,7 +1090,7 @@ void CApp::TrayAnimProcess(const bool bcForceCycle)
       const UINT uicRes = (FALSE == pCfgMem->common64.bEnableTrayIconAnim)
         ? uiOpenEyeIcon
         : ((false != bTrayAnimEyesClosed) ? IDI_TRAY_MAIN_2_ICON : uiOpenEyeIcon);
-      const HICON hcIcon = ::LoadIcon(hInst, MAKEINTRESOURCE(uicRes));
+      const HICON hcIcon = LoadBestTrayIcon(hInst, MAKEINTRESOURCE(uicRes));
       _ASSERT(0 != hcIcon);
       TrayIconSet(hcIcon, 0, false == bTrayIconPresent);
       bTrayIconPresent = true;
