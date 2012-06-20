@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Developer Studio generated include file.
-// Used by MImp.rc
+// Microsoft Visual C++ generated include file.
+// Used by MImpSrv.rc
 //
 
 // Next default values for new objects

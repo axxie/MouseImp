@@ -20,7 +20,6 @@ AboutDlg
 
 #include "MImpCfg.h"
 
-
 //////////////////////////////////////////////////////////////////////
 //global's
 
@@ -32,9 +31,9 @@ AboutDlg
 CAboutPage::CAboutPage(CWnd* const cpParent) 
   :CChildDlg(CAboutPage::IDD, cpParent)
 {
-	//{{AFX_DATA_INIT(CAboutPage)
-		// NOTE: the ClassWizard will add member initialization here
-	//}}AFX_DATA_INIT
+    //{{AFX_DATA_INIT(CAboutPage)
+        // NOTE: the ClassWizard will add member initialization here
+    //}}AFX_DATA_INIT
 }
 
 CAboutPage::~CAboutPage()
@@ -43,17 +42,17 @@ CAboutPage::~CAboutPage()
 
 void CAboutPage::DoDataExchange(CDataExchange* pDX)
 {
-	CChildDlg::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(CAboutPage)
-		// NOTE: the ClassWizard will add DDX and DDV calls here
-	//}}AFX_DATA_MAP
+    CChildDlg::DoDataExchange(pDX);
+    //{{AFX_DATA_MAP(CAboutPage)
+        // NOTE: the ClassWizard will add DDX and DDV calls here
+    //}}AFX_DATA_MAP
 
 }
 
 
 BEGIN_MESSAGE_MAP(CAboutPage, CChildDlg)
-	//{{AFX_MSG_MAP(CAboutPage)
-	//}}AFX_MSG_MAP
+    //{{AFX_MSG_MAP(CAboutPage)
+    //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 BOOL CAboutPage::OnInitDialog()

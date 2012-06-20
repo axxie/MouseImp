@@ -11,10 +11,6 @@ Abstract:
     Interface of Mouse Imp Host application and Hook Library is composed 
     from these declarations.
     
-Last:
-
-    $Id:$
-
 --*/
 
 //internal version

@@ -1,5 +1,5 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Developer Studio generated include file.
+// Microsoft Visual C++ generated include file.
 // Used by MImp.rc
 //
 #define IDC_SCR_ALL_OPEN_CUR            101

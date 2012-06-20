@@ -23,43 +23,6 @@ LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// Version
-//
-
-VS_VERSION_INFO VERSIONINFO
- FILEVERSION 7,0,0,3
- PRODUCTVERSION 7,0,0,3
- FILEFLAGSMASK 0x3fL
-#ifdef _DEBUG
- FILEFLAGS 0x1L
-#else
- FILEFLAGS 0x0L
-#endif
- FILEOS 0x4L
- FILETYPE 0x2L
- FILESUBTYPE 0x0L
-BEGIN
-    BLOCK "StringFileInfo"
-    BEGIN
-        BLOCK "000004b0"
-        BEGIN
-            VALUE "FileDescription", "MouseImp PRO hook module"
-            VALUE "FileVersion", "7.0.0.3"
-            VALUE "InternalName", "MIPro"
-            VALUE "OriginalFilename", "MIPro.dll"
-            VALUE "ProductName", "MouseImp PRO"
-            VALUE "ProductVersion", "7.0.0.3"
-        END
-    END
-    BLOCK "VarFileInfo"
-    BEGIN
-        VALUE "Translation", 0x0, 1200
-    END
-END
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
 // Cursor
 //
 
@@ -95,14 +58,13 @@ END
 
 2 TEXTINCLUDE 
 BEGIN
-    "#include ""afxres.h""\r\n"
-    "\0"
+    "#include ""afxres.h""\r\0"
 END
 
 3 TEXTINCLUDE 
 BEGIN
-    "\r\n"
-    "\0"
+    "#define FILE_DESCRIPTION ""MouseImp PRO hook module""\r\n"
+    "#include ""..\\include\\version.rc2\0"
 END
 
 #endif    // APSTUDIO_INVOKED
@@ -117,8 +79,8 @@ END
 //
 // Generated from the TEXTINCLUDE 3 resource.
 //
-
-
+#define FILE_DESCRIPTION "MouseImp PRO hook module"
+#include "..\include\version.rc2"
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED
 
