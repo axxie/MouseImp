@@ -342,6 +342,7 @@ public:
   //timer thunk proc
   void TimerThunkProc(HWND hWnd, UINT uiMsg, UINT_PTR, DWORD);
   bool CheckIntegrityLevel();
+  void ChangeMessageFilters();
 };
 
 /**********************************************************************

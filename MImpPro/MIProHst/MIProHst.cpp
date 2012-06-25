@@ -422,6 +422,10 @@ bool CApp::Init(bool& rNewInited)
               if (OsVer.dwMajorVersion >= 6)
               {
                   bRes = CheckIntegrityLevel();
+                  if (bRes)
+                  {
+                      ChangeMessageFilters();
+                  }
               }
           }
           else if(VER_PLATFORM_WIN32_WINDOWS == OsVer.dwPlatformId)
@@ -1216,6 +1220,7 @@ LRESULT CApp::MainWndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     //save cfg
   case emcNeedSaveCfg:
     SaveCfg();
+    TrayAnimProcess(true);
     break;
 
     //app name queried from CFG app
@@ -1824,3 +1829,27 @@ bool CApp::CheckIntegrityLevel()
     return true;
 }
 
+void CApp::ChangeMessageFilters()
+{
+    HMODULE hUser32 = LoadLibrary("User32.dll");
+    if (!hUser32)
+    {
+        return;
+    }
+
+    typedef BOOL (WINAPI *PChangeWindowMessageFilter)(
+        __in UINT message,
+        __in DWORD dwFlag);
+
+    PChangeWindowMessageFilter pChangeWindowMessageFilter = (PChangeWindowMessageFilter)GetProcAddress(hUser32, "ChangeWindowMessageFilter");
+
+    if (!pChangeWindowMessageFilter)
+    {
+        return;
+    }
+
+    for (UINT message = emcToHostTrayIconNotifyMsg; message < emcRegInfoEnter; message++)
+    {
+        pChangeWindowMessageFilter(message, MSGFLT_ADD);
+    }
+}

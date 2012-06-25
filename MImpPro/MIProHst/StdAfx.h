@@ -11,7 +11,7 @@ precompiled hdr's
 
 #pragma once
 
-
+#define WINVER 0x0600
 #define STRICT
 #define WIN32_LEAN_AND_MEAN
 #define WIN32_EXTRA_LEAN

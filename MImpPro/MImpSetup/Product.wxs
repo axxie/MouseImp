@@ -5,13 +5,14 @@
 		<?define ProductName = "Mouse Imp (64 bit)" ?>
 		<?define Win64 = "yes" ?>
 		<?define PlatformProgramFilesFolder = "ProgramFiles64Folder" ?>
+		<?define PlatformName = "x64" ?>
 	<?else ?>
 		<?define ProductName = "Mouse Imp" ?>
 		<?define Win64 = "no" ?>
 		<?define PlatformProgramFilesFolder = "ProgramFilesFolder" ?>
+		<?define PlatformName = "Win32" ?>
 	<?endif ?>
 
-	<?define ProgramFiles=MIPro.dll;MIProHst.exe;MIProCfg.exe?>
 	<?define AdditionalFiles=MImpPro.chm;License.txt;License_rus.txt;mimpwnds.xml?>
 
 	<Product 
@@ -29,25 +30,31 @@
 		<Property Id="ARPPRODUCTICON" Value="MImpCfg.ico" />
 		<Property Id="ARPHELPLINK" Value="http://mouseimp.com" />
 
+		<WixVariable Id="WixUIBannerBmp" Value="Bitmaps\bannrbmp.bmp" />
+		<WixVariable Id="WixUIDialogBmp" Value="Bitmaps\dlgbmp.bmp" />
+
 		<Property Id="MSIRESTARTMANAGERCONTROL" Value="Disable" />
 
 		<Directory Id="TARGETDIR" Name="SourceDir">
-			<Directory Id="ProgramFilesFolder">
+			<Directory Id="$(var.PlatformProgramFilesFolder)">
 				<Directory Id="INSTALLLOCATION" Name="$(var.ProductName)">
-					<?foreach FileName in $(var.ProgramFiles)?>
-						<Component Id='$(var.FileName)'>
-							<File Id='$(var.FileName)' Name='$(var.FileName)' DiskId='1' Source='$(var.SolutionDir)\..\Bin\Win32\$(var.Configuration)\$(var.FileName)' KeyPath='yes'/>
-						</Component>
-					<?endforeach?>
-					<?foreach FileName in $(var.AdditionalFiles)?>
-						<Component Id='$(var.FileName)'>
-							<File Id='$(var.FileName)' Name='$(var.FileName)' DiskId='1' Source='$(var.SolutionDir)\MImpSetup\Files\$(var.FileName)' KeyPath='yes'/>
-						</Component>
-					<?endforeach?>
+					<Component Id='MIProCfg.exe'>
+						<File Id='MIProCfg.exe' Name='MIProCfg.exe' DiskId='1' Source='$(var.SolutionDir)\..\Bin\Win32\$(var.Configuration)\MIProCfg.exe' KeyPath='yes'/>
+					</Component>
+					<Component Id='MIPro.dll'>
+						<File Id='MIPro.dll' Name='MIPro.dll' DiskId='1' Source='$(var.SolutionDir)\..\Bin\$(var.PlatformName)\$(var.Configuration)\MIPro.dll' KeyPath='yes'/>
+					</Component>
+					<Component Id='MIProHst.exe'>
+						<File Id='MIProHst.exe' Name='MIProHst.exe' DiskId='1' Source='$(var.SolutionDir)\..\Bin\$(var.PlatformName)\$(var.Configuration)\MIProHst.exe' KeyPath='yes'/>
+					</Component>
 					<Component Id='MImpSrv.exe'>
 						<File Id='MImpSrv.exe' Name='MImpSrv.exe' DiskId='1' Source='$(var.SolutionDir)\..\Bin\Win32\$(var.Configuration)\MImpSrv.exe' KeyPath='yes'/>
 					</Component>
-
+					<?foreach FileName in $(var.AdditionalFiles)?>
+					<Component Id='$(var.FileName)'>
+						<File Id='$(var.FileName)' Name='$(var.FileName)' DiskId='1' Source='$(var.SolutionDir)\MImpSetup\Files\$(var.FileName)' KeyPath='yes'/>
+					</Component>
+					<?endforeach?>
 				</Directory>
 			</Directory>
 
@@ -83,14 +90,14 @@
 		</Directory>
 
 		<Feature Id="ProductFeature" Title="Program Files" Level="1">
-			<?foreach FileName in $(var.ProgramFiles)?>
-				<ComponentRef Id="$(var.FileName)" />
-			<?endforeach?>
-			<?foreach FileName in $(var.AdditionalFiles)?>
-				<ComponentRef Id="$(var.FileName)" />
-			<?endforeach?>
+			<ComponentRef Id="MIProCfg.exe" />
+			<ComponentRef Id="MIPro.dll" />
+			<ComponentRef Id="MIProHst.exe" />
 			<ComponentRef Id="mimpwnds.xml" />
 			<ComponentRef Id="Shortcuts" />
+			<?foreach FileName in $(var.AdditionalFiles)?>
+			<ComponentRef Id="$(var.FileName)" />
+			<?endforeach?>
 
 			<!-- Note: The following ComponentGroupRef is required to pull in generated authoring from project references. -->
 			<ComponentGroupRef Id="Product.Generated" />
