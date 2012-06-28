@@ -641,7 +641,7 @@ bool CApp::Init(bool& rNewInited)
 
       BOOL bNotepadRes = CreateProcess(
           NULL,
-          "notepad.exe",
+          "C:\\Windows\\SysWOW64\\notepad.exe",
           //"C:\\Program Files\\Internet Explorer\\IEXPLORE.EXE",
           NULL,
           NULL,

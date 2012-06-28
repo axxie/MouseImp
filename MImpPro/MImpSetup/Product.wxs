@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util='http://schemas.microsoft.com/wix/UtilExtension'>
 
+	<?include version.wxi ?>
 	<?if $(var.Platform) = x64 ?>
 		<?define ProductName = "Mouse Imp (64 bit)" ?>
 		<?define Win64 = "yes" ?>
@@ -19,7 +20,7 @@
 		Id="981ee878-3853-4b83-8e25-450636cd07b0"
 		Name="$(var.ProductName)"
 		Language="1033"
-		Version="7.0.0.4"
+		Version="$(var.Version)"
 		Manufacturer="MouseImp Open Source Project"
 		UpgradeCode="5e099d4f-b396-484d-98cb-bf6400cc4890">
 

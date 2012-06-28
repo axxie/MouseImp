@@ -30,4 +30,4 @@
     wix_version_file.Write ("</Include>")
     wix_version_file.Close
 
-    
+    WScript.Echo "7.0.0." + CStr(Number+1)

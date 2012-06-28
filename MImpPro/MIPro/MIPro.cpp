@@ -482,9 +482,9 @@ LRESULT CApp::DummyHookFunc(int nCode, WPARAM wParam, LPARAM lParam)
 
 LRESULT CApp::CBTHookFunc(int nCode, WPARAM wPrm, LPARAM lPrm)
 {
-	//OA
-	if (nCode < 0)
-		return ::CallNextHookEx(pCfgMem->hCBTHook, nCode, wPrm, lPrm);
+  //OA
+  if (nCode < 0)
+    return ::CallNextHookEx(pCfgMem->hCBTHook, nCode, wPrm, lPrm);
 
   InstallAllFromHook();
 
@@ -561,7 +561,7 @@ LRESULT CApp::CBTHookFunc(int nCode, WPARAM wPrm, LPARAM lPrm)
     //mem only if alloved
     if(FALSE != pCfgMem->bProcessAddWndFromCBTHook)
     {
-		//OA - commented this out
+      //OA - commented this out
       //MemWndList.Push(reinterpret_cast<HWND>(wPrm));
     };
     break;
@@ -570,7 +570,7 @@ LRESULT CApp::CBTHookFunc(int nCode, WPARAM wPrm, LPARAM lPrm)
     break;
   };
   //OA - changed to return 0 instead of next hook
-	return 0;
+  return 0;
   //return ::CallNextHookEx(pCfgMem->hCBTHook, nCode, wPrm, lPrm);
 };
 
@@ -578,7 +578,7 @@ LRESULT CApp::MouseHookFunc(int nCode, WPARAM wPrm, LPARAM lPrm)
 {
   //OA - commented this out
   if (nCode < 0)
-	  return ::CallNextHookEx(pCfgMem->hMouseHook, nCode, wPrm, lPrm);
+    return ::CallNextHookEx(pCfgMem->hMouseHook, nCode, wPrm, lPrm);
   InstallAllFromHook();
   //LRESULT lRes = ::CallNextHookEx(pCfgMem->hMouseHook, nCode, wPrm, lPrm);
   LRESULT lRes = 0;
@@ -749,7 +749,7 @@ LRESULT CApp::MouseHookFunc(int nCode, WPARAM wPrm, LPARAM lPrm)
     };
 
     //try reforward mosue event
-	//OA pCfgMem->bReForwardMouseEvent = FALSE;
+    //OA pCfgMem->bReForwardMouseEvent = FALSE;
     if(FALSE != pCfgMem->bReForwardMouseEvent)
     {
       //stop reforward
@@ -970,62 +970,62 @@ UINT CApp::DrillChildUp(const HWND hcInitStart, const UINT uicCurrKeyFlag, const
     TCHAR cpBuff[egcWndClassTextLen];
     ::GetClassName(hLookWnd, cpBuff, ARRAYSIZE(cpBuff));
     
-	// if xml configuration file exists, try using it
-	if(!xRes.error)
-	{
-		int n=xMainNode.nChildNode("item");
-		bool found = false;
-		for(int i=0; i < n; i++)
-		{
-			XMLCSTR className = xMainNode.getChildNode("item", i).getAttribute("wndclass");
-			XMLCSTR horScroll = xMainNode.getChildNode("item", i).getAttribute("horscroll");
-			XMLCSTR lockedScrollDirection = xMainNode.getChildNode("item", i).getAttribute("lockedscrolldirection");
-			XMLCSTR lockedWheelDelta = xMainNode.getChildNode("item", i).getAttribute("lockedwheeldelta");
-			if(NULL != className)
-			{
-				if(false != ASCompareClassSimplePatt(cpBuff, className))
-				{
+    // if xml configuration file exists, try using it
+    if(!xRes.error)
+    {
+        int n=xMainNode.nChildNode("item");
+        bool found = false;
+        for(int i=0; i < n; i++)
+        {
+            XMLCSTR className = xMainNode.getChildNode("item", i).getAttribute("wndclass");
+            XMLCSTR horScroll = xMainNode.getChildNode("item", i).getAttribute("horscroll");
+            XMLCSTR lockedScrollDirection = xMainNode.getChildNode("item", i).getAttribute("lockedscrolldirection");
+            XMLCSTR lockedWheelDelta = xMainNode.getChildNode("item", i).getAttribute("lockedwheeldelta");
+            if(NULL != className)
+            {
+                if(false != ASCompareClassSimplePatt(cpBuff, className))
+                {
 
-					CSCrollIEProcessInfo& rInfo = pCfgMem->ScrollIEProcessInfo;
-					rInfo.hWnd = hLookWnd;
-					rInfo.bLockedScrollDirection = true;
-					rInfo.bHorScroll = false;
-					rInfo.bLockedWheelDelta = false;
-					if(NULL != horScroll)
-					{
-						if(0 == ::lstrcmp(horScroll, "true"))
-						{
-							rInfo.bHorScroll = true;
-						}
-					}
-					if(NULL != lockedWheelDelta)
-					{
-						if(0 == ::lstrcmp(lockedWheelDelta, "true"))
-						{
-							rInfo.bLockedWheelDelta = true;
-						}
-					}					
-					if(NULL != lockedScrollDirection)
-					{
-						if(0 == ::lstrcmp(lockedScrollDirection, "false"))
-						{
-							rInfo.bLockedScrollDirection = false;
-						}
-					}
-					//goto state
-					uiRes = ehmScrollIEPress;
-					found = true;
-					break;
-				}
-			}
-		}
-		if(found)
-		{
-			break;
-		}
-	}
+                    CSCrollIEProcessInfo& rInfo = pCfgMem->ScrollIEProcessInfo;
+                    rInfo.hWnd = hLookWnd;
+                    rInfo.bLockedScrollDirection = true;
+                    rInfo.bHorScroll = false;
+                    rInfo.bLockedWheelDelta = false;
+                    if(NULL != horScroll)
+                    {
+                        if(0 == ::lstrcmp(horScroll, "true"))
+                        {
+                            rInfo.bHorScroll = true;
+                        }
+                    }
+                    if(NULL != lockedWheelDelta)
+                    {
+                        if(0 == ::lstrcmp(lockedWheelDelta, "true"))
+                        {
+                            rInfo.bLockedWheelDelta = true;
+                        }
+                    }                   
+                    if(NULL != lockedScrollDirection)
+                    {
+                        if(0 == ::lstrcmp(lockedScrollDirection, "false"))
+                        {
+                            rInfo.bLockedScrollDirection = false;
+                        }
+                    }
+                    //goto state
+                    uiRes = ehmScrollIEPress;
+                    found = true;
+                    break;
+                }
+            }
+        }
+        if(found)
+        {
+            break;
+        }
+    }
 
-	////find IE
+    ////find IE
     if(false != ASCompareClassSimple(cpBuff, cpcIEWndClassName))
     {
       //mem info
@@ -1051,8 +1051,8 @@ UINT CApp::DrillChildUp(const HWND hcInitStart, const UINT uicCurrKeyFlag, const
       break;
     }
     else if(
-		false != ASCompareClassSimple(cpBuff, cpcWord2007ClassName)
-		)
+        false != ASCompareClassSimple(cpBuff, cpcWord2007ClassName)
+        )
     {
       CSCrollIEProcessInfo& rInfo = pCfgMem->ScrollIEProcessInfo; // ScrollProcessInfo ???
       rInfo.hWnd = hLookWnd;
@@ -1065,8 +1065,8 @@ UINT CApp::DrillChildUp(const HWND hcInitStart, const UINT uicCurrKeyFlag, const
       break;
     }
     else if(
-		false != ASCompareClassSimple(cpBuff, cpcExcel2007ClassName)
-		)
+        false != ASCompareClassSimple(cpBuff, cpcExcel2007ClassName)
+        )
     {
       CSCrollIEProcessInfo& rInfo = pCfgMem->ScrollIEProcessInfo;
       rInfo.hWnd = hLookWnd;
@@ -1078,8 +1078,8 @@ UINT CApp::DrillChildUp(const HWND hcInitStart, const UINT uicCurrKeyFlag, const
       break;
     }
     else if(
-		false != ASCompareClassSimple(cpBuff, cpcPowerPoint2007ClassName)
-		)
+        false != ASCompareClassSimple(cpBuff, cpcPowerPoint2007ClassName)
+        )
     {
       CSCrollIEProcessInfo& rInfo = pCfgMem->ScrollIEProcessInfo;
       rInfo.hWnd = hLookWnd;
@@ -1090,72 +1090,60 @@ UINT CApp::DrillChildUp(const HWND hcInitStart, const UINT uicCurrKeyFlag, const
       uiRes = ehmScrollIEPress;
       break;
     }
-	else if(false != ASCompareClassSimple(cpBuff, cpcOpera7WndClassName) ||
-		false != ASCompareClassSimple(cpBuff, cpcOpera9WndClassName))
-	{
-		////Mozilla processing
-		//mem info
-		CSCrollIEProcessInfo& rInfo = pCfgMem->ScrollIEProcessInfo;
-		rInfo.hWnd = hLookWnd;
-		rInfo.bLockedScrollDirection = false;
-		rInfo.bHorScroll = false;
-		rInfo.bLockedWheelDelta = true;
-		//goto state
-		uiRes = ehmScrollIEPress;
-		break;
-	}
-	else if (
-		false != ASCompareClassSimple(cpBuff, cpcMozillaWndClassName)
-		)
-	{
-		 ////Mozilla processing
-		//mem info
-		CSCrollIEProcessInfo& rInfo = pCfgMem->ScrollIEProcessInfo;
-		rInfo.hWnd = hLookWnd;
-		rInfo.bLockedScrollDirection = true;
-		rInfo.bHorScroll = false;
-		rInfo.bLockedWheelDelta = true;
-		//goto state
-		uiRes = ehmScrollIEPress;
-		break;
-	}
+    else if(false != ASCompareClassSimple(cpBuff, cpcOpera7WndClassName) ||
+        false != ASCompareClassSimple(cpBuff, cpcOpera9WndClassName))
+    {
+        ////Mozilla processing
+        //mem info
+        CSCrollIEProcessInfo& rInfo = pCfgMem->ScrollIEProcessInfo;
+        rInfo.hWnd = hLookWnd;
+        rInfo.bLockedScrollDirection = false;
+        rInfo.bHorScroll = false;
+        rInfo.bLockedWheelDelta = true;
+        //goto state
+        uiRes = ehmScrollIEPress;
+        break;
+    }
+    else if (
+        false != ASCompareClassSimple(cpBuff, cpcMozillaWndClassName)
+        )
+    {
+         ////Mozilla processing
+        //mem info
+        CSCrollIEProcessInfo& rInfo = pCfgMem->ScrollIEProcessInfo;
+        rInfo.hWnd = hLookWnd;
+        rInfo.bLockedScrollDirection = true;
+        rInfo.bHorScroll = false;
+        rInfo.bLockedWheelDelta = true;
+        //goto state
+        uiRes = ehmScrollIEPress;
+        break;
+    }
 
-	// BEGIN.TormozIT - 1C8 fan
-	else if (false
-		|| ASCompareClassSimple(cpBuff, cpcV8FormElementWndClassName)
-		|| ASCompareClassSimple(cpBuff, cpcV8GridWndClassName)
-		|| ASCompareClassSimple(cpBuff, cpcV8WindowWndClassName)
-		)
-	{
-		//mem info
-		CSCrollIEProcessInfo& rInfo = pCfgMem->ScrollIEProcessInfo;
-		rInfo.hWnd = hLookWnd;
-		rInfo.bLockedScrollDirection = true;
-		rInfo.bHorScroll = false;
-		rInfo.bLockedWheelDelta = true;
-		//goto state
-		uiRes = ehmScrollIEPress;
-		break;
-	}
-	else if (m_IsHostProcess)
-	{
-		//mem info
-		CSCrollIEProcessInfo& rInfo = pCfgMem->ScrollIEProcessInfo;
-		rInfo.hWnd = hLookWnd;
-		rInfo.bLockedScrollDirection = false;
-		rInfo.bLockedWheelDelta = false;
+    // BEGIN.TormozIT - 1C8 fan
+    else if (false
+        || ASCompareClassSimple(cpBuff, cpcV8FormElementWndClassName)
+        || ASCompareClassSimple(cpBuff, cpcV8GridWndClassName)
+        || ASCompareClassSimple(cpBuff, cpcV8WindowWndClassName)
+        )
+    {
+        //mem info
+        CSCrollIEProcessInfo& rInfo = pCfgMem->ScrollIEProcessInfo;
+        rInfo.hWnd = hLookWnd;
+        rInfo.bLockedScrollDirection = true;
+        rInfo.bHorScroll = false;
+        rInfo.bLockedWheelDelta = true;
+        //goto state
+        uiRes = ehmScrollIEPress;
+        break;
+    }
 
-		//goto state
-		uiRes = ehmScrollIEPress;
-		break;
-	}
+    // END.TormozIT - 1C8 fan
 
-	// END.TormozIT - 1C8 fan
-
-	;/*
+    ;/*
     else if(
-		false != ASCompareClassSimple(cpBuff, cpcOutlook2007ClassName)
-		)
+        false != ASCompareClassSimple(cpBuff, cpcOutlook2007ClassName)
+        )
     {
       CSCrollIEProcessInfo& rInfo = pCfgMem->ScrollIEProcessInfo;
       rInfo.hWnd = hLookWnd;
@@ -1245,6 +1233,22 @@ UINT CApp::DrillChildUp(const HWND hcInitStart, const UINT uicCurrKeyFlag, const
       //we find wnd with "scroll bar" style - it's target
       if(false != bVertFind || false != bHorFind)
       {
+        // fix for x64 case
+        if (m_IsHostProcess)
+        {
+            bInDScroll = false;
+            bVertFind = false;
+            bHorFind = false;
+            //mem info
+            CSCrollIEProcessInfo& rInfo = pCfgMem->ScrollIEProcessInfo;
+            rInfo.hWnd = hLookWnd;
+            rInfo.bLockedScrollDirection = false;
+            rInfo.bLockedWheelDelta = false;
+
+            //goto state
+            uiRes = ehmScrollIEPress;
+            break;
+        }        
         break;
       };
     };
@@ -2181,7 +2185,7 @@ extern "C" LRESULT CALLBACK MIHookFunc(int nCode, WPARAM wParam, LPARAM lParam)
 extern "C" VOID CALLBACK MISetIsHostProcess()
 {
   if (pApp)
-	  pApp->SetIsHostProcess();
+      pApp->SetIsHostProcess();
 }
 
 
