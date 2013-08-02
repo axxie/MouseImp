@@ -1,0 +1,273 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Template|Win32">
+      <Configuration>Template</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Template|x64">
+      <Configuration>Template</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{756CB75D-EE02-4D68-A211-4C28767DF6A7}</ProjectGuid>
+    <RootNamespace>MImpCfg</RootNamespace>
+    <Keyword>MFCProj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Template|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\Properties\MouseImpDebug.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\Properties\MouseImpRelease.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Template|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\Properties\MouseImpDebug.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\Properties\MouseImpRelease.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.40219.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetEnvironment>Win32</TargetEnvironment>
+      <TypeLibraryName>.\Release/MImpCfg.tlb</TypeLibraryName>
+      <HeaderFileName>
+      </HeaderFileName>
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+    </ClCompile>
+    <Link>
+      <OutputFile>$(OutDir)MIProCfg.exe</OutputFile>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+    <Manifest>
+      <AdditionalManifestFiles>res\MIProCfg.exe.manifest;%(AdditionalManifestFiles)</AdditionalManifestFiles>
+    </Manifest>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Midl>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetEnvironment>X64</TargetEnvironment>
+      <TypeLibraryName>.\Release/MImpCfg.tlb</TypeLibraryName>
+      <HeaderFileName>
+      </HeaderFileName>
+    </Midl>
+    <Link>
+      <OutputFile>$(OutDir)MIProCfg.exe</OutputFile>
+      <SubSystem>Windows</SubSystem>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
+    <Manifest>
+      <AdditionalManifestFiles>res\MIProCfg.exe.manifest;%(AdditionalManifestFiles)</AdditionalManifestFiles>
+    </Manifest>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetEnvironment>Win32</TargetEnvironment>
+      <TypeLibraryName>.\Debug/MImpCfg.tlb</TypeLibraryName>
+      <HeaderFileName>
+      </HeaderFileName>
+    </Midl>
+    <Link>
+      <OutputFile>$(OutDir)MIProCfg.exe</OutputFile>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+    <Manifest>
+      <AdditionalManifestFiles>res\MIProCfg.exe.manifest;%(AdditionalManifestFiles)</AdditionalManifestFiles>
+    </Manifest>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Midl>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetEnvironment>X64</TargetEnvironment>
+      <TypeLibraryName>.\Debug/MImpCfg.tlb</TypeLibraryName>
+      <HeaderFileName>
+      </HeaderFileName>
+    </Midl>
+    <Link>
+      <OutputFile>$(OutDir)MIProCfg.exe</OutputFile>
+      <SubSystem>Windows</SubSystem>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
+    <Manifest>
+      <AdditionalManifestFiles>res\MIProCfg.exe.manifest;%(AdditionalManifestFiles)</AdditionalManifestFiles>
+    </Manifest>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="MImpCfg.cpp" />
+    <ClCompile Include="MImpCfgMainDlg.cpp" />
+    <ClCompile Include="NewsShowDialog.cpp" />
+    <ClCompile Include="QuickTourDlg.cpp" />
+    <ClCompile Include="RegDlg.cpp" />
+    <ClCompile Include="AppConst.cpp" />
+    <ClCompile Include="MyListCtrl.cpp" />
+    <ClCompile Include="RegShowWnd.cpp" />
+    <ClCompile Include="StdAfx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="BmpStatic.cpp" />
+    <ClCompile Include="ClickStatic.cpp" />
+    <ClCompile Include="hyperlink.cpp" />
+    <ClCompile Include="AboutPage.cpp" />
+    <ClCompile Include="ChildDlg.cpp" />
+    <ClCompile Include="General.cpp" />
+    <ClCompile Include="OdometerDlg.cpp" />
+    <ClCompile Include="ScrollPage.cpp" />
+    <ClCompile Include="AutoHidePatterns.cpp" />
+    <ClCompile Include="SelWndPatternDlg.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MImpCfg.h" />
+    <ClInclude Include="MImpCfgMainDlg.h" />
+    <ClInclude Include="NewsShowDialog.h" />
+    <ClInclude Include="QuickTourDlg.h" />
+    <ClInclude Include="RegDlg.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="AppConst.h" />
+    <ClInclude Include="MyListCtrl.h" />
+    <ClInclude Include="RegShowWnd.h" />
+    <ClInclude Include="StdAfx.h" />
+    <ClInclude Include="BmpStatic.h" />
+    <ClInclude Include="ClickStatic.h" />
+    <ClInclude Include="hyperlink.h" />
+    <ClInclude Include="AboutPage.h" />
+    <ClInclude Include="ChildDlg.h" />
+    <ClInclude Include="General.h" />
+    <ClInclude Include="OdometerDlg.h" />
+    <ClInclude Include="ScrollPage.h" />
+    <ClInclude Include="AutoHidePatterns.h" />
+    <ClInclude Include="SelWndPatternDlg.h" />
+    <ClInclude Include="..\MICrptInfo.h" />
+    <ClInclude Include="..\MICrptInfoImpl.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\arrows.bmp" />
+    <None Include="res\check_bmp.bmp" />
+    <None Include="res\hand_cur.cur" />
+    <None Include="res\logo.png" />
+    <None Include="res\logo1.png" />
+    <None Include="res\logo2.png" />
+    <None Include="res\logo3.png" />
+    <None Include="res\logo4.png" />
+    <None Include="res\logo5.png" />
+    <None Include="res\MImpCfg.ico" />
+    <None Include="res\MImpCfg.rc2" />
+    <None Include="res\patt_type.bmp" />
+    <None Include="res\Quick0.png" />
+    <None Include="res\Quick1.png" />
+    <None Include="res\Quick1r.png" />
+    <None Include="res\Quick2.png" />
+    <None Include="res\Quick2r.png" />
+    <None Include="res\Quick3.png" />
+    <None Include="res\Quick3r.png" />
+    <None Include="res\Quick4.png" />
+    <None Include="res\Quick4r.png" />
+    <None Include="res\Quick5.png" />
+    <None Include="res\Quick5r.png" />
+    <None Include="res\Quick6.png" />
+    <None Include="res\Quick6r.png" />
+    <None Include="res\title_logo.png" />
+    <None Include="res\TVLogo.BMP" />
+    <None Include="res\wnd_clear.ico" />
+    <None Include="res\wnd_cur.ico" />
+    <None Include="res\wnd_find.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="MImpCfg.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PngLib\PngLib.vcxproj">
+      <Project>{23ba6e60-5bce-4492-b918-85bef35f1117}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\SLibExc\SLibExc.vcxproj">
+      <Project>{46a238fe-d18f-49a0-88bd-ae98a5b887f2}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\SLibWin\SLibWin.vcxproj">
+      <Project>{d1b9c290-650c-4f7a-8c20-d7cc15509f75}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\ZLib\ZLib.vcxproj">
+      <Project>{ba5a987c-2882-4cb2-b8cf-596495f77ceb}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties RESOURCE_FILE="MImpCfg.rc" />
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

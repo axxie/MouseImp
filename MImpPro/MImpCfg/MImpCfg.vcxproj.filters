@@ -1,0 +1,244 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{20403f3e-40c4-4cb0-ab5f-7d924913a1bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{55af51ad-5764-4b11-b356-4d281264d2fe}</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+    <Filter Include="Util">
+      <UniqueIdentifier>{3801bcf1-274c-45bb-8177-fecab45cfbfd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Util\HyperUi">
+      <UniqueIdentifier>{c6b22b47-b186-4805-be3f-35ab0e337066}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pages">
+      <UniqueIdentifier>{b2d7072f-0792-488b-bdcc-0755351e4c94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pages\WndPattern">
+      <UniqueIdentifier>{b14f848f-7310-4deb-8f6a-0bdcbb38f64e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="MImpCfg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MImpCfgMainDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NewsShowDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QuickTourDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RegDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AppConst.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="MyListCtrl.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="RegShowWnd.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="StdAfx.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="BmpStatic.cpp">
+      <Filter>Util\HyperUi</Filter>
+    </ClCompile>
+    <ClCompile Include="ClickStatic.cpp">
+      <Filter>Util\HyperUi</Filter>
+    </ClCompile>
+    <ClCompile Include="hyperlink.cpp">
+      <Filter>Util\HyperUi</Filter>
+    </ClCompile>
+    <ClCompile Include="AboutPage.cpp">
+      <Filter>Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="ChildDlg.cpp">
+      <Filter>Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="General.cpp">
+      <Filter>Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="OdometerDlg.cpp">
+      <Filter>Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="ScrollPage.cpp">
+      <Filter>Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="AutoHidePatterns.cpp">
+      <Filter>Pages\WndPattern</Filter>
+    </ClCompile>
+    <ClCompile Include="SelWndPatternDlg.cpp">
+      <Filter>Pages\WndPattern</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MImpCfg.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MImpCfgMainDlg.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NewsShowDialog.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QuickTourDlg.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RegDlg.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AppConst.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="MyListCtrl.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="RegShowWnd.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="StdAfx.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="BmpStatic.h">
+      <Filter>Util\HyperUi</Filter>
+    </ClInclude>
+    <ClInclude Include="ClickStatic.h">
+      <Filter>Util\HyperUi</Filter>
+    </ClInclude>
+    <ClInclude Include="hyperlink.h">
+      <Filter>Util\HyperUi</Filter>
+    </ClInclude>
+    <ClInclude Include="AboutPage.h">
+      <Filter>Pages</Filter>
+    </ClInclude>
+    <ClInclude Include="ChildDlg.h">
+      <Filter>Pages</Filter>
+    </ClInclude>
+    <ClInclude Include="General.h">
+      <Filter>Pages</Filter>
+    </ClInclude>
+    <ClInclude Include="OdometerDlg.h">
+      <Filter>Pages</Filter>
+    </ClInclude>
+    <ClInclude Include="ScrollPage.h">
+      <Filter>Pages</Filter>
+    </ClInclude>
+    <ClInclude Include="AutoHidePatterns.h">
+      <Filter>Pages\WndPattern</Filter>
+    </ClInclude>
+    <ClInclude Include="SelWndPatternDlg.h">
+      <Filter>Pages\WndPattern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\MICrptInfo.h" />
+    <ClInclude Include="..\MICrptInfoImpl.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\arrows.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\check_bmp.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\hand_cur.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\logo.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\logo1.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\logo2.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\logo3.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\logo4.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\logo5.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\MImpCfg.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\MImpCfg.rc2">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\patt_type.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Quick0.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Quick1.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Quick1r.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Quick2.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Quick2r.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Quick3.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Quick3r.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Quick4.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Quick4r.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Quick5.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Quick5r.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Quick6.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Quick6r.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\title_logo.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\TVLogo.BMP">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\wnd_clear.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\wnd_cur.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\wnd_find.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="MImpCfg.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

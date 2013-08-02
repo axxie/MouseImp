@@ -1,5 +1,6 @@
-﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
+    <EnableProjectHarvesting>True</EnableProjectHarvesting>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>3.5</ProductVersion>
@@ -42,7 +43,7 @@
     <Compile Include="Product.wxs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MImpCfg\MImpCfg.vcproj">
+    <ProjectReference Include="..\MImpCfg\MImpCfg.vcxproj">
       <Name>MImpCfg</Name>
       <Project>{756cb75d-ee02-4d68-a211-4c28767df6a7}</Project>
       <Private>True</Private>
@@ -50,7 +51,7 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLLOCATION</RefTargetDir>
     </ProjectReference>
-    <ProjectReference Include="..\MImpSrv\MImpSrv.vcproj">
+    <ProjectReference Include="..\MImpSrv\MImpSrv.vcxproj">
       <Name>MImpSrv</Name>
       <Project>{433bbc19-ad15-4d78-97e6-b82eb981a088}</Project>
       <Private>True</Private>
@@ -58,7 +59,7 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLLOCATION</RefTargetDir>
     </ProjectReference>
-    <ProjectReference Include="..\MIProHst\MIProHst.vcproj">
+    <ProjectReference Include="..\MIProHst\MIProHst.vcxproj">
       <Name>MIProHst</Name>
       <Project>{30875039-3a54-420d-acd2-c0c1b88eb64d}</Project>
       <Private>True</Private>
@@ -66,7 +67,7 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLLOCATION</RefTargetDir>
     </ProjectReference>
-    <ProjectReference Include="..\MIPro\MIPro.vcproj">
+    <ProjectReference Include="..\MIPro\MIPro.vcxproj">
       <Name>MIPro</Name>
       <Project>{642d304f-ce5a-4ed1-8e97-15e47d74a426}</Project>
       <Private>True</Private>

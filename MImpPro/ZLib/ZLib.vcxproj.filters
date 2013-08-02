@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{4c001490-a8f3-4d72-a2c8-591e16c2b6e9}</UniqueIdentifier>
+      <Extensions>cpp,c</Extensions>
+    </Filter>
+    <Filter Include="hdr">
+      <UniqueIdentifier>{54461416-a020-49ff-a5cd-da372dcbdb93}</UniqueIdentifier>
+      <Extensions>h</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="adler32.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="crc32.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="deflate.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="infblock.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="infcodes.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="inffast.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="inflate.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="inftrees.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="infutil.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="trees.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="zutil.c">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="deflate.h">
+      <Filter>hdr</Filter>
+    </ClInclude>
+    <ClInclude Include="infblock.h">
+      <Filter>hdr</Filter>
+    </ClInclude>
+    <ClInclude Include="infcodes.h">
+      <Filter>hdr</Filter>
+    </ClInclude>
+    <ClInclude Include="inffast.h">
+      <Filter>hdr</Filter>
+    </ClInclude>
+    <ClInclude Include="inffixed.h">
+      <Filter>hdr</Filter>
+    </ClInclude>
+    <ClInclude Include="inftrees.h">
+      <Filter>hdr</Filter>
+    </ClInclude>
+    <ClInclude Include="infutil.h">
+      <Filter>hdr</Filter>
+    </ClInclude>
+    <ClInclude Include="trees.h">
+      <Filter>hdr</Filter>
+    </ClInclude>
+    <ClInclude Include="zconf.h">
+      <Filter>hdr</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib.h">
+      <Filter>hdr</Filter>
+    </ClInclude>
+    <ClInclude Include="zutil.h">
+      <Filter>hdr</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

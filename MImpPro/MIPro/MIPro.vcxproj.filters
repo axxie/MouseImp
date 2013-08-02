@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Src">
+      <UniqueIdentifier>{cffc5aca-7cb3-4d4e-a943-642f654575f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Res">
+      <UniqueIdentifier>{d9932fea-2892-4025-9752-59130fb019bd}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="MIPro.cpp">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="StdAfx.cpp">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="xmlParser.cpp">
+      <Filter>Src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MIPro.h">
+      <Filter>Src</Filter>
+    </ClInclude>
+    <ClInclude Include="StdAfx.h">
+      <Filter>Src</Filter>
+    </ClInclude>
+    <ClInclude Include="xmlParser.h">
+      <Filter>Src</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Res</Filter>
+    </ClInclude>
+    <ClInclude Include="MICrptInfo.h" />
+    <ClInclude Include="..\Include\MIGlobal.h" />
+    <ClInclude Include="..\Include\MIHostInterface.h" />
+    <ClInclude Include="PEHelper.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="MIPro_WndDummyProc.txt">
+      <Filter>Src</Filter>
+    </None>
+    <None Include="MIPro_WndProc.txt">
+      <Filter>Src</Filter>
+    </None>
+    <None Include="cur00001.cur">
+      <Filter>Res</Filter>
+    </None>
+    <None Include="cur00002.cur">
+      <Filter>Res</Filter>
+    </None>
+    <None Include="scr_all.cur">
+      <Filter>Res</Filter>
+    </None>
+    <None Include="scr_hor_.cur">
+      <Filter>Res</Filter>
+    </None>
+    <None Include="scr_none.cur">
+      <Filter>Res</Filter>
+    </None>
+    <None Include="scr_vert.cur">
+      <Filter>Res</Filter>
+    </None>
+    <None Include="MouseImp\res\splash_b.bmp">
+      <Filter>Res</Filter>
+    </None>
+    <None Include="MImp.def" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="MImp.rc">
+      <Filter>Res</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
