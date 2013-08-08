@@ -141,6 +141,14 @@ struct CSCrollIEProcessInfo
   bool bLockedScrollDirection;
   //locked "whell delta" (used for WinAmp scrolling)
   bool bLockedWheelDelta;
+
+  void Reset(HWND newHwnd)
+  {
+      hWnd = newHwnd;
+      bHorScroll = false;
+      bLockedScrollDirection = true;
+      bLockedWheelDelta = true;
+  }
 };
 
 ////info for scroll pager ctrl

@@ -1,0 +1,8 @@
+/Bin/Win32/Debug
+/Bin/Win32/Release
+/Intermediate
+*.user
+*.sdf
+*.opensdf
+*.suo
+*.ipch

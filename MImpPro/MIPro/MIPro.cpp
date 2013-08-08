@@ -970,6 +970,9 @@ UINT CApp::DrillChildUp(const HWND hcInitStart, const UINT uicCurrKeyFlag, const
     TCHAR cpBuff[egcWndClassTextLen];
     ::GetClassName(hLookWnd, cpBuff, ARRAYSIZE(cpBuff));
     
+
+    CSCrollIEProcessInfo& rInfo = pCfgMem->ScrollIEProcessInfo;
+
     // if xml configuration file exists, try using it
     if(!xRes.error)
     {
@@ -985,11 +988,7 @@ UINT CApp::DrillChildUp(const HWND hcInitStart, const UINT uicCurrKeyFlag, const
             {
                 if(false != ASCompareClassSimplePatt(cpBuff, className))
                 {
-
-                    CSCrollIEProcessInfo& rInfo = pCfgMem->ScrollIEProcessInfo;
-                    rInfo.hWnd = hLookWnd;
-                    rInfo.bLockedScrollDirection = true;
-                    rInfo.bHorScroll = false;
+                    rInfo.Reset(hLookWnd);
                     rInfo.bLockedWheelDelta = false;
                     if(NULL != horScroll)
                     {
@@ -1029,8 +1028,7 @@ UINT CApp::DrillChildUp(const HWND hcInitStart, const UINT uicCurrKeyFlag, const
     if(false != ASCompareClassSimple(cpBuff, cpcIEWndClassName))
     {
       //mem info
-      CSCrollIEProcessInfo& rInfo = pCfgMem->ScrollIEProcessInfo;
-      rInfo.hWnd = hLookWnd;
+      rInfo.Reset(hLookWnd);
       rInfo.bLockedScrollDirection = false;
       rInfo.bLockedWheelDelta = false;
       //goto state
@@ -1041,11 +1039,7 @@ UINT CApp::DrillChildUp(const HWND hcInitStart, const UINT uicCurrKeyFlag, const
     {
       ////WinAmp processing
       //mem info
-      CSCrollIEProcessInfo& rInfo = pCfgMem->ScrollIEProcessInfo;
-      rInfo.hWnd = hLookWnd;
-      rInfo.bLockedScrollDirection = true; 
-      rInfo.bHorScroll = false;
-      rInfo.bLockedWheelDelta = true;
+      rInfo.Reset(hLookWnd);
       //goto state
       uiRes = ehmScrollIEPress;
       break;
@@ -1054,24 +1048,15 @@ UINT CApp::DrillChildUp(const HWND hcInitStart, const UINT uicCurrKeyFlag, const
         false != ASCompareClassSimple(cpBuff, cpcWord2007ClassName)
         )
     {
-      CSCrollIEProcessInfo& rInfo = pCfgMem->ScrollIEProcessInfo; // ScrollProcessInfo ???
-      rInfo.hWnd = hLookWnd;
-      rInfo.bLockedScrollDirection = true;
-      rInfo.bHorScroll = false;
-      rInfo.bLockedWheelDelta = true;
-      //rInfo.bLockedWheelDelta = true;
-      //goto state
-      uiRes = ehmScrollIEPress; // ehmScrollPress ???
+      rInfo.Reset(hLookWnd);
+      uiRes = ehmScrollIEPress;
       break;
     }
     else if(
         false != ASCompareClassSimple(cpBuff, cpcExcel2007ClassName)
         )
     {
-      CSCrollIEProcessInfo& rInfo = pCfgMem->ScrollIEProcessInfo;
-      rInfo.hWnd = hLookWnd;
-      rInfo.bLockedScrollDirection = true;
-      rInfo.bHorScroll = false;
+      rInfo.Reset(hLookWnd);
       rInfo.bLockedWheelDelta = false;
       //goto state
       uiRes = ehmScrollIEPress;
@@ -1081,10 +1066,7 @@ UINT CApp::DrillChildUp(const HWND hcInitStart, const UINT uicCurrKeyFlag, const
         false != ASCompareClassSimple(cpBuff, cpcPowerPoint2007ClassName)
         )
     {
-      CSCrollIEProcessInfo& rInfo = pCfgMem->ScrollIEProcessInfo;
-      rInfo.hWnd = hLookWnd;
-      rInfo.bLockedScrollDirection = true;
-      rInfo.bHorScroll = false;
+      rInfo.Reset(hLookWnd);
       rInfo.bLockedWheelDelta = false;
       //goto state
       uiRes = ehmScrollIEPress;
@@ -1095,11 +1077,8 @@ UINT CApp::DrillChildUp(const HWND hcInitStart, const UINT uicCurrKeyFlag, const
     {
         ////Mozilla processing
         //mem info
-        CSCrollIEProcessInfo& rInfo = pCfgMem->ScrollIEProcessInfo;
-        rInfo.hWnd = hLookWnd;
+        rInfo.Reset(hLookWnd);
         rInfo.bLockedScrollDirection = false;
-        rInfo.bHorScroll = false;
-        rInfo.bLockedWheelDelta = true;
         //goto state
         uiRes = ehmScrollIEPress;
         break;
@@ -1110,11 +1089,7 @@ UINT CApp::DrillChildUp(const HWND hcInitStart, const UINT uicCurrKeyFlag, const
     {
          ////Mozilla processing
         //mem info
-        CSCrollIEProcessInfo& rInfo = pCfgMem->ScrollIEProcessInfo;
-        rInfo.hWnd = hLookWnd;
-        rInfo.bLockedScrollDirection = true;
-        rInfo.bHorScroll = false;
-        rInfo.bLockedWheelDelta = true;
+        rInfo.Reset(hLookWnd);
         //goto state
         uiRes = ehmScrollIEPress;
         break;
@@ -1128,11 +1103,7 @@ UINT CApp::DrillChildUp(const HWND hcInitStart, const UINT uicCurrKeyFlag, const
         )
     {
         //mem info
-        CSCrollIEProcessInfo& rInfo = pCfgMem->ScrollIEProcessInfo;
-        rInfo.hWnd = hLookWnd;
-        rInfo.bLockedScrollDirection = true;
-        rInfo.bHorScroll = false;
-        rInfo.bLockedWheelDelta = true;
+        rInfo.Reset(hLookWnd);
         //goto state
         uiRes = ehmScrollIEPress;
         break;
@@ -1140,66 +1111,6 @@ UINT CApp::DrillChildUp(const HWND hcInitStart, const UINT uicCurrKeyFlag, const
 
     // END.TormozIT - 1C8 fan
 
-    ;/*
-    else if(
-        false != ASCompareClassSimple(cpBuff, cpcOutlook2007ClassName)
-        )
-    {
-      CSCrollIEProcessInfo& rInfo = pCfgMem->ScrollIEProcessInfo;
-      rInfo.hWnd = hLookWnd;
-      rInfo.bLockedScrollDirection = true;
-      rInfo.bHorScroll = false;
-      rInfo.bLockedWheelDelta = false;
-      //goto state
-      uiRes = ehmScrollIEPress;
-      break;
-    };*/
-//    //find Pager Ctrl
-//    if(false != ASCompareClassSimple(cpBuff, WC_PAGESCROLLER))
-//    {
-//      const HWND hcChildWnd = ::GetWindow(hLookWnd, GW_CHILD);
-//      if(0 != hcChildWnd)
-//      {
-//        const bool bcHor = PGS_HORZ == ((PGS_HORZ | PGS_VERT) & lcLookStyle);
-//        //try query scroll size from child - if size chnged - scroll valid
-//        NMPGCALCSIZE Info;
-//        Info.dwFlag = (false != bcHor)
-//          ? PGF_CALCWIDTH
-//          : PGF_CALCHEIGHT;
-//        Info.iHeight = 0;
-//        Info.iWidth = 0;
-//        NMHDR& rHdr = Info.hdr;
-//        rHdr.code = PGN_CALCSIZE;
-//        rHdr.hwndFrom = hLookWnd;
-//        rHdr.idFrom = ::GetDlgCtrlID(hLookWnd);
-//        if(false != SafeSendMsg(hcChildWnd, WM_NOTIFY, rHdr.code, reinterpret_cast<LPARAM>(&rHdr)))
-//        {
-//          //calc client rect
-//          RECT PgCliRect;
-//          ::GetClientRect(hLookWnd, &PgCliRect);
-//          const int icCliSize = (false != bcHor)
-//            ? PgCliRect.right
-//            : PgCliRect.bottom;
-//          //info size
-//          int& riSize = (false != bcHor)
-//            ? Info.iWidth
-//            : Info.iHeight;
-//          if(icCliSize < riSize)
-//          {
-//            //valid scroll for pager ctrl
-//            CScrollPagerCtrlInfo& rScrollInfo = pCfgMem->ScrollPagerCtrlInfo;
-//            rScrollInfo.PntLastScroll = cpMsg->pt;
-//            rScrollInfo.ClientRect = PgCliRect;
-//            rScrollInfo.bHorProcess = bcHor;
-//            rScrollInfo.hChildWnd = hcChildWnd;
-//            rScrollInfo.hPagerCtrl = hLookWnd;
-//            rScrollInfo.uiPagerCtrlId = rHdr.idFrom;
-//            uiRes = ehmScrollPagerPress;
-//            break;
-//          };
-//        };
-//      };
-//    };
 
     //in scroll bar analyse
     bInDScroll = true;
@@ -1241,7 +1152,7 @@ UINT CApp::DrillChildUp(const HWND hcInitStart, const UINT uicCurrKeyFlag, const
             bHorFind = false;
             //mem info
             CSCrollIEProcessInfo& rInfo = pCfgMem->ScrollIEProcessInfo;
-            rInfo.hWnd = hLookWnd;
+            rInfo.Reset(hLookWnd);
             rInfo.bLockedScrollDirection = false;
             rInfo.bLockedWheelDelta = false;
 
