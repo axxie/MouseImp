@@ -1024,93 +1024,44 @@ UINT CApp::DrillChildUp(const HWND hcInitStart, const UINT uicCurrKeyFlag, const
         }
     }
 
-    ////find IE
-    if(false != ASCompareClassSimple(cpBuff, cpcIEWndClassName))
+    if(ASCompareClassSimple(cpBuff, cpcIEWndClassName))
     {
-      //mem info
       rInfo.Reset(hLookWnd);
       rInfo.bLockedScrollDirection = false;
       rInfo.bLockedWheelDelta = false;
-      //goto state
-      uiRes = ehmScrollIEPress;
-      break;
-    }
-    else if(false != ASCompareClassSimple(cpBuff, cpcWinAmpPLClassName))
-    {
-      ////WinAmp processing
-      //mem info
-      rInfo.Reset(hLookWnd);
-      //goto state
       uiRes = ehmScrollIEPress;
       break;
     }
     else if(
-        false != ASCompareClassSimple(cpBuff, cpcWord2007ClassName)
-        )
+        ASCompareClassSimple(cpBuff, cpcWinAmpPLClassName)         ||
+        ASCompareClassSimple(cpBuff, cpcWord2007ClassName)         ||
+        ASCompareClassSimple(cpBuff, cpcMozillaWndClassName)       ||
+        ASCompareClassSimple(cpBuff, cpcV8FormElementWndClassName) || 
+        ASCompareClassSimple(cpBuff, cpcV8GridWndClassName)        || 
+        ASCompareClassSimple(cpBuff, cpcV8WindowWndClassName))
     {
       rInfo.Reset(hLookWnd);
       uiRes = ehmScrollIEPress;
       break;
     }
     else if(
-        false != ASCompareClassSimple(cpBuff, cpcExcel2007ClassName)
-        )
+        ASCompareClassSimple(cpBuff, cpcExcel2007ClassName) ||
+        ASCompareClassSimple(cpBuff, cpcPowerPoint2007ClassName))
     {
       rInfo.Reset(hLookWnd);
       rInfo.bLockedWheelDelta = false;
-      //goto state
       uiRes = ehmScrollIEPress;
       break;
     }
     else if(
-        false != ASCompareClassSimple(cpBuff, cpcPowerPoint2007ClassName)
-        )
+        ASCompareClassSimple(cpBuff, cpcOpera7WndClassName) ||
+        ASCompareClassSimple(cpBuff, cpcOpera9WndClassName))
     {
       rInfo.Reset(hLookWnd);
-      rInfo.bLockedWheelDelta = false;
-      //goto state
+      rInfo.bLockedScrollDirection = false;
       uiRes = ehmScrollIEPress;
       break;
     }
-    else if(false != ASCompareClassSimple(cpBuff, cpcOpera7WndClassName) ||
-        false != ASCompareClassSimple(cpBuff, cpcOpera9WndClassName))
-    {
-        ////Mozilla processing
-        //mem info
-        rInfo.Reset(hLookWnd);
-        rInfo.bLockedScrollDirection = false;
-        //goto state
-        uiRes = ehmScrollIEPress;
-        break;
-    }
-    else if (
-        false != ASCompareClassSimple(cpBuff, cpcMozillaWndClassName)
-        )
-    {
-         ////Mozilla processing
-        //mem info
-        rInfo.Reset(hLookWnd);
-        //goto state
-        uiRes = ehmScrollIEPress;
-        break;
-    }
-
-    // BEGIN.TormozIT - 1C8 fan
-    else if (false
-        || ASCompareClassSimple(cpBuff, cpcV8FormElementWndClassName)
-        || ASCompareClassSimple(cpBuff, cpcV8GridWndClassName)
-        || ASCompareClassSimple(cpBuff, cpcV8WindowWndClassName)
-        )
-    {
-        //mem info
-        rInfo.Reset(hLookWnd);
-        //goto state
-        uiRes = ehmScrollIEPress;
-        break;
-    }
-
-    // END.TormozIT - 1C8 fan
-
 
     //in scroll bar analyse
     bInDScroll = true;
