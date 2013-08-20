@@ -17,4 +17,7 @@
       <ImportLibrary>$(IntDir)$(TargetName).lib</ImportLibrary>
     </Link>
   </ItemDefinitionGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="..\..\Wpp\TraceWpp.props" />
+  </ImportGroup>
 </Project>

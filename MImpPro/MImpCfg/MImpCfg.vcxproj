@@ -206,8 +206,6 @@
     <ClInclude Include="ScrollPage.h" />
     <ClInclude Include="AutoHidePatterns.h" />
     <ClInclude Include="SelWndPatternDlg.h" />
-    <ClInclude Include="..\MICrptInfo.h" />
-    <ClInclude Include="..\MICrptInfoImpl.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\arrows.bmp" />

@@ -26,6 +26,7 @@
     <ClInclude Include="resource.h">
       <Filter>Res</Filter>
     </ClInclude>
+    <ClInclude Include="..\Include\MIGlobal.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\MImpCfg.ico">

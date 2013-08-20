@@ -130,6 +130,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Include\MIGlobal.h" />
     <ClInclude Include="MIProHst.h" />
     <ClInclude Include="StdAfx.h" />
     <ClInclude Include="resource.h" />

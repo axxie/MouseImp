@@ -8,6 +8,8 @@ mouse imp hok dll
 
 #include <limits.h>
 
+#include "MIPro.cpp.tmh"
+
 //////////////////////////////////////////////////////////////////////
 //global's
 
@@ -1973,6 +1975,7 @@ extern "C" BOOL WINAPI DllMain(HANDLE hDllHandle, DWORD dwReason, LPVOID lpReser
   switch(dwReason)
   {
   case DLL_PROCESS_ATTACH:
+    WPP_INIT_TRACING(L"MIPro");
 #ifdef __REL_CFG
     //dbg:
     sl::SLExcInstall("\\rpt.txt");
@@ -2004,6 +2007,7 @@ extern "C" BOOL WINAPI DllMain(HANDLE hDllHandle, DWORD dwReason, LPVOID lpReser
     sl::SLExcUnInstall();
     //dbg:
 #endif//__REL_CFG
+    WPP_CLEANUP();
     break;
 
   default:

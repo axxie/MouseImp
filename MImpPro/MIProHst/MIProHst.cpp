@@ -26,6 +26,7 @@ main functionaly
 
 #include "..\\MImpSrv\MImpSrvCtl.h"
 
+
 namespace help
 {
 //# include "..\\help\\MIPROHLP.H"
@@ -41,6 +42,7 @@ namespace ToolResDll
 
 #include <TLHELP32.H>
 
+#include "MIProHst.cpp.tmh"
 
 //info for scall process's wnd's
 struct __CScanProcessInfo
@@ -121,6 +123,8 @@ static const UINT cpcScrollControlCommands[] =
 
 int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
+  WPP_INIT_TRACING(L"MIProHst");
+
   //create app instance
   //try init
   //if init ok - start
@@ -141,6 +145,8 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR lpCmdLine, in
   };
   delete g_pApp;
   g_pApp = 0;
+
+  WPP_CLEANUP();
 
   return iRes;
 };

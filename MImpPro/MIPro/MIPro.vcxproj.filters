@@ -32,10 +32,8 @@
     <ClInclude Include="resource.h">
       <Filter>Res</Filter>
     </ClInclude>
-    <ClInclude Include="MICrptInfo.h" />
     <ClInclude Include="..\Include\MIGlobal.h" />
     <ClInclude Include="..\Include\MIHostInterface.h" />
-    <ClInclude Include="PEHelper.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MIPro_WndDummyProc.txt">

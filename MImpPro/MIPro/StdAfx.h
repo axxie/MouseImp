@@ -18,4 +18,7 @@ precompiled
 #include <COMMCTRL.H>
 #include <psapi.h>
 
+#include "../Include/Wpp.h"
+
+
 #endif//__STDAFX_H

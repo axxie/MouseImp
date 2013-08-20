@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CoreCppClean Include="@(CoreCppClean);$(ProjectDir)">
+      <FilePatternsToDelete>*.tmh</FilePatternsToDelete>
+    </CoreCppClean>
+  </ItemGroup>
+  <Target Name="WppPreSource" BeforeTargets="WppSource">
+    <ItemGroup>
+      <TraceWppSources Include="@(ClCompile); @(ClInclude)" Exclude="stdafx.cpp" />
+    </ItemGroup>
+  </Target>
+  <Target Name="WppSource" BeforeTargets="ClCompile" Inputs="@(TraceWppSources)" Outputs="@(TraceWppSources -> '$(IntDir)%(Filename)%(Extension).tmh')">
+    <Message Text="Building tmh files for the following sources: @(TraceWppSources)" />
+    <Delete Files="@(TraceWppSources -> '$(IntDir)%(Filename)%(Extension).tmh')" />
+    <Exec Command="$(MSBuildThisFileDirectory)tracewpp.EXE -cfgdir:$(MSBuildThisFileDirectory)rev1 -odir:$(IntDir) -ext:.c.cpp.h -preserveext:.c.cpp.h @(TraceWppSources, ' ') " />
+    <Message Text="$(MSBuildThisFileDirectory)tracewpp.EXE -cfgdir:$(MSBuildThisFileDirectory)rev1 -odir:$(IntDir) -ext:.c.cpp.h -preserveext:.c.cpp.h @(TraceWppSources, ' ') " />
+  </Target>
+  <Target Name="WppPdb" AfterTargets="Link" Inputs="%(Link.ProgramDatabaseFile)" Outputs="$(OutDir)$(ProjectName).tmf">
+    <Exec Command="$(MSBuildThisFileDirectory)tracepdb.EXE -f %(Link.ProgramDatabaseFile) -o $(OutDir)$(ProjectName).tmf" />
+  </Target>
+</Project>

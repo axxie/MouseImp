@@ -141,8 +141,6 @@
     <ClInclude Include="SelWndPatternDlg.h">
       <Filter>Pages\WndPattern</Filter>
     </ClInclude>
-    <ClInclude Include="..\MICrptInfo.h" />
-    <ClInclude Include="..\MICrptInfoImpl.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\arrows.bmp">

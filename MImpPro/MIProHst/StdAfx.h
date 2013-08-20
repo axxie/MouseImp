@@ -20,6 +20,7 @@ precompiled hdr's
 #include <SHELLAPI.H>
 #include "sddl.h"
 
+#include "../Include/Wpp.h"
 
 //not used "command line" info
 #define __SLW_NO_COMMAND_LINE_INFO

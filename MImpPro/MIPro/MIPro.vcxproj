@@ -157,10 +157,8 @@
     <ClInclude Include="StdAfx.h" />
     <ClInclude Include="xmlParser.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="MICrptInfo.h" />
     <ClInclude Include="..\Include\MIGlobal.h" />
     <ClInclude Include="..\Include\MIHostInterface.h" />
-    <ClInclude Include="PEHelper.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MIPro_WndDummyProc.txt" />
