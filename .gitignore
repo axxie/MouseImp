@@ -1,5 +1,4 @@
-/Bin/Win32/Debug
-/Bin/Win32/Release
+/Bin
 /Intermediate
 *.user
 *.sdf
