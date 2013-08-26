@@ -479,6 +479,9 @@ protected:
   inline bool FSBTestRangeGreatPage(const HWND hcWnd, const bool bcIsHor, const SCROLLINFO& rcInfo);
   //get min thumb size (depend on OS)
   static inline LONG GetMinThumbSize(const bool bcIsHor);
+
+  bool m_isWin7orLower;
+  bool m_IE10NoMouseUpEvent;
 };
 
 
@@ -1338,7 +1341,7 @@ inline void CApp::TryUnLock(const HWND hcWnd, CSubClassInfo* const cpInfo)
 
 inline bool CApp::SubClassWnd(const HWND hcWnd)
 {
-	bool bRes = false;
+    bool bRes = false;
 
   //try get wnd process id
   const DWORD dwcWndThrd = ::GetWindowThreadProcessId(hcWnd, 0);
@@ -1766,13 +1769,13 @@ inline void CApp::SBScrollStartInt(CScrollProcessInfo& rInfo, CScrollProcessInfo
 
   //subclass and goto forwarding mode
   // OA this function causes Windows Vista applications to fail
-	OSVERSIONINFO osvi;
-	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-	GetVersionEx (&osvi);
-	bool bIsWindowsVistaorLater = (osvi.dwMajorVersion > 5);
+    OSVERSIONINFO osvi;
+    osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+    GetVersionEx (&osvi);
+    bool bIsWindowsVistaorLater = (osvi.dwMajorVersion > 5);
 
-	if (!bIsWindowsVistaorLater)
-		pCfgMem->bMouseHookInForwardMode = false != SubClassWnd(pCfgMem->hSubClassScrollWnd);
+    if (!bIsWindowsVistaorLater)
+        pCfgMem->bMouseHookInForwardMode = false != SubClassWnd(pCfgMem->hSubClassScrollWnd);
 
   //store "save" distance - from mouse pnt to thumb center - for start of scroll
   CalcSaveDistance(rcPnt, rCurrPnt);
@@ -2033,7 +2036,7 @@ inline bool CApp::IEScrollStartInt(const MOUSEHOOKSTRUCT* const cpMsg, CSCrollIE
   rScrollInfo.bHorScroll = bcHorStart;
 
   //emulate "unpress" with "eat" mouse input
-  if(false != bcRealyFirstStart)
+  if(false != bcRealyFirstStart && !rScrollInfo.bDontSendMouseUp)
   {
     const StopMouseMsg& rcInfo = cpcStopMouseNCInfo[pCfgMem->dwMouseControlStartKey];
     pCfgMem->uiEatUpFlag |= rcInfo.uiSkipMask;
@@ -2115,8 +2118,8 @@ inline bool CApp::IEScrollMoveInt(const MOUSEHOOKSTRUCT* const cpMsg, CSCrollIEP
       rScrollInfo.lRemand = iMouseShift - lcRealDeltaMult * egcWheelScrollingSBPointPerDelta;
       if(0 != lcRealDeltaMult)
       {
-		  // Oleg: added " / 2 " to increase scrolling precision in Office 2007 applications.
-		  // " / 4 " would be the same as a infinitely stopless mouse wheel
+          // Oleg: added " / 2 " to increase scrolling precision in Office 2007 applications.
+          // " / 4 " would be the same as a infinitely stopless mouse wheel
         const LONG lcDeltaVal = WHEEL_DELTA * lcRealDeltaMult / 2;
         SafeSendMsg(rScrollInfo.hWnd, WM_MOUSEWHEEL, MAKEWPARAM(0, -lcDeltaVal), MAKELPARAM(rScrollInfo.PntStartScroll.x, rScrollInfo.PntStartScroll.y));
         rScrollInfo.LastScrollPnt = cpMsg->pt;

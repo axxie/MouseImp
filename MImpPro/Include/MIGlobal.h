@@ -141,6 +141,8 @@ struct CSCrollIEProcessInfo
   bool bLockedScrollDirection;
   //locked "whell delta" (used for WinAmp scrolling)
   bool bLockedWheelDelta;
+  //do not send mouse up, is set only for true IE window, not the one treated like IE
+  bool bDontSendMouseUp;
 
   void Reset(HWND newHwnd)
   {
@@ -148,6 +150,7 @@ struct CSCrollIEProcessInfo
       bHorScroll = false;
       bLockedScrollDirection = true;
       bLockedWheelDelta = true;
+      bDontSendMouseUp = false;
   }
 };
 
@@ -355,7 +358,7 @@ inline bool ASCompareClassSimple(LPCSTR const cpcClass, LPCSTR const cpcPatt)
 //simple compare class (without MFC processing)
 inline bool ASCompareClassSimplePatt(LPCSTR const cpcClass, LPCSTR const cpcPatt)
 {
-	return NULL != ::strstr(cpcClass,cpcPatt);
+    return NULL != ::strstr(cpcClass,cpcPatt);
 };
 
 //compare wnd title for AShrink

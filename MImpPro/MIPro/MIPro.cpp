@@ -7,6 +7,7 @@ mouse imp hok dll
 #include "MIPro.h"
 
 #include <limits.h>
+#include "..\SLibExc\SLCfgReg.h"
 
 //////////////////////////////////////////////////////////////////////
 //global's
@@ -231,7 +232,9 @@ CApp::CApp(HINSTANCE hInitInstance)
 
   MemWndList(100),
 
-  m_IsHostProcess(false)
+  m_IsHostProcess(false),
+  m_isWin7orLower(false),
+  m_IE10NoMouseUpEvent(false)
 {
 };
 
@@ -367,6 +370,82 @@ bool CApp::Init()
   char szFileName[MAX_PATH];
   GetFullBasedName("mimpwnds.xml", szFileName, hInstance);
   xMainNode = XMLNode::parseFile(szFileName, "config", &xRes);
+
+  // special handling for IE10 
+  OSVERSIONINFO OsVer = {0};
+  OsVer.dwOSVersionInfoSize = sizeof(OsVer);
+  bRes = (FALSE != ::GetVersionEx(&OsVer));
+  if(false != bRes)
+  {
+    if (VER_PLATFORM_WIN32_NT == OsVer.dwPlatformId)
+    {
+      if ((OsVer.dwMajorVersion == 6 && OsVer.dwMinorVersion <= 1) ||
+           OsVer.dwMajorVersion < 6)
+      {
+        m_isWin7orLower = true;
+      }
+    }
+  }
+
+
+  if (m_isWin7orLower)
+  {
+    // read IE10 binary path from registry
+    LPSTR iePath = nullptr;
+    LPCSTR ieRegPath = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths\\IEXPLORE.EXE";
+    HKEY hKey;
+
+    if (ERROR_SUCCESS == RegOpenKey(HKEY_LOCAL_MACHINE, ieRegPath, &hKey))
+    {
+        LONG valueSize;
+        if (ERROR_SUCCESS == RegQueryValue(hKey, "", NULL, &valueSize))
+        {
+            iePath = new CHAR[valueSize + 1];
+            if (ERROR_SUCCESS != RegQueryValue(hKey, "", iePath, &valueSize ))
+            {
+                delete [] iePath;
+                iePath = nullptr;
+            }
+        }
+        RegCloseKey(hKey);
+    }
+
+    // read IE10 version info
+    if (iePath)
+    {
+        DWORD  verHandle = NULL;
+        UINT   size      = 0;
+        LPBYTE lpBuffer  = NULL;
+        DWORD  verSize   = GetFileVersionInfoSize(iePath, &verHandle);
+
+        if (verSize != 0)
+        {
+            LPSTR verData = new char[verSize];
+
+            if (GetFileVersionInfo(iePath, verHandle, verSize, verData))
+            {
+                if (VerQueryValue(verData,"\\",(VOID FAR* FAR*)&lpBuffer,&size))
+                {
+                    if (size)
+                    {
+                        VS_FIXEDFILEINFO *verInfo = (VS_FIXEDFILEINFO *)lpBuffer;
+                        if (verInfo->dwSignature == 0xfeef04bd)
+                        {
+                            int major = HIWORD(verInfo->dwFileVersionMS);
+                            if (major >= 10)
+                            {
+                                m_IE10NoMouseUpEvent = true;
+                            }
+                        }
+                    }
+                }
+            }
+            delete[] verData;
+        }    
+    }
+    delete [] iePath;
+  }
+
 
   //init (if ok)
   if(false != bRes)
@@ -1029,6 +1108,7 @@ UINT CApp::DrillChildUp(const HWND hcInitStart, const UINT uicCurrKeyFlag, const
       rInfo.Reset(hLookWnd);
       rInfo.bLockedScrollDirection = false;
       rInfo.bLockedWheelDelta = false;
+      rInfo.bDontSendMouseUp = m_IE10NoMouseUpEvent;
       uiRes = ehmScrollIEPress;
       break;
     }
