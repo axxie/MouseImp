@@ -7,17 +7,17 @@ set OutName=Mimp_Release_Win32_%datetime%.log
 set OutName64=Mimp_Release_x64_%datetime%.log
 
 @echo on
-"%VS80COMNTOOLS%\..\IDE\devenv" MImp.sln /rebuild "Release|Win32" /Out %OutName% >nul 2>nul
+"%VS100COMNTOOLS%\..\IDE\devenv" MImp.sln /rebuild "Release|Win32" /Out %OutName% >nul 2>nul
 @if errorlevel 1 goto prep_build_error
-"%VS80COMNTOOLS%\..\IDE\devenv" MImp.sln /rebuild "Release|x64" /Out %OutName64% >nul 2>nul
+"%VS100COMNTOOLS%\..\IDE\devenv" MImp.sln /rebuild "Release|x64" /Out %OutName64% >nul 2>nul
 @if errorlevel 1 goto prep_build_error64
 
 @echo B^> Incrementing build number
 for /f "tokens=*" %%i in ('cscript //nologo IncrementBuildNumber.vbs') do set Version=%%i
 
-"%VS80COMNTOOLS%\..\IDE\devenv" MImp.sln /rebuild "Release|Win32" /Out %OutName% >nul 2>nul
+"%VS100COMNTOOLS%\..\IDE\devenv" MImp.sln /rebuild "Release|Win32" /Out %OutName% >nul 2>nul
 @if errorlevel 1 goto error
-"%VS80COMNTOOLS%\..\IDE\devenv" MImp.sln /rebuild "Release|x64" /Out %OutName64% >nul 2>nul
+"%VS100COMNTOOLS%\..\IDE\devenv" MImp.sln /rebuild "Release|x64" /Out %OutName64% >nul 2>nul
 @if errorlevel 1 goto error64
 
 @echo B^> Creating backup
