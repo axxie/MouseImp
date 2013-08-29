@@ -21,7 +21,7 @@ for /f "tokens=*" %%i in ('cscript //nologo IncrementBuildNumber.vbs') do set Ve
 @if errorlevel 1 goto error64
 
 @echo B^> Creating backup
-rar a -r -x*.user -x*.ncb -x*.aps -x*.suo -xIntermediate -x.hg -xbin\Win32\Debug -xbin\x64\Debug ..\..\bkp\MouseImp_%Version%_src.rar ..\*.*
+rar a -r -x*.user -x*.ncb -x*.aps -x*.suo -xIntermediate -x.hg -xbin\Win32\Debug -xbin\x64\Debug -x*.ipch -x*.sdf -x*.opensdf -x.git ..\..\bkp\MouseImp_%Version%_src.rar ..\*.*
 
 @echo B^> Copying .msi files
 copy ..\bin\win32\release\en-US\MouseImp.msi .\MouseImp%Version%.msi
