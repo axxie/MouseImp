@@ -448,7 +448,7 @@ void CMImpCfgMainDlg::OnApply()
   ::SendMessage(theApp.pCommon64->hMainHostWnd, emcNeedSaveCfg, 0, 0);
 }
 
-void CMImpCfgMainDlg::OnTimer(UINT nIDEvent) 
+void CMImpCfgMainDlg::OnTimer(UINT_PTR nIDEvent) 
 {
   switch(nIDEvent)
   {

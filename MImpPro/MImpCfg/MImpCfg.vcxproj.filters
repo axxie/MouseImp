@@ -20,6 +20,9 @@
     <Filter Include="Pages\WndPattern">
       <UniqueIdentifier>{b14f848f-7310-4deb-8f6a-0bdcbb38f64e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="PatchedMFC">
+      <UniqueIdentifier>{f33b4806-4a33-43b5-babe-13c72f32ceb4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MImpCfg.cpp">
@@ -78,6 +81,15 @@
     </ClCompile>
     <ClCompile Include="SelWndPatternDlg.cpp">
       <Filter>Pages\WndPattern</Filter>
+    </ClCompile>
+    <ClCompile Include="PatchedMFC\afxctrlcontainer.cpp">
+      <Filter>PatchedMFC</Filter>
+    </ClCompile>
+    <ClCompile Include="PatchedMFC\afxglobals.cpp">
+      <Filter>PatchedMFC</Filter>
+    </ClCompile>
+    <ClCompile Include="PatchedMFC\winmdi.cpp">
+      <Filter>PatchedMFC</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -11,13 +11,27 @@ precompiled's
 //////////////////////////////////////////////////////////////////////
 //MFC
 
-#define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers
+//#define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers
+#include <SDKDDKVer.h>
 
+/*
 #include <afxwin.h>
 #include <afxdlgs.h>
 //#include <afxext.h>         // MFC extensions
 #include <afxdtctl.h>		// MFC support for Internet Explorer 4 Common Controls
 #include <afxcmn.h>			// MFC support for Windows Common Controls
+*/
+
+#include <afxwin.h>         // MFC core and standard components
+#include <afxext.h>         // MFC extensions
+#include <afxdtctl.h>		// MFC support for Internet Explorer 4 Common Controls
+#include <afxcmn.h>			// MFC support for Windows Common Controls
+
+
+#include "afxpriv.h"
+#include "afxole.h"
+#include "..\src\mfc\oleimpl2.h"
+#include "..\src\mfc\afximpl.h"
 
 
 ////////////////////////////////////////////////////////////////////////

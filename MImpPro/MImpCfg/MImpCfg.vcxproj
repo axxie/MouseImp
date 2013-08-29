@@ -92,12 +92,16 @@
       </HeaderFileName>
     </Midl>
     <ClCompile>
-      <Optimization>Disabled</Optimization>
+      <Optimization>MinSpace</Optimization>
       <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
+      <UndefinePreprocessorDefinitions>_WIN32_WINNT</UndefinePreprocessorDefinitions>
     </ClCompile>
     <Link>
       <OutputFile>$(OutDir)MIProCfg.exe</OutputFile>
       <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>res\MIProCfg.exe.manifest;%(AdditionalManifestFiles)</AdditionalManifestFiles>
@@ -121,6 +125,9 @@
     <Manifest>
       <AdditionalManifestFiles>res\MIProCfg.exe.manifest;%(AdditionalManifestFiles)</AdditionalManifestFiles>
     </Manifest>
+    <ClCompile>
+      <UndefinePreprocessorDefinitions>_WIN32_WINNT</UndefinePreprocessorDefinitions>
+    </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Midl>
@@ -139,6 +146,9 @@
     <Manifest>
       <AdditionalManifestFiles>res\MIProCfg.exe.manifest;%(AdditionalManifestFiles)</AdditionalManifestFiles>
     </Manifest>
+    <ClCompile>
+      <UndefinePreprocessorDefinitions>_WIN32_WINNT</UndefinePreprocessorDefinitions>
+    </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Midl>
@@ -158,11 +168,27 @@
     <Manifest>
       <AdditionalManifestFiles>res\MIProCfg.exe.manifest;%(AdditionalManifestFiles)</AdditionalManifestFiles>
     </Manifest>
+    <ClCompile>
+      <UndefinePreprocessorDefinitions>_WIN32_WINNT</UndefinePreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">
+    <ClCompile>
+      <UndefinePreprocessorDefinitions>_WIN32_WINNT</UndefinePreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Template|x64'">
+    <ClCompile>
+      <UndefinePreprocessorDefinitions>_WIN32_WINNT</UndefinePreprocessorDefinitions>
+    </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="MImpCfg.cpp" />
     <ClCompile Include="MImpCfgMainDlg.cpp" />
     <ClCompile Include="NewsShowDialog.cpp" />
+    <ClCompile Include="PatchedMFC\afxctrlcontainer.cpp" />
+    <ClCompile Include="PatchedMFC\afxglobals.cpp" />
+    <ClCompile Include="PatchedMFC\winmdi.cpp" />
     <ClCompile Include="QuickTourDlg.cpp" />
     <ClCompile Include="RegDlg.cpp" />
     <ClCompile Include="AppConst.cpp" />
