@@ -16,8 +16,8 @@ Requirements
 Build
 -----
 
-# Open MImp.sln solution file in Visual Studio.
-# Build Win32 configuration, then build x64 configuration
+1. Open MImp.sln solution file in Visual Studio.
+2. Build Win32 configuration, then build x64 configuration
 Compiled msi files can be found in corresponding subfolder in the Bin folder
 
 License
